@@ -3,6 +3,8 @@ type: Policy
 title: 반품 정책
 description: 반품 신청 기한과 할인 상품 규칙.
 tags: [반품, 할인]
+verified: { by: human:jun, at: 2026-11-18T15:00:00+09:00 }
+stale_after: 2026-12-31T00:00:00Z
 sources:
   - id: returns-faq
     resource: /references/returns-faq.md

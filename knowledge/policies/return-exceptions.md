@@ -2,6 +2,7 @@
 type: Policy
 title: 반품 예외
 description: 최종 판매 상품의 처리 기준.
+status: deprecated
 tags: [반품, 예외]
 ---
 
