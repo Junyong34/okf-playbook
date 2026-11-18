@@ -46,3 +46,9 @@ next-env.d.ts
 .eslintcache
 .turbo
 .swc
+
+# editors & local tools
+.idea/
+.vscode/
+.serena/
+.claude/settings.local.json
