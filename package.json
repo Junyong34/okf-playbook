@@ -11,7 +11,9 @@
     "typecheck": "tsc --noEmit",
     "retrieve": "node retrieve.ts",
     "prompt": "node prompt.ts",
-    "check-answer": "node check-answer.ts"
+    "check-answer": "node check-answer.ts",
+    "compare": "node compare.ts",
+    "trace": "node trace.ts"
   },
   "dependencies": {
     "yaml": "^2.9.1"

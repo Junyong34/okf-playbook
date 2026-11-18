@@ -38,9 +38,12 @@
 | 3 | [0003 검증기](lessons/0003-validate.html) | `src/okf/validate.ts` 구현, 테스트 30개 통과 | 완료 (에이전트 구현, 2026-11-18) |
 | 4 | [0004 질문별 문서 찾기](lessons/0004-retrieve.html) | `src/okf/retrieve.ts` 구현, `evaluation.md` 4회차 표 | 완료 (에이전트 구현, 2026-11-18) |
 | 5 | [0005 근거를 붙인 답변](lessons/0005-grounded-answer.html) | `src/okf/answer.ts` 구현, 답변 저장·검사, `evaluation.md` 5회차 표 | 코드 완료 (에이전트 구현). 모델 답변 저장·검사는 남음 |
-| 6 | 0006 검색 설정 비교 | `evaluation.md` 결과표 | 예정 |
-| 선택 | FAQ를 개념으로 나누기 | `source/returns-faq.md`. 심화 1(`references/returns-faq.md`)과 함께 진행 | 보류 |
-| 심화 | 0007~ `sources`·각주, `verified`·`stale_after` | 계획 §6 | 예정 |
+| 6 | [0006 검색 설정 비교](lessons/0006-compare-settings.html) | `src/okf/compare.ts` 구현, `pnpm compare` 결과표, `evaluation.md` 6회차 | 코드 완료 (에이전트 구현, 2026-11-18). 예측·결론 메모는 남음 |
+| 심화 1 | [0007 원문으로 거슬러 올라가기](lessons/0007-sources-footnotes.html) | `src/okf/provenance.ts` 구현, `references/returns-faq.md`, `sources`·각주, `pnpm trace`, `evaluation.md` 7회차. 선택 레슨이던 FAQ 실습을 여기에 합쳤다 | 완료 (에이전트 구현, 2026-11-18). 팀 규칙 결정은 사용자 확인 필요 |
+| 심화 2 | [0008 검토 상태와 낡은 개념](lessons/0008-trust-lifecycle.html) | `src/okf/trust.ts` 구현, 직접 대조한 개념에 `verified`, 낡은 사본에서 `pnpm retrieve --now` 주의 표시, `evaluation.md` 8회차 소비자 정책 (계획 §6-2, 명세 §5.2~§5.5·§7) | 진행 중 (T1~T3 TODO) |
+| 심화 3 | 0009 같은 번들을 다른 방식으로 읽기 | 로컬 CLI와 공식 시각화 도구 비교, §10 계산 검증 예제 읽기 (계획 §6-3) | 예정 |
+
+기본 과정은 0006(6회차)까지이고, 심화까지 포함하면 0009가 마지막 레슨이다. 그 뒤의 웹 화면(Vite + React + TS + Claude SDK)은 사용자가 요청할 때 별도로 시작한다.
 
 ## 참고 문서
 

@@ -112,9 +112,15 @@ describe('7단계 실제 번들', () => {
   test('knowledge/는 오류도 경고도 없다', async () => {
     assert.deepEqual(summary(await loadBundle('knowledge')), []);
   });
-  test('루트 index.md와 개념 3개가 모두 있다', async () => {
+  test('루트 index.md와 개념 3개, 0007의 원문 개념이 모두 있다', async () => {
     const b = await loadBundle('knowledge');
-    assert.deepEqual([...b.keys()].sort(), ['index.md', 'policies/return-exceptions.md', 'policies/returns.md', 'processes/refunds.md']);
+    assert.deepEqual([...b.keys()].sort(), [
+      'index.md',
+      'policies/return-exceptions.md',
+      'policies/returns.md',
+      'processes/refunds.md',
+      'references/returns-faq.md',
+    ]);
     assert.deepEqual(summary(bundle({ 'index.md': ROOT_INDEX, 'policies/returns.md': POLICY })), []);
   });
 });

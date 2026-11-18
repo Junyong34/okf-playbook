@@ -8,6 +8,7 @@ import { bigrams, readConcepts, retrieve, score } from '../src/okf/retrieve.ts';
 import type { Bundle } from '../src/okf/types.ts';
 
 const bundle = (files: Record<string, string>): Bundle => new Map(Object.entries(files));
+const withoutReferences = (b: Bundle): Bundle => new Map([...b].filter(([path]) => !path.startsWith('references/')));
 const doc = (type: string, body: string, extra = '') => `---\ntype: ${type}\n${extra}---\n\n${body}\n`;
 // 결과를 "k:경로"(키워드) / "l:경로"(링크) 목록으로 줄여 비교한다.
 const picks = (b: Bundle, q: string, o = {}) => retrieve(b, q, o).picks.map((p) => `${p.via[0]}:${p.path}`);
@@ -94,6 +95,7 @@ describe('R4단계 retrieve: 링크 한 단계 (0003 resolveLink 필요)', () =>
 describe('R5단계 실제 번들과 학습 계획의 질문 6개', () => {
   // 기본 설정(body+meta, 링크 on, max 3, min 2)에서 이 알고리즘이 내는 결과다.
   // "정답"이 아니라 현재 동작의 기록이다. 맞는지 틀리는지는 레슨에서 직접 판단한다.
+  // 4회차 번들(개념 3개)의 기록이라 0007에서 더한 원문 개념(references/)은 뺀다.
   const cases: [string, string[]][] = [
     ['물건을 받은 지 5일 됐어요. 반품 신청할 수 있나요?', ['k:policies/returns.md', 'k:processes/refunds.md', 'l:policies/return-exceptions.md']],
     ['8일이 지난 할인 상품도 반품할 수 있나요?', ['k:policies/return-exceptions.md', 'k:policies/returns.md', 'l:processes/refunds.md']],
@@ -104,7 +106,7 @@ describe('R5단계 실제 번들과 학습 계획의 질문 6개', () => {
   ];
   for (const [q, expected] of cases) {
     test(q, async () => {
-      assert.deepEqual(picks(await loadBundle('knowledge'), q), expected);
+      assert.deepEqual(picks(withoutReferences(await loadBundle('knowledge')), q), expected);
     });
   }
 });
