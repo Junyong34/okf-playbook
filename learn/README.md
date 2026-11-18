@@ -41,7 +41,7 @@
 | 6 | [0006 검색 설정 비교](lessons/0006-compare-settings.html) | `src/okf/compare.ts` 구현, `pnpm compare` 결과표, `evaluation.md` 6회차 | 코드 완료 (에이전트 구현, 2026-11-18). 예측·결론 메모는 남음 |
 | 심화 1 | [0007 원문으로 거슬러 올라가기](lessons/0007-sources-footnotes.html) | `src/okf/provenance.ts` 구현, `references/returns-faq.md`, `sources`·각주, `pnpm trace`, `evaluation.md` 7회차. 선택 레슨이던 FAQ 실습을 여기에 합쳤다 | 완료 (에이전트 구현, 2026-11-18). 팀 규칙 결정은 사용자 확인 필요 |
 | 심화 2 | [0008 검토 상태와 낡은 개념](lessons/0008-trust-lifecycle.html) | `src/okf/trust.ts` 구현, 직접 대조한 개념에 `verified`, 낡은 사본에서 `pnpm retrieve --now` 주의 표시, `evaluation.md` 8회차 소비자 정책 (계획 §6-2, 명세 §5.2~§5.5·§7) | 코드 완료 (에이전트 구현, 2026-11-18). 사람 대조 후 `verified` 기록과 소비자 정책 메모는 남음 |
-| 심화 3 | 0009 같은 번들을 다른 방식으로 읽기 | 로컬 CLI와 공식 시각화 도구 비교, §10 계산 검증 예제 읽기 (계획 §6-3) | 예정 |
+| 심화 3 | [0009 같은 번들을 다른 방식으로 읽기](lessons/0009-read-bundle-differently.html) | `src/okf/graph.ts` 구현, `pnpm graph [--mermaid]`, 공식 뷰어와 비교, `evaluation.md` 9회차, §10 계산 검증 예제 읽기 (계획 §6-3) | 코드 완료 (에이전트 구현, 2026-11-19). 공식 뷰어 비교·사본 실험·§10 표는 남음 |
 
 기본 과정은 0006(6회차)까지이고, 심화까지 포함하면 0009가 마지막 레슨이다. 그 뒤의 웹 화면(Vite + React + TS + Claude SDK)은 사용자가 요청할 때 별도로 시작한다.
 

@@ -230,3 +230,38 @@ q7·q8은 레슨 모범 답안의 예시 질문이다 (에이전트가 넣음).
 - deprecated 개념:
 - 모델에 주의를 넘길지, 넘긴다면 어떤 모양으로:
 
+## 9회차: 같은 번들을 다른 방식으로 읽기
+
+레슨: `learn/lessons/0009-read-bundle-differently.html`.
+
+두 소비자로 읽은 진짜 번들 (실습 4단계):
+
+| 비교할 것 | `pnpm graph` (+ `retrieve`) | 공식 뷰어 |
+| --- | --- | --- |
+| 간선 수 (링크 / 출처) | | |
+| FAQ가 이어지는 방식 | | |
+| 신뢰 등급·낡음 표시 | | |
+| 검색이 보는 필드 ("3~5일", "환불") | | |
+
+사본에서 갈린 지점 (실습 5단계, `/tmp/okf-exp`):
+
+| 바꾼 것 | 우리 | 공식 뷰어 | 명세로 본 판단, 생산자가 쓸 형식 |
+| --- | --- | --- | --- |
+| (가) 본문 링크 `/processes/refunds.md` | | | |
+| (나) `stale_after: 2026-10-01` | | | |
+| (다) `verified: { by: human, … }` | | | |
+
+§10 예제 읽기 (실습 6단계, `acme_retail/computations/revenue-ytd.md`):
+
+| 필드 | 내용 |
+| --- | --- |
+| `runtime` | |
+| `parameters` | |
+| `executor.receipt` | |
+| `attester` | |
+| `verified`·`stale_after` | |
+
+환불 예정일을 Attested Computation으로 둘 가치가 있나:
+
+-
+

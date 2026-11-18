@@ -13,7 +13,8 @@
     "prompt": "node prompt.ts",
     "check-answer": "node check-answer.ts",
     "compare": "node compare.ts",
-    "trace": "node trace.ts"
+    "trace": "node trace.ts",
+    "graph": "node graph.ts"
   },
   "dependencies": {
     "yaml": "^2.9.1"
