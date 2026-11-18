@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0004 · 질문별 문서 찾기, 키워드와 링크 한 단계</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/bigram-lab.js" defer></script>
+</head>
+<body>
+<main>
+<header class="lesson">
+  <p class="kicker">Lesson 0004 · 4회차</p>
+  <h1>질문별 문서 찾기, 키워드와 링크 한 단계</h1>
+  <p class="lede"><code>src/okf/retrieve.ts</code>를 채워서 질문마다 고른 개념, 링크로 더한 개념, 고른 이유를 출력한다.</p>
+  <div class="meta"><span>약 90분</span><span>회상 5 · 읽기 15 · 퀴즈 5 · 실습 50 · 검토 15</span><span>용어: <a href="../reference/okf-v0.2-core.html">핵심 규칙과 용어집</a></span></div>
+</header>
+
+<div class="box win">
+  <h3>왜 이것이 다음인가</h3>
+  <p>RAG는 검색 단계와 생성 단계로 나뉜다.<a class="cite" href="https://arxiv.org/abs/2005.11401">Lewis et al.</a> 오늘은 검색 단계를 만든다. 5회차에 모델에 넘길 "경로 + 본문"이 바로 오늘의 출력이다. 검색이 근거를 빠뜨리면 모델이 아무리 좋아도 답에 근거가 없다.</p>
+</div>
+
+<div class="note"><strong>시작 전 확인.</strong> R4단계(링크 따라가기)는 0003 2단계의 <code>resolveLink</code>를 그대로 쓴다. 아직이면 R3단계까지 하고 0003 2단계를 먼저 통과시킨다. <code>node --test --test-name-pattern="2단계" "tests/**/*.test.ts"</code></div>
+
+<h2>0. 회상</h2>
+<details><summary>검증기가 끊어진 링크를 오류로 내면 검색기에 어떤 문제가 생기나?</summary>
+<p>번들 하나에 링크 하나만 끊겨도 번들 전체를 못 읽게 된다. 명세는 소비자에게 끊어진 링크를 참고 계속 읽으라고 요구한다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#11-conformance">§11</a> 오늘 검색기도 끊어진 링크는 경고만 남긴다.</p></details>
+<details><summary><code>validateBundle</code>이 파일 경로 대신 <code>Map</code>을 받는 이유 두 가지는?</summary>
+<p>테스트에서 디스크 없이 번들을 문자열로 만들 수 있다. 그리고 나중에 웹 화면에서 브라우저가 가진 파일 내용만으로 같은 함수를 돌릴 수 있다. <code>retrieve</code>도 같은 방식이다.</p></details>
+<details><summary><code>../policies/../processes/refunds.md</code>를 정규화하지 않으면 무엇이 중복되나?</summary>
+<p>같은 <code>processes/refunds.md</code>가 다른 문자열로 두 번 들어간다. 오늘 R4단계는 <code>resolveLink</code>로 정규화한 경로끼리 비교해서 중복을 막는다.</p></details>
+
+<h2>1. 한국어 키워드는 두 글자씩 자른다</h2>
+<p>띄어쓰기로만 자르면 "상품을"과 "상품"이 다른 단어가 된다. 조사와 어미가 붙기 때문이다. 형태소 분석기 없이 이 문제를 줄이는 흔한 방법이 두 글자 묶음(bigram)이다. Elasticsearch의 기본 CJK 분석기도 한·중·일 텍스트를 이렇게 자른다.<a class="cite" href="https://www.elastic.co/docs/reference/text-analysis/analysis-cjk-bigram-tokenfilter">Elasticsearch</a></p>
+<pre><code>"할인 상품을"  →  할인 · 상품 · 품을
+"상품도"       →  상품 · 품도        ← "상품"이 겹친다</code></pre>
+<p>점수는 질문과 개념이 공유하는 묶음 수다. 단어 사이를 건너는 묶음은 만들지 않고, 한 글자 단어("수", "지")는 버린다. 대소문자도 낮춰 비교하므로 <code>type: Policy</code>와 <code>policy</code>는 같은 키워드가 된다. 앞서 물어본 대소문자 문제를 소비자 쪽에서 막는 방법이다.</p>
+
+<h3>직접 넣어 보기</h3>
+<p>아래는 실제 <code>knowledge/</code> 개념 3개(본문 + type·title·description·tags)다. 질문을 바꿔 가며 점수가 어떻게 움직이는지 본다. 특히 "5일 됐어요"가 왜 환불 절차를 끌어오는지 찾아본다.</p>
+<div class="box"><div class="bigram-lab" data-min="2" data-question="물건을 받은 지 5일 됐어요. 반품 신청할 수 있나요?" data-docs="[{&quot;path&quot;:&quot;policies/return-exceptions.md&quot;,&quot;text&quot;:&quot;Policy\n반품 예외\n최종 판매 상품의 처리 기준.\n반품 예외\n\n# 최종 판매 상품\n\n주문할 때 최종 판매로 표시된 상품은 반품할 수 없다.\n일반 반품 기한은 [반품 정책](returns.md)을 따른다.\n&quot;},{&quot;path&quot;:&quot;policies/returns.md&quot;,&quot;text&quot;:&quot;Policy\n반품 정책\n반품 신청 기한과 할인 상품 규칙.\n반품 할인\n\n# 반품 조건\n\n할인 상품을 포함해 수령 후 7일 이내에 반품을 신청할 수 있다.\n최종 판매로 표시된 상품은 [반품 예외](return-exceptions.md)를 확인한다.\n반품 승인 이후의 일정은 [환불 절차](../processes/refunds.md)를 따른다.\n&quot;},{&quot;path&quot;:&quot;processes/refunds.md&quot;,&quot;text&quot;:&quot;Process\n환불 절차\n반품 승인부터 환불까지의 기간.\n환불\n\n# 환불 일정\n\n환불은 반품 승인 후 영업일 기준 3~5일 걸린다.\n&quot;}]"></div></div>
+
+<h2>2. 링크는 한 단계만, 중복 없이</h2>
+<ol>
+  <li><strong>키워드로 고른다.</strong> 점수가 <code>minScore</code>(기본 2) 이상인 개념을 점수순으로 <code>maxDocs</code>(기본 3)개까지.</li>
+  <li><strong>링크를 한 단계 따라간다.</strong> 키워드로 고른 개념의 링크만 본다. 링크로 들어온 개념의 링크는 따라가지 않는다. 한 단계를 넘기면 관련 없는 개념이 빠르게 늘어난다(학습 계획 §4 구현 순서 2).</li>
+  <li><strong>상한을 지킨다.</strong> 링크로 더한 개념도 <code>maxDocs</code>에 포함된다. 6회차 비교에서 설정마다 같은 상한을 쓰기 위해서다.</li>
+  <li><strong>이유를 남긴다.</strong> 키워드로 고른 개념은 점수와 겹친 묶음을, 링크로 더한 개념은 출발 개념을 기록한다. 끊어진 링크·번들 밖 링크·상한 초과는 <code>warnings</code>로 남기고 계속한다.</li>
+</ol>
+<p>인덱스(<code>index.md</code>)는 검색 대상에서 뺀다. 인덱스는 길 안내용이고 답의 근거는 개념 본문에서 가져온다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#8-index-files">§8</a></p>
+
+<h2>3. 기억에서 꺼내기</h2>
+<p>점수: <span class="quiz-score"></span></p>
+<div class="quiz" data-answer="3" data-why="&quot;5일&quot;이 환불 본문의 &quot;3~5일&quot;과 같은 묶음이 된다. 숫자와 단위가 붙은 묶음은 뜻이 달라도 겹친다.">
+  <p class="q">Q1. "받은 지 5일 됐어요" 질문에 <code>refunds.md</code>가 키워드로 걸린 이유는?</p>
+  <ol><li>tags의 환불과 겹쳐서</li><li>returns 링크로 따라와서</li><li>본문 3~5일과 겹쳐서</li><li>제목의 절차와 겹쳐서</li></ol>
+</div>
+<div class="quiz" data-answer="1" data-why="한 단계를 넘기면 질문과 상관없는 개념이 빠르게 늘어난다. 명세가 정한 제한이 아니라 이 실습의 설계다.">
+  <p class="q">Q2. 링크로 추가한 개념의 링크를 다시 따라가지 않는 이유는?</p>
+  <ol><li>불필요한 개념이 늘어나서</li><li>명세가 두 단계를 금지해서</li><li>resolveLink가 처리하지 못해서</li><li>링크 개념은 점수가 없어서</li></ol>
+</div>
+<div class="quiz" data-answer="4" data-why="번들에 배송비 정책은 없는데 &quot;반품&quot;·&quot;주문&quot;이 겹쳐 예외 문서가 골라졌다. 5회차 지시문이 &quot;확인할 수 없음&quot;을 지켜야 하는 이유다.">
+  <p class="q">Q3. "해외 주문 반품 배송비" 질문에 <code>return-exceptions.md</code>가 골라졌다. 맞는 해석은?</p>
+  <ol><li>배송비 근거를 정확히 찾았다</li><li>번들이 명세를 어긴 상태다</li><li>링크가 끊어져서 생긴 결과다</li><li>엉뚱한 개념이 근거로 골라졌다</li></ol>
+</div>
+<div class="quiz" data-answer="2" data-why="키워드 단계가 이미 상한 3개를 채우면 링크 단계는 경고만 남기고 아무것도 더하지 않는다.">
+  <p class="q">Q4. 키워드로 3개를 골랐고 <code>maxDocs</code>가 3이다. 링크 단계는?</p>
+  <ol><li>링크 개념으로 하나를 바꾼다</li><li>경고만 남기고 더하지 않는다</li><li>상한을 넘겨서 모두 더한다</li><li>점수가 낮은 것부터 뺀다</li></ol>
+</div>
+
+<h2>4. 실습: 검색기 완성</h2>
+<ol>
+  <li><code>pnpm test</code>를 돌리면 <code>R1단계</code>(제공 함수)는 통과하고 나머지는 <code>TODO</code>로 실패한다. 단계별로 하나씩 통과시킨다.
+<pre><code>node --test --test-name-pattern="R2단계" "tests/**/*.test.ts"</code></pre></li>
+  <li><strong>R2</strong> <code>score</code> → <strong>R3</strong> <code>retrieve</code> 키워드 부분 → <strong>R4</strong> 링크 부분 → <strong>R5</strong> 실제 번들 질문 6개. 각 TODO 주석에 규칙이 적혀 있다.</li>
+  <li>모두 통과하면 질문 6개를 CLI로 돌린다.
+<pre><code>pnpm retrieve "할인 상품을 반품할 수 있나요? 환불은 언제 들어오나요?"
+
+[키워드] policies/returns.md  점수 5  일치: 반품, 상품, 품을, 할인, 환불
+[키워드] policies/return-exceptions.md  점수 3  일치: 반품, 상품, 품할
+[키워드] processes/refunds.md  점수 3  일치: 반품, 불은, 환불</code></pre></li>
+  <li>저장소 루트 <code>evaluation.md</code> 4회차 표를 채운다. 질문마다 키워드·링크로 고른 개념을 적고, 기대 근거와 비교해 빠진 근거와 불필요한 개념을 적는다.</li>
+  <li>설정을 바꿔 본다. 같은 질문에서 무엇이 달라지는지 메모에 적는다. 6회차 비교의 예행연습이다.
+<pre><code>pnpm retrieve "물건을 받은 지 5일 됐어요. 반품 신청할 수 있나요?" --max 1
+pnpm retrieve "물건을 받은 지 5일 됐어요. 반품 신청할 수 있나요?" --max 1 --no-links
+pnpm retrieve "해외 주문 반품 배송비는 누가 부담하나요?" --min 3</code></pre></li>
+</ol>
+<p class="note">R5단계 기대값은 정답이 아니라 이 알고리즘의 현재 동작이다. 질문 1에 <code>refunds.md</code>가 끼고 질문 6에 엉뚱한 개념이 걸리는 것도 그대로 기록되어 있다. 무엇이 문제인지 판단해서 <code>evaluation.md</code>에 적는 것이 오늘의 검토 과제다.</p>
+
+<details><summary>모범 답안: <code>score</code>와 <code>retrieve</code> (테스트를 직접 통과시킨 뒤에 열기)</summary>
+<pre><code>export function score(question: string, c: Concept, fields: Options['fields']): { score: number; matched: string[] } {
+  const doc = bigrams(searchText(c, fields));
+  const matched = [...bigrams(question)].filter((b) =&gt; doc.has(b)).sort();
+  return { score: matched.length, matched };
+}
+
+export function retrieve(bundle: Bundle, question: string, options: Partial&lt;Options&gt; = {}): Result {
+  const opt = { ...DEFAULT_OPTIONS, ...options };
+  const concepts = readConcepts(bundle);
+  const byPath = new Map(concepts.map((c) =&gt; [c.path, c]));
+  const picks: Pick[] = [];
+  const warnings: string[] = [];
+
+  // 1) 키워드로 고르기: 점수 내림차순, 같으면 경로순. minScore 이상, maxDocs까지.
+  const ranked = concepts
+    .map((c) =&gt; ({ c, ...score(question, c, opt.fields) }))
+    .filter((r) =&gt; r.score &gt;= opt.minScore)
+    .sort((a, b) =&gt; b.score - a.score || a.c.path.localeCompare(b.c.path));
+  for (const r of ranked.slice(0, opt.maxDocs)) {
+    picks.push({ path: r.c.path, via: 'keyword', score: r.score, matched: r.matched });
+  }
+
+  // 2) 링크 한 단계: 키워드로 고른 개념의 링크만 본다. 링크로 추가한 개념의 링크는 따라가지 않는다.
+  if (opt.followLinks) {
+    const seeds = picks.filter((p) =&gt; p.via === 'keyword');
+    for (const seed of seeds) {
+      for (const raw of byPath.get(seed.path)!.links) {
+        const target = resolveLink(seed.path, raw);
+        if (target === null) {
+          warnings.push(`${seed.path}의 링크 ${raw}가 번들 밖을 가리켜 건너뛴다.`);
+          continue;
+        }
+        if (picks.some((p) =&gt; p.path === target)) continue; // 중복 제거 (정규화한 경로로 비교)
+        if (!byPath.has(target)) {
+          warnings.push(`${seed.path}의 링크 ${raw}(${target})가 번들에 없어 건너뛴다.`);
+          continue;
+        }
+        if (picks.length &gt;= opt.maxDocs) {
+          warnings.push(`상한 ${opt.maxDocs}개에 걸려 ${target}를 추가하지 않았다.`);
+          continue;
+        }
+        picks.push({ path: target, via: 'link', score: 0, matched: [], from: seed.path });
+      }
+    }
+  }
+  return { picks, warnings };
+}
+</code></pre>
+</details>
+
+<div class="box">
+  <h3>완료 기준 (학습 계획 4회차)</h3>
+  <ul>
+    <li><code>pnpm test</code> 전체 통과 (0003 포함 51개).</li>
+    <li>질문마다 처음 고른 개념, 링크로 추가한 개념, 선택 이유가 출력된다.</li>
+    <li><code>evaluation.md</code> 4회차 표에 질문 6개의 결과와 빠진 근거·불필요한 개념을 적었다.</li>
+  </ul>
+</div>
+
+<h2>5. 다음 회차 시작 질문</h2>
+<ol>
+  <li>질문 6처럼 검색이 엉뚱한 개념을 고르면, 생성 단계에서 무엇으로 막아야 하나?</li>
+  <li>"반품"이 모든 개념에 있으면 점수에 어떤 문제가 생기나?</li>
+  <li><code>maxDocs</code>를 1로 줄이면 링크 따라가기가 결과를 바꿀 수 있나? 직접 돌려 본 결과로 답한다.</li>
+</ol>
+
+<div class="box">
+  <h3>1차 자료</h3>
+  <p><a href="https://arxiv.org/abs/2005.11401">Lewis et al., Retrieval-Augmented Generation (2020)</a>의 초록과 1절. 검색기가 고른 문서가 생성기의 입력이 되는 구조를 확인한다. 한국어 토큰화는 <a href="https://www.elastic.co/docs/reference/text-analysis/analysis-cjk-bigram-tokenfilter">Elasticsearch CJK bigram 필터 문서</a>를 본다.</p>
+  <p>테스트가 왜 실패하는지 모르겠으면 실패 메시지를 그대로 에이전트에게 붙여 넣고 물어본다.</p>
+</div>
+
+<nav class="course">
+  <a href="0003-validate.html">← 0003 검증기</a>
+  <a href="0005-grounded-answer.html">0005 근거를 붙인 답변 →</a>
+</nav>
+</main>
+</body>
+</html>

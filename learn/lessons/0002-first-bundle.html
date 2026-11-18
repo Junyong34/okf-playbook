@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0002 · 첫 번들 완성, 인덱스에서 근거까지 걸어가기</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/okf-check.js" defer></script>
+<script src="../assets/path-drill.js" defer></script>
+</head>
+<body>
+<main>
+<header class="lesson">
+  <p class="kicker">Lesson 0002 · 2회차</p>
+  <h1>첫 번들 완성, 인덱스에서 근거까지 걸어가기</h1>
+  <p class="lede">개념 두 개와 루트 <code>index.md</code>를 더 써서 인덱스에서 출발해 복합 질문의 근거 세 개를 링크로 찾아간다.</p>
+  <div class="meta"><span>약 90분</span><span>회상 5 · 읽기 15 · 연습 15 · 실습 40 · 검토 15</span><span>용어: <a href="../reference/okf-v0.2-core.html">핵심 규칙과 용어집</a></span></div>
+</header>
+
+<div class="box win">
+  <h3>왜 이것이 다음인가</h3>
+  <p>4회차 <code>retrieve.ts</code>는 정책 하나를 찾은 뒤 <em>링크를 한 단계 따라가</em> 예외와 환불 절차를 더한다. 그러려면 링크가 정확히 어디를 가리키는지 사람이 먼저 계산할 수 있어야 하고 따라갈 문서도 실제로 있어야 한다. 오늘 그 번들을 완성한다.</p>
+</div>
+
+<h2>0. 레슨 0001 회상</h2>
+<p>노트 없이 답한 뒤 펼쳐 확인한다.</p>
+<details><summary>개념 문서가 적합하려면 필요한 두 가지는?</summary>
+<p>파싱 가능한 YAML frontmatter, 그리고 그 안의 비어 있지 않은 <code>type</code>. <a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#11-conformance">§11</a></p></details>
+<details><summary><code>policies/returns.md</code> 안의 <code>../processes/refunds.md</code>는 어디를 가리키나?</summary>
+<p><code>processes/refunds.md</code>. <code>policies/</code>에서 한 단계 올라가 번들 루트, 거기서 <code>processes/</code>로. <a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#61-links-between-concepts">§6.1</a></p></details>
+<details><summary>검색기가 문서를 <em>고를 때</em>와 모델이 <em>답할 때</em> 주로 쓰는 부분은?</summary>
+<p>고를 때는 frontmatter(<code>type</code>·<code>tags</code>·<code>description</code>)와 본문 키워드, 답할 때는 본문. 6회차에서 이 차이를 실험한다.</p></details>
+
+<h2>1. YAML 목록은 두 가지로 쓴다</h2>
+<p><code>tags</code>는 YAML 목록이다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#41-frontmatter">§4.1</a> 같은 목록을 한 줄(flow) 또는 여러 줄(block)로 쓸 수 있다.<a class="cite" href="https://yaml.org/spec/1.2.2/#flow-sequences">YAML 7.4.1</a><a class="cite" href="https://yaml.org/spec/1.2.2/#block-sequences">8.2.1</a></p>
+<div class="grid2">
+<pre><code># flow: 대괄호와 쉼표
+tags: [반품, 예외]</code></pre>
+<pre><code># block: 줄마다 "- "
+tags:
+  - 반품
+  - 예외</code></pre>
+</div>
+<p>들여쓰기는 공백만 쓴다. 탭은 YAML 들여쓰기에 쓸 수 없다.<a class="cite" href="https://yaml.org/spec/1.2.2/#indentation-spaces">YAML 6.1</a> <code>키:</code> 뒤에는 공백이 있어야 값으로 읽힌다.</p>
+
+<h2>2. 인덱스는 목차일 뿐이다</h2>
+<p><code>index.md</code>는 문서를 열기 전에 무엇이 있는지 보여 주는 목차다(점진적 공개). 제목 아래 <code>* [제목](경로) - 설명</code> 목록을 두고 설명에는 연결한 개념의 <code>description</code>을 넣는 것을 권장한다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#8-index-files">§8</a></p>
+<pre><code>---
+okf_version: "0.2"      ← 번들 루트 index.md에서만 허용
+---
+
+# 반품과 환불
+
+- [반품 정책](policies/returns.md) - 반품 신청 기한과 할인 상품 규칙.</code></pre>
+<ul>
+  <li>인덱스는 frontmatter가 없다. 예외는 번들 루트 <code>index.md</code>의 <code>okf_version</code> 하나다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#12-versioning">§12</a></li>
+  <li>인덱스는 길 안내용이다. 답변의 근거는 인덱스가 아니라 정책 개념 본문에서 가져온다(학습 계획 §4 구현 순서 2).</li>
+  <li>공식 예제와 비교: <a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/bundles/acme_retail/index.md">Acme Retail <code>index.md</code></a>는 하위 디렉터리마다 한 줄씩 <code>* [tables](tables/index.md) - 설명</code>으로 안내한다.</li>
+</ul>
+
+<h2>3. 경로 계산 연습</h2>
+<p>링크가 번들의 어느 파일을 가리키는지 적는다. 4회차 링크 따라가기가 하는 계산을 사람이 먼저 해 본다.</p>
+<div class="path-drill" data-items='[
+  {"from":"policies/returns.md","link":"return-exceptions.md"},
+  {"from":"processes/refunds.md","link":"/policies/returns.md"},
+  {"from":"policies/returns.md","link":"../processes/refunds.md"},
+  {"from":"processes/refunds.md","link":"../../faq.md"},
+  {"from":"index.md","link":"processes/refunds.md"},
+  {"from":"policies/return-exceptions.md","link":"./returns.md#반품-조건"},
+  {"from":"processes/refunds.md","link":"../policies/../processes/refunds.md"}
+]'></div>
+
+<h2>4. 기억에서 꺼내기</h2>
+<p><strong>위로 스크롤하지 말고</strong> 답한다. 점수: <span class="quiz-score"></span></p>
+
+<div class="quiz" data-answer="2" data-why="block 목록은 줄마다 공백 들여쓰기와 <code>- </code>로 항목을 쓴다 (YAML 8.2.1).">
+  <p class="q">Q1. <code>tags: [반품, 할인]</code>과 같은 값이 되는 것은?</p>
+  <ol>
+    <li><code>tags: 반품 할인</code> 한 줄로</li>
+    <li><code>tags:</code> 아래 공백과 <code>- 반품</code>, <code>- 할인</code></li>
+    <li><code>tags:</code> 아래 탭과 <code>- 반품</code>, <code>- 할인</code></li>
+    <li><code>tags:</code> 아래 공백과 <code>반품, 할인</code></li>
+  </ol>
+</div>
+
+<div class="quiz" data-answer="4" data-why="frontmatter는 번들 루트 <code>index.md</code>에서만, <code>okf_version</code>으로만 허용된다 (§8, §12).">
+  <p class="q">Q2. 하위 디렉터리 <code>policies/index.md</code>에 <code>okf_version</code>을 넣으면?</p>
+  <ol><li>루트보다 우선 적용된다</li><li>하위 번들로 취급된다</li><li>경고 없이 무시된다</li><li>명세상 허용되지 않는다</li></ol>
+</div>
+
+<div class="quiz" data-answer="1" data-why="인덱스 항목은 연결한 개념 frontmatter의 <code>description</code>을 담는 것을 권장한다 (§8).">
+  <p class="q">Q3. 인덱스 목록 항목의 <code>- 설명</code>에 넣기를 권장하는 것은?</p>
+  <ol><li>개념의 <code>description</code> 값</li><li>개념 본문 첫 줄</li><li>디렉터리 이름 그대로</li><li><code>log.md</code> 최신 항목</li></ol>
+</div>
+
+<div class="quiz" data-answer="3" data-why="선택 필드 누락으로 거부할 수 없다. <code>type</code>만 있어도 적합하다 (§4.1, §11). 레슨 0001 복습 문제다.">
+  <p class="q">Q4. <code>processes/refunds.md</code>에 <code>type</code>만 있고 다른 필드가 없다면?</p>
+  <ol><li>권장 필드 누락 오류</li><li>인덱스에서 제외된다</li><li>적합한 개념 문서다</li><li><code>type</code> 값이 무시된다</li></ol>
+</div>
+
+<h2>5. 실습: 번들 완성</h2>
+<p>사실은 두 개다. ① 주문할 때 최종 판매로 표시된 상품은 반품할 수 없다. ② 환불은 반품 승인 후 영업일 기준 3~5일 걸린다. 모범 답안을 보기 전에 각 검사기에서 통과시킨다.</p>
+
+<h3>5-1. <code>policies/return-exceptions.md</code></h3>
+<p>여유가 있으면 <code>returns.md</code>로 돌아가는 링크도 넣어 본다. 링크에는 방향이 있다. 이 링크가 있으면 4회차 검색기가 예외 문서를 먼저 찾았을 때 일반 규칙으로 갈 길이 생긴다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#61-links-between-concepts">§6.1</a></p>
+<div class="box"><div class="okf-check" data-path="policies/return-exceptions.md"
+  data-known="index.md,policies/returns.md,policies/return-exceptions.md,processes/refunds.md"></div></div>
+
+<h3>5-2. <code>processes/refunds.md</code></h3>
+<p><code>type</code>은 직접 고른다. 정책이 아니라 진행 순서를 설명하는 개념이다.</p>
+<div class="box"><div class="okf-check" data-path="processes/refunds.md"
+  data-known="index.md,policies/returns.md,policies/return-exceptions.md,processes/refunds.md"></div></div>
+
+<h3>5-3. 루트 <code>index.md</code></h3>
+<div class="box"><div class="okf-check" data-mode="index" data-path="index.md"
+  data-known="index.md,policies/returns.md,policies/return-exceptions.md,processes/refunds.md"
+  data-goal-links="policies/returns.md,policies/return-exceptions.md,processes/refunds.md"
+  data-placeholder="---&#10;okf_version: &#10;---&#10;&#10;# "></div></div>
+
+<details><summary>모범 답안 (세 검사기를 통과한 뒤에 열기)</summary>
+<pre><code># policies/return-exceptions.md
+---
+type: Policy
+title: 반품 예외
+description: 최종 판매 상품의 처리 기준.
+tags: [반품, 예외]
+---
+
+# 최종 판매 상품
+
+주문할 때 최종 판매로 표시된 상품은 반품할 수 없다.
+일반 반품 기한은 [반품 정책](returns.md)을 따른다.</code></pre>
+<pre><code># processes/refunds.md
+---
+type: Process
+title: 환불 절차
+description: 반품 승인부터 환불까지의 기간.
+tags: [환불]
+---
+
+# 환불 일정
+
+환불은 반품 승인 후 영업일 기준 3~5일 걸린다.</code></pre>
+<pre><code># index.md
+---
+okf_version: "0.2"
+---
+
+# 반품과 환불
+
+- [반품 정책](policies/returns.md) - 반품 신청 기한과 할인 상품 규칙.
+- [반품 예외](policies/return-exceptions.md) - 최종 판매 상품의 처리 기준.
+- [환불 절차](processes/refunds.md) - 반품 승인부터 환불까지의 기간.</code></pre>
+<p class="note"><strong>개념 ID와 <code>resource</code>가 없는 이유.</strong> 개념 ID는 frontmatter에 쓰는 필드가 아니라 파일 경로에서 정해지는 값이다. <code>knowledge/processes/refunds.md</code>의 ID는 <code>processes/refunds</code>다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#2-terminology">§2</a> <code>resource</code>는 테이블·API처럼 가리킬 실물 자산이 있을 때만 쓰는 권장 필드라서, 규칙이나 절차를 설명하는 개념에서는 생략한다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#41-frontmatter">§4.1</a> 비교: Acme Retail <a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/bundles/acme_retail/tables/orders.md"><code>tables/orders.md</code></a>는 BigQuery 테이블을 가리키므로 <code>resource</code>가 있다.</p>
+</details>
+
+<h3>5-4. 저장하고 걸어가 보기</h3>
+<ol>
+  <li>세 파일을 저장소의 <code>knowledge/</code> 아래 같은 경로로 저장한다. <code>knowledge/policies/returns.md</code>는 이미 있다.</li>
+  <li>에디터의 Markdown 미리보기(VS Code는 <kbd>⌘⇧V</kbd>)로 <code>knowledge/index.md</code>를 연다.</li>
+  <li>질문 "할인 상품을 반품할 수 있나요? 환불은 언제 들어오나요?"의 근거를 링크만 눌러서 찾는다: 인덱스 → 반품 정책 → 반품 예외, 반품 정책 → 환불 절차.</li>
+  <li><strong>링크 하나는 미리보기에서 열리지 않는다.</strong> 어느 링크인지, 왜 그런지 적는다.</li>
+</ol>
+<details><summary>4번을 직접 찾은 뒤에 열기</summary>
+<p><code>returns.md</code>의 <code>/processes/refunds.md</code>다. OKF 소비자는 <code>/</code>를 <strong>번들 루트</strong>(<code>knowledge/</code>)로 해석하지만<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#61-links-between-concepts">§6.1</a>, 일반 Markdown 미리보기나 GitHub는 <code>/</code>를 <strong>저장소 루트</strong>로 해석해 <code>okf-playbook/processes/refunds.md</code>를 찾는다.</p>
+<p>명세는 번들 루트 기준 경로를 권장하고 학습 계획은 미리보기 탐색을 위해 상대 경로를 택했다. 둘 다 명세에 맞는다. 이 실습에서 어느 쪽을 <em>팀 규칙</em>으로 삼을지 정해서 적어 둔다. 3회차 "명세 요구사항과 팀 규칙 대조"의 첫 항목이 된다. 상대 경로로 정했다면 <code>../processes/refunds.md</code>로 고친다.</p>
+</details>
+
+<div class="box">
+  <h3>완료 기준 (학습 계획 2회차)</h3>
+  <ul>
+    <li>인덱스에서 개념 세 개를 모두 연다.</li>
+    <li>반품 정책에서 예외와 환불 절차로 이동한다.</li>
+    <li>링크 형식 팀 규칙 한 줄을 적었다.</li>
+  </ul>
+</div>
+
+<h2>6. 다음 회차 시작 질문</h2>
+<ol>
+  <li>명세 위반이라 <em>오류</em>인 것과, 거부하면 안 되어 <em>경고</em>에 그치는 것을 각각 두 개씩 꼽는다.</li>
+  <li><code>/processes/refunds.md</code>가 OKF 소비자와 GitHub에서 다르게 해석되는 이유는?</li>
+  <li>루트 <code>index.md</code>와 <code>policies/returns.md</code>의 frontmatter 규칙 차이는?</li>
+</ol>
+
+<div class="box">
+  <h3>1차 자료</h3>
+  <p><a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#8-index-files">OKF v0.2 명세 §8 Index files</a>와 <a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#61-links-between-concepts">§6.1</a>. 이어서 <a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/tree/main/bundles/acme_retail">Acme Retail 번들</a>을 GitHub에서 인덱스부터 눌러 들어가 보면 실제 번들의 디렉터리 구성을 볼 수 있다.</p>
+  <p>2회차를 마친 뒤에는 <a href="https://www.mariehaynes.com/build-an-okf-brain-like-mine/">Marie Haynes의 적용 글</a>에서 폴더 분류를 보고 쇼핑몰 실습에 옮겨 쓸 분류를 두 개 적는다(학습 계획 §2).</p>
+  <p>막히거나 궁금한 점은 언제든 에이전트에게 물어본다.</p>
+</div>
+
+<nav class="course">
+  <a href="0001-concept-document.html">← 0001 개념 문서 한 장</a>
+  <a href="0003-validate.html">0003 검증기 →</a>
+</nav>
+</main>
+</body>
+</html>

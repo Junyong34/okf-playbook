@@ -1,0 +1,115 @@
+/* OKF course — shared stylesheet. Every lesson and reference links this. */
+:root {
+  --ink: #1d1d1b;
+  --muted: #6b6b66;
+  --paper: #fffff8;
+  --rule: #d9d6c8;
+  --accent: #8a2c0d;
+  --ok: #2f6b3a;
+  --warn: #9a6a00;
+  --err: #a12a2a;
+  --code-bg: #f3f1e6;
+  --font-text: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+  --font-head: "Noto Serif KR", "AppleMyungjo", Georgia, serif;
+  --font-code: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #e8e6dc; --muted: #a3a097; --paper: #1b1a17; --rule: #3a3833;
+    --accent: #e0875f; --ok: #7cc48a; --warn: #e2b44b; --err: #ef7d7d; --code-bg: #26251f;
+  }
+}
+* { box-sizing: border-box; }
+html { font-size: 17px; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: var(--font-text); line-height: 1.75; word-break: keep-all;
+}
+main { max-width: 44rem; margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+header.lesson { border-bottom: 1px solid var(--rule); margin-bottom: 2.5rem; padding-bottom: 1.25rem; }
+header.lesson .kicker { color: var(--accent); font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; margin: 0; }
+h1, h2, h3 { font-family: var(--font-head); font-weight: 600; line-height: 1.35; }
+h1 { font-size: 2rem; margin: .3rem 0 .6rem; }
+h2 { font-size: 1.35rem; margin-top: 3rem; padding-top: .5rem; border-top: 1px solid var(--rule); }
+h3 { font-size: 1.08rem; margin-top: 2rem; }
+p.lede { font-size: 1.1rem; color: var(--muted); margin: 0; }
+a { color: var(--accent); text-underline-offset: 2px; }
+code, pre, textarea.code { font-family: var(--font-code); font-size: .86em; }
+code { background: var(--code-bg); padding: .08em .35em; border-radius: 3px; }
+pre { background: var(--code-bg); padding: 1rem 1.1rem; border-radius: 6px; overflow-x: auto; line-height: 1.55; }
+pre code { background: none; padding: 0; }
+table { border-collapse: collapse; width: 100%; margin: 1.2rem 0; font-size: .93rem; }
+th, td { text-align: left; padding: .45rem .6rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-weight: 600; border-bottom: 2px solid var(--ink); }
+.cite { font-size: .78rem; vertical-align: super; margin-left: .1em; }
+.note { color: var(--muted); font-size: .9rem; border-left: 3px solid var(--rule); padding-left: .9rem; margin: 1.2rem 0; }
+.box { border: 1px solid var(--rule); border-radius: 8px; padding: 1rem 1.2rem; margin: 1.5rem 0; }
+.box.win { border-color: var(--accent); }
+.box h3 { margin-top: 0; }
+.meta { display: flex; gap: 1.5rem; flex-wrap: wrap; color: var(--muted); font-size: .85rem; }
+nav.course { display: flex; justify-content: space-between; gap: 1rem; margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--rule); font-size: .92rem; }
+details { margin: 1rem 0; }
+summary { cursor: pointer; color: var(--accent); }
+
+/* quiz.js */
+.quiz { border: 1px solid var(--rule); border-radius: 8px; padding: 1rem 1.2rem; margin: 1.2rem 0; }
+.quiz .q { font-weight: 600; margin: 0 0 .7rem; }
+.quiz ol { list-style: none; padding: 0; margin: 0; display: grid; gap: .45rem; }
+.quiz button.opt {
+  width: 100%; text-align: left; font: inherit; color: inherit; background: transparent;
+  border: 1px solid var(--rule); border-radius: 6px; padding: .5rem .8rem; cursor: pointer;
+}
+.quiz button.opt:hover { border-color: var(--ink); }
+.quiz button.opt.right { border-color: var(--ok); color: var(--ok); font-weight: 600; }
+.quiz button.opt.wrong { border-color: var(--err); color: var(--err); text-decoration: line-through; }
+.quiz .feedback { margin: .8rem 0 0; font-size: .92rem; min-height: 1.2em; }
+.quiz .feedback.right { color: var(--ok); }
+.quiz .feedback.wrong { color: var(--err); }
+.quiz-score { font-weight: 600; }
+
+/* okf-check.js */
+.okf-check label { display: block; font-size: .85rem; color: var(--muted); margin: .6rem 0 .25rem; }
+.okf-check input, .okf-check textarea {
+  width: 100%; font: inherit; color: inherit; background: var(--code-bg);
+  border: 1px solid var(--rule); border-radius: 6px; padding: .6rem .7rem;
+}
+.okf-check textarea { min-height: 16rem; font-family: var(--font-code); font-size: .85rem; line-height: 1.55; tab-size: 2; }
+.okf-check button.run {
+  margin-top: .7rem; font: inherit; background: var(--ink); color: var(--paper);
+  border: 0; border-radius: 6px; padding: .5rem 1.1rem; cursor: pointer;
+}
+.okf-check ul.report { list-style: none; padding: 0; margin: .9rem 0 0; font-size: .9rem; }
+.okf-check ul.report li { padding: .3rem 0 .3rem 1.6rem; position: relative; border-bottom: 1px dashed var(--rule); }
+.okf-check ul.report li::before { position: absolute; left: 0; font-weight: 700; }
+.okf-check li.error { color: var(--err); } .okf-check li.error::before { content: "✕"; }
+.okf-check li.warn  { color: var(--warn); } .okf-check li.warn::before  { content: "!"; }
+.okf-check li.ok    { color: var(--ok); }   .okf-check li.ok::before    { content: "✓"; }
+.okf-check li.info  { color: var(--muted); } .okf-check li.info::before { content: "·"; }
+
+/* reference sheets */
+.sheet h2 { margin-top: 2rem; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+@media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
+dl.glossary dt { font-weight: 600; margin-top: .8rem; }
+dl.glossary dd { margin: .1rem 0 0 0; color: var(--ink); }
+dl.glossary dd small { color: var(--muted); }
+
+@media print {
+  :root { --paper: #fff; --ink: #000; }
+  html { font-size: 11pt; }
+  main { max-width: none; padding: 0; }
+  nav.course, .quiz button.opt:hover, .okf-check, .no-print { display: none !important; }
+  h2 { break-after: avoid; } pre, table, .box { break-inside: avoid; }
+  a { color: inherit; }
+}
+
+/* path-drill.js */
+.path-drill input {
+  width: 100%; font-family: var(--font-code); font-size: .85rem; color: inherit;
+  background: var(--code-bg); border: 1px solid var(--rule); border-radius: 4px; padding: .3rem .45rem;
+}
+.path-drill td.mark { font-weight: 700; width: 1.5rem; }
+
+/* bigram-lab.js */
+.bigram-lab label { display: block; font-size: .85rem; color: var(--muted); margin-bottom: .25rem; }
+.bigram-lab input.q { width: 100%; font: inherit; color: inherit; background: var(--code-bg); border: 1px solid var(--rule); border-radius: 6px; padding: .55rem .7rem; }
