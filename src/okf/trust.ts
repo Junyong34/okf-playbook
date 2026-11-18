@@ -1,4 +1,4 @@
-// 8회차(심화 2) 실습: normalizeVerified·trustTier·assess (tests/trust.test.ts). 순서: T1단계 → T2단계 → T3단계.
+// 8회차(심화 2) 실습: normalizeVerified·trustTier·assess 구현 완료 (tests/trust.test.ts). 순서: T1단계 → T2단계 → T3단계.
 // 레슨: learn/lessons/0008-trust-lifecycle.html
 import { parse } from 'yaml';
 import type { Bundle } from './types.ts';
@@ -36,7 +36,18 @@ export type Verification = { by: string; at?: string };
 //  - 목록이면 원소마다 읽는다. 매핑이 아니거나 by가 없는 원소는 건너뛴다.
 //  - by는 String(...)으로, at은 dateText(...)로 읽는다. at이 없으면 at 키를 두지 않는다.
 export function normalizeVerified(value: unknown): Verification[] {
-  throw new Error('TODO T1단계: normalizeVerified');
+  // T1단계 (완료)
+  if (value === undefined || value === null) return [];
+  const list = Array.isArray(value) ? value : [value]; // 대시 없는 매핑 하나 = 원소 하나짜리 목록
+  const out: Verification[] = [];
+  for (const item of list) {
+    if (!item || typeof item !== 'object' || Array.isArray(item)) continue;
+    const o = item as Record<string, unknown>;
+    if (o.by === undefined || o.by === null) continue;
+    const at = dateText(o.at);
+    out.push(at === undefined ? { by: String(o.by) } : { by: String(o.by), at });
+  }
+  return out;
 }
 
 // ── 신뢰 등급 ─────────────────────────────────────────────────────────
@@ -48,7 +59,9 @@ export type Tier = 'unverified' | 'machine-confirmed' | 'human-reviewed';
 //  - 그 밖(에이전트·프로세스만)이면 machine-confirmed.
 //  등급은 접두사로만 정한다(§7). 이름이 사람처럼 보여도 'human:'이 없으면 사람 검토가 아니다.
 export function trustTier(verified: Verification[]): Tier {
-  throw new Error('TODO T2단계: trustTier');
+  // T2단계 (완료)
+  if (verified.length === 0) return 'unverified';
+  return verified.some((v) => v.by.startsWith('human:')) ? 'human-reviewed' : 'machine-confirmed';
 }
 
 // ── 한 개념의 신뢰·수명 판정 ─────────────────────────────────────────
@@ -77,7 +90,31 @@ export type Assessment = {
 //    now.getTime() >= 그 시각이면 stale = true, 주의 'stale'. 같은 시각도 낡았다(§5.5 "on/after").
 //  - cautions 순서: status 주의 → stale_after 주의.
 export function assess(fm: Record<string, unknown>, now: Date): Assessment {
-  throw new Error('TODO T3단계: assess');
+  // T3단계 (완료)
+  const verified = normalizeVerified(fm.verified);
+  const a: Assessment = { tier: trustTier(verified), status: 'stable', stale: false, cautions: [] };
+  let latest = -Infinity;
+  for (const v of verified) {
+    const t = v.at === undefined ? NaN : Date.parse(v.at);
+    if (!Number.isNaN(t) && t > latest) {
+      latest = t;
+      a.latestVerifiedAt = v.at;
+    }
+  }
+  if (fm.status !== undefined && fm.status !== null) a.status = String(fm.status);
+  if (a.status === 'draft' || a.status === 'deprecated') a.cautions.push(a.status);
+  else if (a.status !== 'stable') a.cautions.push('unknown-status');
+  const staleAfter = dateText(fm.stale_after);
+  if (staleAfter !== undefined) {
+    a.staleAfter = staleAfter;
+    const t = Date.parse(staleAfter);
+    if (Number.isNaN(t)) a.cautions.push('bad-date');
+    else if (now.getTime() >= t) {
+      a.stale = true;
+      a.cautions.push('stale');
+    }
+  }
+  return a;
 }
 
 // ── 출력 (제공) ─────────────────────────────────────────────────────

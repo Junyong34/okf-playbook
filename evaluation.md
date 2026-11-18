@@ -197,23 +197,32 @@ q7·q8은 레슨 모범 답안의 예시 질문이다 (에이전트가 넣음).
 
 레슨: `learn/lessons/0008-trust-lifecycle.html`. 출력은 `--now 2026-11-18T00:00:00Z`로 고정해서 본다.
 
+2026-11-18, 사용자 요청으로 에이전트가 `trust.ts` 모범 답안을 적용하고 CLI 결과로 표를 채움. 3단계(사람 대조)와 5단계(소비자 정책)는 사용자 몫으로 비워 둠.
+
 예측 (실습 2단계, 돌리기 전에):
 
--
+- 기록하지 않았다 (모범 답안을 바로 적용함).
 
 직접 대조한 개념 (실습 3단계):
 
 | 개념 | 대조한 출처 | 같은가 | 적은 `verified` |
 | --- | --- | --- | --- |
-| `policies/returns.md` | `references/returns-faq.md` | | |
+| `policies/returns.md` | `references/returns-faq.md` | | (사용자가 직접 대조한 뒤 적는다. 에이전트는 `human:`을 적지 않는다) |
 
 낡은 사본에서 본 것 (실습 4단계, `/tmp/okf-stale`):
 
 | 질문 | `--now` | 주의가 붙은 개념 |
 | --- | --- | --- |
-| q4 | 2026-11-18T00:00:00Z | |
-| q4 | 2026-09-01T00:00:00Z | |
-| q3 | 2026-11-18T00:00:00Z | |
+| q4 | 2026-11-18T00:00:00Z | `processes/refunds.md`: stale_after 2026-10-01T00:00:00Z가 지났다 |
+| q4 | 2026-09-01T00:00:00Z | 없음 (고른 개념은 위와 같다) |
+| q3 | 2026-11-18T00:00:00Z | `policies/return-exceptions.md`: status deprecated |
+
+관찰:
+
+- 진짜 번들(`knowledge/`)은 지금 모든 개념이 unverified이고 주의가 없다. q5 출력에도 신뢰 줄만 붙는다.
+- 신뢰 신호는 순위를 바꾸지 않는다. 사본에서도 FAQ(unverified)가 q3·q4 모두 1순위다.
+- q3에서 deprecated인 `return-exceptions.md`가 7점으로 2순위다. 이 질문의 핵심 근거라서, 빼면 "최종 판매는 반품 제외"를 받칠 개념이 FAQ밖에 남지 않는다.
+- `pnpm validate /tmp/okf-stale`는 오류 0개, 경고 0개. 낡음과 deprecated는 검증 문제가 아니다.
 
 소비자 정책 (실습 5단계):
 

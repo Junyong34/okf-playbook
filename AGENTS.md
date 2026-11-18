@@ -62,7 +62,7 @@ okf-playbook/
 
 ## 실습 코드 주의
 
-`src/okf/` 실습 함수(0003 `validate.ts`, 0004 `retrieve.ts`, 0005 `answer.ts`)는 사용자 요청으로 구현을 마쳤다(2026-11-18). 0006 `compare.ts`의 `judge`·`compare`도 사용자 요청으로 채웠다. 0007 `provenance.ts`의 `checkAttribution`·`trace`와 `knowledge/references/returns-faq.md`·`returns.md` 출처도 사용자 요청으로 채웠다. 0008 `trust.ts`의 `normalizeVerified`·`trustTier`·`assess`는 TODO로 남아 있다. `verified`의 `human:` 기록은 사용자가 직접 대조한 뒤 사용자가 적는다. 에이전트가 대신 `human:`을 적지 않는다. 새 레슨에서 TODO 실습을 만들면 사용자가 요청하기 전에는 채우지 않는다. 사용자가 요청하지 않으면 채우지 않는다. 테스트 실패가 `Error: TODO …`라면 버그가 아니라 남은 실습이다. 모범 답안은 각 레슨 HTML 안에 접혀 있다.
+`src/okf/` 실습 함수(0003 `validate.ts`, 0004 `retrieve.ts`, 0005 `answer.ts`)는 사용자 요청으로 구현을 마쳤다(2026-11-18). 0006 `compare.ts`의 `judge`·`compare`도 사용자 요청으로 채웠다. 0007 `provenance.ts`의 `checkAttribution`·`trace`와 `knowledge/references/returns-faq.md`·`returns.md` 출처도 사용자 요청으로 채웠다. 0008 `trust.ts`의 `normalizeVerified`·`trustTier`·`assess`도 사용자 요청으로 채웠다. `verified`의 `human:` 기록은 사용자가 직접 대조한 뒤 사용자가 적는다. 에이전트가 대신 `human:`을 적지 않는다. 새 레슨에서 TODO 실습을 만들면 사용자가 요청하기 전에는 채우지 않는다. 사용자가 요청하지 않으면 채우지 않는다. 테스트 실패가 `Error: TODO …`라면 버그가 아니라 남은 실습이다. 모범 답안은 각 레슨 HTML 안에 접혀 있다.
 
 ## Agent skills
 
