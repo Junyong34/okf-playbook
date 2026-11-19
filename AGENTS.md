@@ -23,6 +23,8 @@ okf-playbook/
 │   ├── assets/                # 공용 CSS·퀴즈·OKF 검사기·경로 연습·bigram 실습
 │   └── learning-records/      # 익힌 것 기록 (0001-*.md)
 ├── .scratch/                  # 로컬 Markdown 이슈·스펙 (필요할 때 생성)
+├── source/                    # OKF로 변환하기 전 데이터
+│   └── sample-faq.json       # FAQ 테스트 샘플
 ├── knowledge/                 # OKF 번들 루트
 │   ├── index.md               # okf_version: "0.2" 선언, 목차
 │   ├── references/
@@ -55,8 +57,7 @@ okf-playbook/
 ├── package.json · tsconfig.json  # Node 22.18+ TS 직접 실행, yaml 패키지
 │
 │  # 아래는 실습하면서 만들 예정 (docs/okf-learning-plan.md §4)
-├── source/
-│   └── returns-faq.md         # 실습용 원본 FAQ (선택)
+├── source/returns-faq.md      # 실습용 원본 FAQ (선택)
 └── (5회차 이후) 답변 생성, 웹 UI
 ```
 

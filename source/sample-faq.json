@@ -1,0 +1,1335 @@
+{
+  "datasetType": "test-sample",
+  "sources": {
+    "categories": "https://api.example.test/faq/getFaqClass.json",
+    "faqs": "https://api.example.test/faq/getFaq.json?classCd=&page=1&perPage=20&searchKeyword="
+  },
+  "collectedOn": "2026-11-19",
+  "pagination": {
+    "perPage": 20,
+    "totalPage": 13,
+    "totalCount": 258
+  },
+  "categories": [
+    {
+      "mcCd": "PROFILE",
+      "mcNm": "회원"
+    },
+    {
+      "mcCd": "PURCHASE",
+      "mcNm": "주문/결제/배송"
+    },
+    {
+      "mcCd": "CLAIM",
+      "mcNm": "취소/교환/반품"
+    },
+    {
+      "mcCd": "BENEFIT",
+      "mcNm": "쿠폰/포인트"
+    },
+    {
+      "mcCd": "ITEM",
+      "mcNm": "상품"
+    },
+    {
+      "mcCd": "MEMBERSHIP",
+      "mcNm": "샘플 ONE 등급제"
+    },
+    {
+      "mcCd": "ETC",
+      "mcNm": "기타"
+    }
+  ],
+  "faqs": [
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "[배송불가] 배송 불가 지역은 언제 쯤 다시 배송이 재개 되나요?",
+      "faqBody": "<p>서비스 재개 이후 배송 차량 안정화를 &nbsp;위해서 일부 지역은 현재 배송이 제한되고 있습니다.</p><p>배송 지역 확대를 다각도로 검토 중이나, 현재로서는 정확한 재개 일정을 안내드리기 어려운 점 양해 부탁드립니다.</p><p>차후 안정적인 배송 서비스 제공을 위해 더 노력하겠습니다.</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "[전체판매종료] 상품이 ‘판매종료’로 뜨는데 배송 지역과 관련이 있나요?",
+      "faqBody": "<p>배송받으실 주소 등록 후, \"점포배송 서비스를 지원하지 않는 배송지입니다.\" 또는 “판매 종료”라는 문구가 노출된다면</p><p>기존에는 배송이 가능하셨어도 현재는 온라인 배송이 어려운 지역입니다</p><p>배송 가능 지역 확대를 위해 지속적으로 노력하겠으나,</p><p>현재로서는 정확한 재개 일정을 안내드리기 어려운 점 양해 부탁드리며,</p><p>차후 안정적인 배송 서비스 제공을 위해 더 노력하겠습니다.</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "[배송안됨] 이전에 배송받던 지역인데 왜 갑자기 배송이 안 되나요?",
+      "faqBody": "<p>8/10(월) 영업 재개 시 배송 안정화를 위해서 기존 배송중인 지역 중 일부지역의 배송이 불가할 수 있습니다.&nbsp;</p><p>차후 안정적인 배송 서비스 제공을 위해 더 노력하겠습니다.</p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "배송 예약 시간이 지났는데 상품을 못 받았어요. 어떻게 해야 하나요? ",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>교통체증, 기상악화와 같이 예상치 못한 사정으로 인하여 배송이 지연될 수 있으며,<br>지연배송의 경우 먼저 고객님께 연락드릴 수 있도록 노력하고 있습니다.<br><br>만일 배송시간 이후에도 배송이 되지 않아 불편함이 있으시다면 마이페이지 &gt; My 쇼핑활동 &gt; 1:1 문의내역으로 언제든지 연락주세요. 친절히 확인 후 안내 해 드리도록 하겠습니다.<br><br>단, 17시 이후에는 주문상세내역에 기재된 배송기사님께 연락 부탁드리며,<br>다른 고객께 배송을 진행하고 있을 때는 신속하게 전화를 받지 못할 수도 있으니 이 점 양해 부탁드립니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "[선물세트] 송장 조회가 되지 않아요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>희망발송일이 도래하지 않았거나, 희망 발송일의 늦은 저녁부터 배송 흐름이 조회됩니다.&nbsp;</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>배송 기간은 일반 택배 상품과 동일하니 참고해 주시고, 시일이 경과한 후에도 확인되지 않는다면 마이페이지 &gt; My 쇼핑활동 &gt; 1:1 문의내역로 문의 부탁드립니다. <br>※ 오프라인 구매건은 해당 매장의 고객센터로 문의</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "[재입고 알림] 장바구니에 있는 일시품절 상품 중 재입고 알림이 안되는 상품이 있습니다 왜 그런건가요",
+      "faqBody": "<p>판매종료 및 입고 예정이 없는 상품은 재입고 알림 신청이 어렵습니다.</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "[재입고 알림] 재입고 알림 받았는데 확인이 안되요",
+      "faqBody": "<p>1) 신청 점포와 현재 기본배송지가 다른경우</p><p>: 기본배송지 기준으로 재입고 알림이 발송됩니다. 배송지 확인 부탁드립니다.</p><p>2) 입고되었으나 그 사이 판매가 모두 되어 재고가 확인되지 않는 경우</p><p>: 재입고 후 상품이 모두 판매 되었을 경우 상품이 조회되지 않을 수 있습니다.</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "[재입고 알림] 기본배송지는 무엇인가요",
+      "faqBody": "<p>고객님 장바구니에 설정되어 있는 기본배송지 입니다.</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "[재입고 알림] 재입고 알림 기능이 무엇인가요",
+      "faqBody": "<p>재입고 알림이란 일시품절 상품을 고객으로부터 알림 신청을 받아</p><p>상품 재입고시 알림을 발송해주는 기능입니다. (앱푸시 또는 알림톡 1회 발송)</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "[선물세트] 주문 시 상품 출고일이 보이지 않아요.",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>상품 출고일 선택은 사전예약 기간에만 가능합니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "[선물세트] 보내는 사람, 받는사람 정보 수정 가능한가요? ",
+      "faqBody": "<p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>[주문 전] 장바구니 단계에서 우측 상단 “다중배송” 탭을 눌러 배송지를 선택 후 결제 단계에서 보내는 사람, 받는 사람 정보를 수정 후 주문할 수 있습니다. &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br></span></p><p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>[주문 완료 후] 단일 배송지 일 경우 &nbsp;보내는 사람 수정 불가, 받는 사람 성함, 연락처, 배송지 변경 가능합니다. 다중 배송지 일 경우 보내는 사람 성함, &nbsp;받는 사람 성함, 연락처, 배송지 정보 수정 가능합니다. &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br></span></p><p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>※ 경로 : &nbsp;[마이페이지- 주문배송조회 – 상세보기- 배송지정보]</span></p>"
+    },
+    {
+      "classCdNm": "상품",
+      "faqSubject": "[선물세트] 쇼핑백 동봉되나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>상품 입고 시 쇼핑백이 동봉되어 있는 상품은 쇼핑백이 함께 제공(상세페이지에 표기)되나, 쇼핑백이 구성품에 포함되지 않는 상품은 쇼핑백 추가 발송이 어렵습니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>※ 자체 손잡이로 구성된 상품은 쇼핑백이 동봉되지 않습니다.</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "[선물세트] 사전예약 상품 교환/반품은 어떻게 진행되나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>상품 불량의 경우 가까운 대형 매장의 재고를 확인한 후 내방하여 교환이 가능하며, 재고가 없을 경우 고객이 직접 온라인에서 반품 접수가 가능합니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>※ 신선/냉장/냉동식품은 단순 변심에 의한 교환/반품 불가</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "[선물세트] 일부 상품이 배송되지 않았어요.",
+      "faqBody": "<p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>상품 수량이 많을 경우 분할되어 배송됩니다. 주문내역 내 운송장번호 별 이동경로를 확인해주세요.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "[선물세트] 상품출고일이 되지 않았는데, 왜 벌써 배송중인가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>선물세트는 원활한 상품 배송을 위해 출고일 2일 전 배송 중 상태로 단계가 변경됩니다. 이는 배송 단계만 자동으로 변경될 뿐, 선물세트는 요청하신 출고일에 안전하게 출고되니 걱정하지 않으셔도 됩니다.<br>※ 상품 출고일 : 상품을 실제 수령하는 날짜가 아닌 상품이 출고되는 날짜입니다.</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "[선물세트] 선물세트 부분 취소 가능한가요? ",
+      "faqBody": "<p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>선물세트 주문은 부분 취소 처리가 어렵습니다.</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "[선물세트] 선물세트 취소 가능한가요? ",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>선물세트 출고 요청일 D-4까지는 고객 직접 취소 가능합니다. (D-3 이후 상품 준비 및 출발로 취소 불가)</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "[선물세트] 상품출고일 변경할 수 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>상품출고일 변경은 도움드리기 어렵습니다.<br>결제완료 단계에서는 취소 후 재 주문만 가능하며, 상품준비중 이후 단계부터는 취소는 어렵습니다.<br>* 취소 후 재주문 시 쿠폰 및 행사 속성은 변경될 수 있음</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "[선물세트] 대량구매 견적을 받고 싶습니다.",
+      "faqBody": "<p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>대량 구매건의 경우 별도 부서나 담당자가 없습니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "[선물세트] 출고 시, 보내는 사람은 어떻게 표기되나요? ",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>보내는 사람은 주문자명, 주소는 배송 점포로 노출됩니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "[선물세트] 한번에 여러곳으로 보낼 수 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>명절 사전예약 기간에는 다중배송 방법으로 보낼 수 있으며, 기간 종료 후에는 매장상품으로 각각 주문만 가능 합니다.</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "샘플마트에서 민생회복지원금 사용이 가능한가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>민생회복지원금 사용처는 아래와 같습니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">* 지역사랑 상품권 : 지역사랑상품권 가맹점</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">* 신용 / 체크 / 선불카드 : 연 매출액 30역원 이하 매장</span></span><br><br></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플마트와 같은 대형마트는<span style=\"color: rgb(209, 72, 65);\"> 민생회복지원금 사용처에서 제외</span>되었습니다.</span></p><p>&nbsp;</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "샘플페이는 최소 결제금액은 얼마인가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플페이 결제 최소금액은 100원 입니다.&nbsp;</span></p>"
+    },
+    {
+      "classCdNm": "상품",
+      "faqSubject": "[주류매직픽업] 픽업하기 전까지 냉장보관이 가능한가요?",
+      "faqBody": "<p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>주류매직픽업을 통해 구매하신 상품은 냉장보관이 불가합니다.<br>(일반 매직픽업 주문 시 냉장/냉동 상품에 한하여 냉장/냉동 보관 후 전달하여 드립니다.)</span></p>"
+    },
+    {
+      "classCdNm": "상품",
+      "faqSubject": "[주류매직픽업] 주류매직픽업 서비스란 무엇인가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플마트 온라인을 통해 주류 상품을 구매하고, 원하는 매장에서 픽업하는 서비스입니다.<br>(점포별 운영 여부 및 취급 상품 상이)</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "[주류매직픽업] 픽업 후 반품, 교환은 어떻게 해야하나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>픽업하신 매장에 직접 방문하시어 반품/교환 가능합니다.&nbsp;</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">교환은 동일 상품에 한하여 가능합니다. (포장 불량인 경우)</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>※ 주류 상품의 경우, 주문자 본인만 수령 가능하며, 교환 시에도 본인 확인 절차가 있으므로 신분증 확인 후 교환이 가능합니다.</span></p>"
+    },
+    {
+      "classCdNm": "회원",
+      "faqSubject": "[주류매직픽업] 주류매직픽업 주문도 회원 등급 산정에 포함되나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>주류 매직픽업 구매금액은 픽업완료 후 등급산정에 포함됩니다.</span></p>"
+    },
+    {
+      "classCdNm": "상품",
+      "faqSubject": "[매직픽업] 매직픽업 서비스란 무엇인가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플마트 온라인을 통해 상품을 구매하고, 원하는 매장에서 픽업하는 서비스입니다.<br>(점포별 운영 여부 및 취급 상품 상이)</span></p>"
+    },
+    {
+      "classCdNm": "상품",
+      "faqSubject": "담배는 판매하지 않나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플마트 온라인 쇼핑몰에서는 담배 등은 청소년 보호법 및 주세법 38조 및 동법시행령 제 57조,&nbsp;</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">제 61조의 규정에 의한 <span style=\"color: rgb(235, 107, 86);\">국세청고시 제 98-21호, 기타 해당 법률에 의하여 온라인상으로는 판매가 금지되어있습니다.</span></span></span></p><p><br></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "카드 환불 확인은 언제 되나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>고객님의 카드 환불은 영업일 기준 3~5일 이후에 카드사에서 확인 가능합니다.<br>(단, 부분취소는 당일 상관 없이 모두 영업일 기준 3~5일 이후 확인가능)</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'><br>체크카드의 경우 주문취소 즉시 환불처리 됩니다. 단, 아래와 같은 경우는 당일환불 예외처리됩니다.<br>① 부분취소 거래<br>② 포인트 결제거래(1원이상)<br>③ 청구 할인 거래(일부 캐시백 거래 포함)<br>④ 원거래 승인일자로부터 90일 경과 거래<br>⑤ 고액 결제 거래(200만원 이상)<br>⑥ 취소 선처리 불가 가맹점에서 발생한 거래등</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "쿠폰은 어떻게 사용하나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>상품쿠폰은 다운로드 받으시면 결제 시 자동으로 쿠폰이 적용되어 할인혜택을 받으실 수 있습니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>장바구니쿠폰, 마일리지, MHC포인트, 중복쿠폰, 배송비쿠폰 등은 주문/결제 단계에서 적용을 하셔야 할인혜택을 받으실 수 있습니다.</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "주문 취소 시 쿠폰도 환불되나요?",
+      "faqBody": "<p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>결제 완료 상태인 고객님의 주문을 취소하시면 모든 쿠폰은 복원됩니다.</span></p><p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>하지만, 사용 기한이 경과한 경우 재 발행이 어려우니 주문 취소 시 유의하여 주시기를 부탁드립니다.</span></p>"
+    },
+    {
+      "classCdNm": "기타",
+      "faqSubject": "자동으로 로그아웃이 됩니다.",
+      "faqBody": "<p>샘플마트 온라인 쇼핑몰은 다른 고객님의 정보보호를 위해 30분 동안 페이지 이동이 없을 경우 자동으로 로그아웃이 됩니다.</p><p>불편하시더라도 다시 로그인 후 사용 해주세요.</p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "결제한 금액과 환불된 금액이 달라요!",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 12px;'>신용/체크카드, 디지털/모바일 상품권, 마일리지, 마이샘플마트포인트는 모두 주 결제수단에 해당됩니다.</span></p><p><span style=\"font-size: 12px;\"><span style=\"font-family: Malgun Gothic, serif;\">이에 따라 위 결제 수단을 2가지 이상 사용하여 결제하실 경우, 각 결제수단별로 배분되어 환불됩니다.</span></span></p><p><span style=\"font-size: 12px;\"><span style=\"font-family: Malgun Gothic, serif;\">각 환불금액은 환불정보에서 취소영수증을 통해 확인 부탁 드립니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 12px;'>(확인 : 마이페이지 &gt; 취소/반품/교환조회 &gt; 주문상세보기 &gt; 취소영수증)</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 12px;'><img src=\"https://images.example.test/td/dcf4fdb6-5a69-4503-b20a-4026045d1e7c\" class=\"fr-fic fr-dii\"></span><br></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "[주류매직픽업] 최소 주문금액이 있나요?",
+      "faqBody": "<p><span style=\"font-size: 14px;\">일반 매직픽업, 주류매직픽업 모두 별도의 최소 주문금액은 없습니다.&nbsp;</span></p>"
+    },
+    {
+      "classCdNm": "기타",
+      "faqSubject": "[전자 영수증] 설정은 어디서 하나요?",
+      "faqBody": "<p><span style=\"color: rgb(184, 49, 47);\">마이</span><span style=\"color: rgb(184, 49, 47);\">&nbsp;샘플마트 앱</span> &gt; <strong>영수증</strong>에서 '모바일 영수증만 받기'에서 설정 가능 합니다.</p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "샘플머니 온라인 사용 가능한가요?",
+      "faqBody": "<p>샘플머니는 다양한 이벤트를 통해 적립되는 단기소멸성포인트를 의미합니다.</p><p>샘플머니는 샘플마트 <span style=\"color: rgb(209, 72, 65);\"><strong>대형마트에서만 사용이 가능</strong></span>하며, <span style=\"color: rgb(209, 72, 65);\"><strong>온라인 사용은 불가</strong></span>능합니다.</p><p>샘플머니의 사용방법 및 적립액은 마이샘플마트 앱에서 확인이 가능합니다.</p>"
+    },
+    {
+      "classCdNm": "상품",
+      "faqSubject": "상품 및 서비스에 대한 문의는 어디로 해야 하나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>홈페이지 내 1:1게시판 혹은 온라인 마이페이지 &gt; My 쇼핑활동 &gt; 1:1 문의내역로 연락 주시면 친절하고 빠르게 문의에 대한 답변을 드리겠습니다.</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "부분취소란 무엇인가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>주문하신 상품을 배송 전 일부 취소하는 경우를 '부분취소'라고 합니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">결제완료 상태에서는 판매자 승인 없이 즉시 취소 처리 되며, 판매자 택배 상품의 경우 상품준비중상태에서 판매자의 동의 후 취소 처리 가능합니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br></span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">매직나우상품(Express) 의 경우 매장에서 바로 상품을 준비하여 배송해 드리기 때문에 주문 즉시 '상품준비중'으로 배송 상태가 변경되어 취소가 불가 하며,</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">부득이 취소가 필요한 경우 고객센터로 연락 주셔야 합니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>매장에서 준비가 시작된 경우 취소가 불가 하며, 취소를 요청하시는 경우 반품 처리되어 고객님의 변심 사유로 반품배송료가 청구됩니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "[주류매직픽업] 구매 수량 제한이 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>회원당 주종별 1일(00시~24시) 동안 구매 가능한 용량 제한이 있는 상품이 있습니다.<br>구매 용량 제한 상품은 하기의 기준을 참고해주시기 바랍니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br>&nbsp;- 위스키 및 브랜디：1상자(1상자는 500mL 6병 기준) → &nbsp;3,000ml<br>&nbsp;- 맥주：4상자(1상자는 500mL 12병 기준) &nbsp;→ 24,000ml<br>&nbsp;- 희석식소주：2상자(1상자는 360mL 20병 기준) &nbsp;→ 14,400ml</span></span></p><p><br></p>"
+    },
+    {
+      "classCdNm": "회원",
+      "faqSubject": "[주류매직픽업] 비회원 주문도 가능한가요?",
+      "faqBody": "<p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>성인인증이 필요한 주류, 청소년 유해 상품은 비회원 주문이 불가합니다. 회원가입 후 구매 부탁드립니다.</span></p>"
+    },
+    {
+      "classCdNm": "상품",
+      "faqSubject": "[매직픽업]상품은 배송 받을 수 없나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>매직픽업 상품은 샘플마트 온라인몰을 통해 상품을 구매하고, 원하는 매장에서 \"<strong>픽업만</strong>\" 가능한 상품입니다.&nbsp;</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>(점포별 운영여부 및 취급 상품 상이)</span></p><p><br></p>"
+    },
+    {
+      "classCdNm": "회원",
+      "faqSubject": "샘플마트 온라인을 이용 하려고 하는데 어떻게 하면 되죠?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플마트 온라인을 이용 하시려면 인터넷 (https://shop.example.test)로 접속하시거나, 샘플마트온라인을 검색하셔서 앱을 다운로드 하시면 됩니다.<br>상품을 주문하시고 싶으신 경우 회원가입 또는 비회원으로 주문이 가능하며, 원하는 상품을 장바구니에 담아 결제하시면 됩니다.<br>(단, 비회원의 경우 회원에게 제공되는 쿠폰이용 및 일부 상품할인, 행사적용, 이벤트 참여 등 다수의 회원 혜택이 제한됩니다.)</span></p>"
+    },
+    {
+      "classCdNm": "기타",
+      "faqSubject": "종이 주문내역서가 안와서 주문서(영수증)를 확인하고 싶습니다.",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플마트는 환경보호를 위하여 종이 주문내역서를 제공하지 않고 있습니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>고객님의 영수증은 마이페이지 &gt; 주문배송조회 &gt; 주문상세 &gt; 결제내역 [구매영수증] 에서 확인 가능합니다.</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "쿠폰사용 시 결제 취소 한 금액과 실제 환불금액이 달라요.",
+      "faqBody": "<p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>결제 당시 쿠폰을 사용한 경우, 할인금액이 각 상품에 분배되어 할인이 적용됩니다.<br><br>할인되어 결제하신 것과 동일한 방식으로, 환불 시에는 할인금액이 제외된 실결제 금액만큼 환불 처리되고 있습니다.<br><br>다만 장바구니 쿠폰의 경우, 구매하시는 모든 상품에 나누어 할인적용되고, 상품 쿠폰의 경우 해당되는 상품에 나누어 할인적용됩니다.<br><br>품절로 인한 부분취소의 경우에도 동일하게 적용됩니다.</span><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'><br></span><br></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "샘플마트온라인에서 제공하는 쿠폰은 무엇이 있나요? ",
+      "faqBody": "<p><br></p><p>샘플마트온라인에서 제공하는 쿠폰은 상품쿠폰, 장바구니쿠폰, 배송비쿠폰, 3가지 이며 이외 마일리지 포인트가 있습니다.</p><p><br></p><p>1. 상품쿠폰 - 상품별로 할인받는 쿠폰으로 수량과 관계없이 1회 적용가능 합니다.</p><p>2. 장바구니쿠폰 - 쿠폰에 기재된 일정 금액 이상 구매시 사용 가능하며 쿠폰 사용시 결제금액의 총액에서 쿠폰 금액만큼 할인(1회 주문 시 1장 적용/다른 장바구니 쿠폰과 중복사용불가)</p><p>3. 배송비쿠폰 - 유료 배송비가 차감되는 쿠폰으로 배송단위로 사용가능 합니다.</p><p>4. 마일리지 - 온라인 전용 프로모션, 이벤트 참여, 리뷰 작성 등으로 지급되는 포인트로 주문/결제 시 할인 받고자 하는 금액을 10P 단위로 자유롭게 사용 가능하며 상품쿠폰, 장바구니쿠폰과 중복 할인 가능합니다. 10P는 10원과 동일하게 사용할 수 있습니다.(*카드즉시할인 상품과 중복 사용 불가)</p><p><br></p><p>위 모든 쿠폰은 전체 주문취소 시 쿠폰 재사용이 가능합니다. (단, 쿠폰 사용가능기한이 남아있는 경우에 한함)</p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "환불이 덜된 것 같아요!",
+      "faqBody": "<p>주문하실 때 결제수단(신용카드, 마이샘플마트포인트, 마일리지, 디지털/모바일상품권 등) 을 2가지 이상 사용하신 경우 비례 배분되어 환불됩니다.</p><p>각 결제수단으로 환불된 내역은 취소 환불 시 고객님께 보내드리는 카카오톡 알림톡으로 보내드리고 있습니다.</p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "주문시 할인쿠폰 적용을 못했을 경우 어떻게 하나요?",
+      "faqBody": "<p>할인쿠폰은 고객님께서 주문 시 주문/결제 단계에서 쿠폰 적용을 하셔야 할인혜택을 받으실 수 있습니다.</p><p>주문결제 완료 후 쿠폰적용은 어려우며 쿠폰을 적용하지 못하셨다면 주문취소 후 재주문하여 적용이 가능합니다.</p><p>(단, '결제완료' 상태에서만 직접 취소가 가능합니다.)</p><p>직접 취소가 되지 않을 경우 마이페이지 &gt; My 쇼핑활동 &gt; 1:1 문의내역로 문의 부탁드립니다.</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "[주류매직픽업] 주류 주문과 다른 상품을 함께 매직픽업 주문할 수 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>주류 상품의 경우, 주류 외 상품과 픽업운영시간/수령장소가 다를 수 있어 함께 주문 불가합니다.&nbsp;</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>추가로 필요하신 다른 상품은 별도로 주문 진행 부탁드립니다. </span></p>"
+    },
+    {
+      "classCdNm": "기타",
+      "faqSubject": "지금 행사하고 있는 카드는 어떻게 알 수 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>홈페이지 상단의 메뉴들 중 우측에 '이벤트/쿠폰'으로 들어가시면, 현재 진행되고 있는 카드행사 내용을 확인 하실 수 있습니다.<br>또한, 상품마다 각 상품상세 페이지에서 카드행사 여부를 확인 하실 수 있습니다.</span></p>"
+    },
+    {
+      "classCdNm": "샘플 ONE 등급제",
+      "faqSubject": "통합등급제는 온/오프라인 어디에서 구매하든 실적으로 인정되나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>네. 통합 등급제는 온/오프라인 구매가 실적으로 인정됩니다.<br>샘플마트 마트/익스프레스/몰/온라인 어디서 구매하든 실적이 통합되어 인정됩니다.<br>단,&nbsp;마이샘플마트 멤버십 포인트를 적립하는 구매건만 실적으로 인정되오니,<br>통합 멤버십 미가입 고객님은&nbsp;온라인 가입을 통해 통합 멤버십 회원으로 전환 가입하셔야<br>신규 등급제 혜택을 받으실 수 있습니다.<br>(예:&nbsp;샘플마트 온라인 간편회원으로 가입했던 고객&nbsp;-&gt;&nbsp;등급 혜택 못 받음)<br>자세한 등급 산정 기준은 마이페이지 &gt; 이 달의 회원 등급 옆의 [ⓘ] 클릭 &gt; &nbsp;[등급 산정 기준 유의사항] 을<br>참고 해 주시기 바랍니다.</span></p>"
+    },
+    {
+      "classCdNm": "상품",
+      "faqSubject": "상품 가격이 달라졌어요",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>온라인 판매가격과 오프라인(매장) 판매가격은 동일한 가격으로 운영하고 있으나, 일부 온라인 / 오프라인(매장) 단독 행사 상품의 경우 상이할 수 있습니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">※ 로그인 전 대표매장(금천점)의 가격과 로그인 후 고객님께서 배송받으시는 매장의 가격이 상이할 수 있습니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>※ 수량/금액 조건에 맞게 장바구니에 담아야만 행사가로 변경 적용되는 행사상품의 경우에는 상품 상세 페이지에는 정상가만 보여집니다.</span></p>"
+    },
+    {
+      "classCdNm": "회원",
+      "faqSubject": "회원으로 가입하면 어떤 혜택이 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플마트온라인 회원으로 가입하시면 첫주문 혜택, 등급별 혜택, 이벤트 참여기회 등 각종 다양한 할인 혜택을 누리실 수 있습니다.&nbsp;</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">샘플마트온라인을 이용하시면 매월 다양한 혜택과 등급별 적립혜택, 쿠폰혜택이 제공되며, 보다 자세한 사항은 이벤트/쿠폰 메뉴에서 확인 가능합니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br></span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>홈 &gt; 이벤트/쿠폰 &nbsp;(가장 우측)</span></p>"
+    },
+    {
+      "classCdNm": "회원",
+      "faqSubject": "탈퇴했던 아이디로 재가입이 가능한가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플마트온라인을 포함하여 샘플마트 사이트 모두를 다 탈퇴한 경우에는 탈퇴했던 ID로 재가입은 불가 합니다.<br>다른 ID를 지정하셔서 회원가입을 부탁드립니다.</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "전체취소, 부분취소 금액은 카드사에서 언제 확인 가능한가요?",
+      "faqBody": "<p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>[전체취소]</span></p><p><span style=\"font-family: Malgun Gothic, serif;\"><span style=\"font-size: 14px;\">1. 주문하신 날 결제 완료 상태에서 전체 취소 하셨다면, 당일 카드사에서 바로 확인 가능합니다.</span></span></p><p><span style=\"font-family: Malgun Gothic, serif;\"><span style=\"font-size: 14px;\">2. 주문 후 다음날 전체 취소 시 영업일 기준 3~5일 이후에 카드사에서 확인 가능합니다.</span></span></p><p><span style=\"font-family: Malgun Gothic, serif;\"><span style=\"font-size: 14px;\">3. 체크카드의 경우 주문취소 즉시 환불처리 됩니다.</span></span></p><p><span style=\"font-family: Malgun Gothic, serif;\"><span style=\"font-size: 14px;\">단, 아래와 같은 경우는 당일환불 예외처리됩니다.</span></span></p><p><span style=\"font-family: Malgun Gothic, serif;\"><span style=\"font-size: 14px;\">①부분취소 거래</span></span></p><p><span style=\"font-family: Malgun Gothic, serif;\"><span style=\"font-size: 14px;\">②포인트 결제거래(1원이상)</span></span></p><p><span style=\"font-family: Malgun Gothic, serif;\"><span style=\"font-size: 14px;\">③청구 할인 거래(일부 캐시백 거래 포함)</span></span></p><p><span style=\"font-family: Malgun Gothic, serif;\"><span style=\"font-size: 14px;\">④원거래 승인일자로부터 90일 경과 거래</span></span></p><p><span style=\"font-family: Malgun Gothic, serif;\"><span style=\"font-size: 14px;\">⑤고액 결제 거래(200만원 이상)</span></span></p><p><span style=\"font-family: Malgun Gothic, serif;\"><span style=\"font-size: 14px;\">⑥취소 선처리 불가 가맹점에서 발생한 거래등</span></span></p><p><span style=\"font-family: Malgun Gothic, serif;\"><span style=\"font-size: 14px;\"><br></span></span></p><p><span style=\"font-family: Malgun Gothic, serif;\"><span style=\"font-size: 14px;\">[부분 취소]</span></span></p><p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>1. 부분 취소시에는 주문 당일, 익일에 관계없이 모두 영업일 기준 3~5일 이후에 카드사를 통해 확인 가능합니다.</span></p>"
+    },
+    {
+      "classCdNm": "회원",
+      "faqSubject": "학생은 가입이 되지 않나요? ",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플마트온라인은 만14세이상의 고객님에 한해 회원 가입이 가능합니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "[주류매직픽업] 상품 수령은 어디서 하나요? (상품 수령 장소는 어디인가요?)",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>주류 상품의 경우, 고객센터에서 수령 가능합니다.<br>상품 수령 시, 본인 및 성인 확인 절차가 이루어지므로 신분증 지참 부탁드립니다.</span></p>"
+    },
+    {
+      "classCdNm": "상품",
+      "faqSubject": "[1+1]행사상품인데 온라인에서도 동일하게 적용되나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>온라인 행사와 오프라인(매장) 행사는 동일하게 운영하고 있으나, 일부 온라인 / 오프라인(매장) 단독 행사 상품의 경우 판매 가격 및 적용 행사 내용이 상이할 수 있습니다</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>1+1 행사 상품을 2개 주문하시면 1개의 가격을 할인 하여 적용 해 드리며, 장바구니 페이지에서 할인내역을 확인 하실 수 있습니다.</span></p>"
+    },
+    {
+      "classCdNm": "회원",
+      "faqSubject": "외국인과 법인업체는 회원가입이 가능한가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>외국인도 이메일주소와 인증문자를 받을 수 있는 휴대전화를 소유한 경우에 가입 가능합니다. 법인인 경우 주로 구매하시는 담당자의 개인정보로 가입하실 수 있습니다.</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "인터넷에서 구입한 상품을 샘플마트 매장에서 교환/반품이 가능한가요?",
+      "faqBody": "<p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>샘플마트온라인몰에서 구매한 상품은 배송받은 매장에서만 동일상품으로 교환 혹은 환불 접수가 가능합니다.</span></p><p><span style=\"font-family: Malgun Gothic, serif;\"><span style=\"font-size: 14px;\">결제한 상품의 매장 방문 반품/ 환불을 원하실 경우에는 마이페이지 &gt; My주문정보&gt; 주문/배송조회의 모바일영수증에서 결제 하신 매장을 확인 후 해당 매장의 고객서비스센터를 방문 해 주시면 됩니다. 단, 모바일 영수증을 확인후 상품을 샘플마트 매장에 반납 후 환불 접수 시 1~2일 전산 처리가 가능합니다.</span></span></p><p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>(교환은 별도 전산처리 없이 동일한상품으로만 가능)</span></p>"
+    },
+    {
+      "classCdNm": "기타",
+      "faqSubject": "카드 즉시할인 적용이 되었는지 궁금합니다.",
+      "faqBody": "<p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>카드 즉시 할인행사의 적용을 위해서는 결제시 행사카드를 선택해 주셔야 합니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">정상적으로 처리가 되었다면 적용 확인 메시지와 결제 금액을 확인하실 수 있습니다.</span></span></p>"
+    },
+    {
+      "classCdNm": "샘플 ONE 등급제",
+      "faqSubject": "통합등급 회원 구분과 산정 기준은?",
+      "faqBody": "<p>새롭게 개편되는 멤버십 등급제의 회원 구분은<br>VIP+ GOLD+ SILVER+ FAMILLY+&nbsp;4개 등급으로 구성되어 있으며,<br>최근&nbsp;2개월 동안 확정된 구매건수와 구매금액 기준으로 산정됩니다.<br>매월&nbsp;1일 등급 변경되며&nbsp;1개월간 등급 유지됩니다.<br>(예: 6/1일 등급회원의 실적 산정 기간: 4월&nbsp;1일&nbsp;00시~5월&nbsp;31일&nbsp;23:59분)<br>단, 온라인 주문은 판매자 택배 배송 상품 포함 배송완료일자 기준으로 집계되며, 품절 시 결제 취소된 금액은 실적 산정에서 제외됩니다.<br>자세한 등급 산정 기준은 마이페이지 &gt; 이 달의 회원 등급 옆의 [ⓘ] 클릭 &gt; &nbsp;[등급 산정 기준 유의사항] 을<br>참고 해 주시기 바랍니다.</p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "베이비틴 클럽 신청을 앱(APP)에서 할 수 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>베이비틴 클럽은 마이 샘플마트 앱(APP)에서</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">마이샘플마트&gt;가입한 클럽에서 선택 가능하며, 다양한 이벤트 안내와 쿠폰을 제공해드립니다.</span></span></p><p><br></p>"
+    },
+    {
+      "classCdNm": "회원",
+      "faqSubject": "아이디, 비밀번호를 분실했어요.",
+      "faqBody": "<p>로그인 창에서 아이디/비밀번호 찾기를 이용하시면 됩니다</p><p>- PC/MOBILE : 홈 &gt; 로그인 &gt; 아이디/비밀번호 찾기&gt; 휴대폰/이메일/본인 인증 중 선택</p><p><br></p><p>- 아이디 전체를 보고자 할 때는 아이디의 일부를 먼저 찾은 후에 하단의 아이디 전체 찾기를 클릭하셔서 휴대폰/이메일/본인인증 중 선택하셔서 인증번호를 입력하시면 확인하실 수 있습니다.</p><p><br></p><p>- 비밀번호는 회원정보에 등록된 아이디를 입력하신 후, 휴대전화/이메일/본인 인증 중 선택하신 방법으로 인증을 거쳐 비밀번호를 재설정 하실 수 있습니다.</p><p><br></p><p>- 등록된 회원정보를 기억 못하시거나 변경된 경우에는 마이페이지 &gt; My 쇼핑활동 &gt; 1:1 문의내역로 연락 부탁드립니다.</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "[주류매직픽업] 주문자 본인만 픽업이 가능한가요? (본인이 방문을 못 할 경우 타인이 수령할 수 있나요?)",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>주류 상품의 경우, 주문자 본인만 수령 가능합니다.<br>상품 수령 시, 본인 및 성인 확인 절차가 이루어지므로 신분증 (주민등록증, 운전면허증, 여권 등) 지참 부탁드립니다.</span></p>"
+    },
+    {
+      "classCdNm": "회원",
+      "faqSubject": "회원 정보에 등록 된 이름이 변경되었습니다. 변경 된 이름으로 어떻게 바꿀 수 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>개명하셨다면 모바일 APP 또는 PC 접속 후, 홈페이지를 통해 변경가능합니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">▶ 마이페이지 &gt; My회원정보 &gt; 회원정보관리 &gt; 이름변경&nbsp;</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br></span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">위와 같은 경로로 접속이 불가하신 경우 가까운 오프라인 매장 고객센터로 아래 서류 지참 후 방문하시면&nbsp;이름 변경이 가능합니다. (단, 간편회원은 불가)</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">▶</span></span><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>&nbsp;지참 서류 : 개명 증명서, 신분증, 본인 명의 휴대폰</span></p>"
+    },
+    {
+      "classCdNm": "샘플 ONE 등급제",
+      "faqSubject": "통합등급제 혜택이 궁급합니다.",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>통합등급제는 4개 등급별 차등 혜택이 제공될 예정입니다.<br>등급별 혜택 상세 내용은 자세한 등급별 혜택은 마이샘플마트 앱(MHC APP)또는 온라인쇼핑몰 (Web/APP)에서 확인하실 수 있습니다.<br>* 마이샘플마트 앱 &gt; MY<br>* 온라인 쇼핑몰(Web/APP) &gt; 마이페이지 &gt; 상단 고객님의 &nbsp;[이달의 회원등급] 클릭</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "교환이나 반품이 불가한 경우가 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>고객님께서 구입하신 상품은 다음과 같은 상품의 특성이나 상품의 상태에 따라 교환과 반품이 제한될 수 있습니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">1. 고객님의 책임사유로 상품 및 상품의 일부가 없어지거나 훼손된 경우</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">2. 상품의 포장이 훼손되어 상품가치가 현저히 훼손된 경우</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">(예 : 가전제품, 식품, 음반의 포장 훼손, Tag이나 라벨이 훼손된 일반상품 등)</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">3. 고객님의 사용 또는 일부 사용에 의하여 상품의 가치가 현저히 감소한 경우</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">4. 시간의 경과에 의하여 재판매가 곤란할 정도로 상품의 가치가 현저히 감소한 경우</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">5. 복제가 가능한 상품의 포장을 훼손한 경우</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>6. 신선식품(농산/수산/축산/냉장/냉동상품)을 단순 변심으로 교환/반품을 원할 경우</span></p>"
+    },
+    {
+      "classCdNm": "기타",
+      "faqSubject": "샘플마트 앱을 다운받으려면 어떻게 해야하나요?",
+      "faqBody": "<p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>구글플레이, 앱스토어에서 '샘플마트'를 검색한 후 설치 하시면 됩니다.</span></p>"
+    },
+    {
+      "classCdNm": "기타",
+      "faqSubject": "샘플마트 앱에 대한 문의는 어디로 하나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플마트온라인 마이페이지 &gt; My 쇼핑활동 &gt; 1:1 문의내역로 연락주시면 친절히 안내 해 드리겠습니다.</span></p>"
+    },
+    {
+      "classCdNm": "샘플 ONE 등급제",
+      "faqSubject": "신규 통합 등급제 관련 고객 문의가 있을 시 어디로 연락하면 되나요?",
+      "faqBody": "<p><span style=\"font-family: Gulim, serif;\">마이페이지 &gt; My 쇼핑활동 &gt; 1:1 문의내역</span><span style=\"font-family: Gulim, serif; font-size: 14px;\">&nbsp;로 문의내용 접수해 주시면,<br>확인 후 답변 드리겠습니다.</span></p>"
+    },
+    {
+      "classCdNm": "상품",
+      "faqSubject": "주류는 판매하지 않나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플마트 온라인에서는, 주류 매직픽업 서비스를 통해 주류를 판매하고 있습니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">샘플마트 온라인을 통해 주류 상품을 구매하고, 원하는 매장에서 픽업하는 서비스입니다. (점포별 운영 여부 및 취급 상품 상이)</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>주류의 경우 청소년 보호법 및 주세법 38조 및 동법시행령 제 57조, 제 61조의 규정에 의한 국세청고시 제 98-21호, 기타 해당 법률에 의하여 온라인상으로 배송하는 것이 금지되어 있어, 픽업 서비스로 운영하는 점 참고 부탁 드립니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "[주류매직픽업] 상품 수령은 어떻게 하나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>주문 완료 후, 고객님께 알림톡이 발송됩니다.<br>예약한 시간에 맞춰 해당 점포의 고객센터를 방문하시어, 직원에게 픽업 알림톡과 신분증(주민등록증, 운전면허증, 여권 등)을 보여주세요.</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "상품쿠폰은 어디서 다운받을 수 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>상품쿠폰은 상품에 자동 할인가가 적용됩니다.<br>상품 중복쿠폰은 상품상세에서 다운받으실 수 있으며 결제시 적용 가능합니다.</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "반품했는데, 환불이 되지 않았습니다. 어떻게 해야되나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>고객님께서 반품/환불요청 하시면 전산처리는 평일기준 1~2일정도 소요 됩니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>(체크카드는 입금까지 은행 정책에 따라 주말제외 7~10일 소요, 신용카드 환불은 영업일 기준 3~5일 이후 카드사에서 확인 가능합니다.)</span></p>"
+    },
+    {
+      "classCdNm": "회원",
+      "faqSubject": "회원가입은 어떻게 하나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>마이 샘플마트 통합 회원가입과 간편회원가입 2가지 방식으로 회원가입이 가능합니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">마이 샘플마트 통합 회원으로 가입하시면, 한 번 가입으로 샘플마트 모든 서비스 이용이 가능합니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br></span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">1. 마이 샘플마트 통합 회원가입</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">홈 &gt; 로그인 &gt; 통합회원가입 &gt; 휴대폰 인증으로 시작하기 or 신용카드 인증으로 시작하기</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">마이 샘플마트 회원가입은 신용, 체크, 일반 유형 선택이 가능하며, 일반 유형은 즉시 가입됩니다. 샘플마트온라인과 전국샘플마트, 샘플마트익스프레스 매장에서 구매할 때마다 포인트(일반 0.1%, 체크 1.0%, 신용 2.0%) 가 적립되어 현금처럼 사용 가능합니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br></span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">2. 간편 회원가입</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">홈 &gt; 로그인 &gt; 통합회원가입 &gt; 카카오로 시작하기 or 네이버로 시작하기</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">- 간편 회원 가입 : 본인인증 없이 간편하게 가입하여 온라인 서비스 이용이 가능합니다</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>- 네이버로 간편가입 : 네이버 로그인으로 샘플마트 서비스를 이용하실 수 있습니다<br>- 카카오로 간편가입 : 카카오 로그인으로 샘플마트 서비스를 이용하실 수 있습니다</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "판매자 택배상품의 교환/반품 처리 기간은 얼마나 걸리나요?",
+      "faqBody": "<p>교환 접수 후 상품을 발송하시면 기본적으로 1주일 정도 소요됩니다.</p><p>단, 주말/공휴일이 포함된 경우에는 처리 기간이 약 10일 정도 소요됩니다.</p><p>만일, 그 이후에도 처리가 지연된다면, 샘플마트 고마이페이지 &gt; My 쇼핑활동 &gt; 1:1 문의내역로 연락주시면 빠르게 처리될 수 있도록 도와드리겠습니다.</p>"
+    },
+    {
+      "classCdNm": "회원",
+      "faqSubject": "주문하지도 않은 상품이 배송되었다고 문자메세지를 받았어요.",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플마트온라인에서는 고객님께 주문내역, 이벤트 등에 대해 알림톡 또는 문자메세지(SMS) 서비스를 제공해 드리고 있습니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">상품을 주문하신 고객께서 휴대폰 번호를 잘못 입력하신 경우, 주문하지 않은 다른 고객님께 알림톡 또는 <span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>문자메세지(SMS)</span>가 전송되는 경우가 있습니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>이 경우 마이페이지 &gt; My 쇼핑활동 &gt; 1:1 문의내역로 문의하시면 신속히 처리해 드리도록 하겠습니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "[주류매직픽업] 주문 후 픽업 매장을 변경할 수 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>주문 완료 후에는 픽업 매장을 변경하실 수 없습니다. 취소 후 재구매 부탁 드립니다.</span></p>"
+    },
+    {
+      "classCdNm": "샘플 ONE 등급제",
+      "faqSubject": "직접 계산한 실적과 등급에 반영된 실적이 다릅니다. 왜 그런가요? or 통합등급 산정 시, 실적으로 인정되지 않는 것은 무엇인가요? or 마이샘플마트 멤버십 포인트가 적립되지 않는",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>마이샘플마트 멤버십 포인트 미적립 매출이 있는 경우, 실제 결제하신 금액과 실적이 다를 수 있습니다.<br>상품권, 담배, 쓰레기봉투 구매, 장바구니 대여, 배송비 등은 포인트 미적립 매출이기 때문에 통합등급 산정 시 실적으로 인정되지 않습니다.<br>추가로 포인트/마일리지/할인쿠폰/기타할인 수단으로 결제한 실적과 품절되어 결제 취소된 금액도 실적 산정에서 제외됩니다.<br>자세한 등급 산정 기준은 마이페이지 &gt; 이 달의 회원 등급 옆의 [ⓘ] 클릭 &gt; &nbsp;[등급 산정 기준 유의사항] 을<br>참고 해 주시기 바랍니다.</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "샘플마트온라인 카카오톡 채널추가 방법과 혜택은 무엇인가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>카카오톡 검색창 &gt; \"샘플마트 온라인\" 검색 &gt; 채널 추가 버튼을 눌러 접속하시면 각종 혜택과 소식을 받아보실 수 있습니다</span></p>"
+    },
+    {
+      "classCdNm": "상품",
+      "faqSubject": "중량 상품의 경우 주문한 중량과 실제 배송된 중량(금액)이 같은가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>주문하신 상품 중량에 최대한 근접하도록 장보기를 진행하고 있지만, 형태와 규격이 일정하지 않은 신선식품의 특성상 중량 차이가 일부 발생 할 수 있습니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>또한 중량/수량 상품의 경우 판매 상품 가격변경이 있는 경우 주문시점과 배송시점의 차이로 인해 상품에 부착된 라벨 가격이 상이할 수 있습니다. (구매하신 중량은 동일하게 배송해 드립니다.)</span></p>"
+    },
+    {
+      "classCdNm": "기타",
+      "faqSubject": "샘플마트에서 구매하지 않았는데, 소액결제 문자를 받았습니다. 어떻게 해야 하나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플마트는 카드결제, 간편결제, 샘플페이결제 이외 다른 결제는 진행하고 있지 않습니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>문자 내용 중 주소는 클릭하지 마시고, 고객님께서 이용중인 통신사로 연락하셔서 확인하여 주시기 바랍니다.</span></p>"
+    },
+    {
+      "classCdNm": "회원",
+      "faqSubject": "다른 사람의 이름으로 메일이 오고 있어요.",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>고객님께서 이메일 수신동의를 하신 경우 회원정보에 등록되어 있는 E-mail 주소로 고객님의 주문/취소, 행사 관련 메일을 보내드리고 있습니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">다른 고객님께서 실수로 메일주소를 잘못 입력 할 경우 다른 분의 이름으로 메일이 전송될 수 있습니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>고객정보 확인 시 고객님께서 이메일 수신동의 여부가 미수신으로 되어 있음에도 불구하고 메일이 계속 전송되고 있다면, 마이페이지 &gt; My 쇼핑활동 &gt; 1:1 문의내역로 문의 해 주십시오.신속히 처리해 드리도록 하겠습니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "[주류매직픽업] 주문 후 픽업 시간을 변경할 수 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>주문 상태가 [결제완료] 이고, 매직픽업 주문이 마감되지 않았을 경우 시간 변경이 가능합니다. [상품준비중] 이후에는 매직픽업 시간 변경 불가하오니 양해 바랍니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>&nbsp;- 주문상태 : 결제완료<br>&nbsp;- 변경 페이지 : 마이페이지 &gt; 주문/배송조회 &gt; 주문상세</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "앱(APP)을 삭제 후 재설치했는데 디지털상품권이 사라졌어요. 재등록이 가능한가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>앱(APP)을 삭제하시는 경우 등록한 디지털상품권 정보가 사라집니다. 상품권 번호, 핀번호를 알고계신 경우 재등록이 가능합니다.</span></p><p><span dir=\"ltr\" style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>(디지털 상품권이란, 온/오프라인에서 사용이 가능한 상품권이며, 오프라인 고객센터를 통해 구매하거나, <span dir=\"ltr\">온/오프라인</span> 사은행사 시 지급되는 상품권(기프트카드)을 의미합니다.)</span></p>"
+    },
+    {
+      "classCdNm": "샘플 ONE 등급제",
+      "faqSubject": "구매 건수를 모두 충족하였는데, 등급이 다르게 나왔어요.",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>통합등급제는 구매 건수와 구매 금액 2가지 조건이 모두 충족되어야 합니다.<br>자세한 등급 산정 기준은 마이페이지 &gt; 이 달의 회원 등급 옆의 [ⓘ] 클릭 &gt; &nbsp;[등급 산정 기준 유의사항] 을<br>참고 해 주시기 바랍니다.</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "신용카드 결제 후 주문취소 시 현금환불을 받을 수 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>취소로 인한 환불 시에는 동일 결제 수단으로만 환불이 가능합니다.</span></p>"
+    },
+    {
+      "classCdNm": "상품",
+      "faqSubject": "채소/야채/생선 등 신선식품은 어떻게 배송되나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플마트 배송 차량은 상온/냉장/냉동칸이 구분 된 특수 차량으로 신선식품도 최적화된 상태로 배송이 가능합니다.</span></p>"
+    },
+    {
+      "classCdNm": "기타",
+      "faqSubject": "보험 행사 전화를 받았는데, 더 이상 받고 싶지 않습니다.",
+      "faqBody": "<p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>신유통(보험/카드)전화로 불편을 겪으시는 경우 본사콜센터(02-3459-8000)으로 문의 주시면 확인 후 신속하게 처리해 드리겠습니다.</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "판매자 택배상품의 반품을 잘못 보냈을 경우,어떻게 하나요?",
+      "faqBody": "<p>택배 영수증(반송장)에 표기된 반송날짜, 택배사명, 반송장번호, 반송지주소 등을 확인하여, 샘플마트 마이페이지 &gt; My 쇼핑활동 &gt; 1:1 문의내역로 문의해 주시면 확인 후 안내 드리겠습니다.</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "[주류매직픽업] 지정한 시간 이전(또는 이후)에 픽업할 수 있나요?",
+      "faqBody": "<p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>고객님께서 주류매직픽업을 신청하실 때 선택하신 시간 내 픽업하셔야 합니다.<br>선택하신 매직픽업시간은 픽업 알림톡/문자 발송 시 함께 포함하여 보내드리고 있으며, 매직픽업하지 않은 상품은 다음날 오전에 취소됩니다.</span></p>"
+    },
+    {
+      "classCdNm": "샘플 ONE 등급제",
+      "faqSubject": "구매 금액을 모두 충족하였는데, 등급이 다르게 나왔어요.",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>통합등급제는 구매 건수와 구매 금액 2가지 조건이 모두 충족되어야 합니다.<br>자세한 등급 산정 기준은 마이페이지 &gt; 이 달의 회원 등급 옆의 [ⓘ] 클릭 &gt; &nbsp;[등급 산정 기준 유의사항] 을 참고 해 주시기 바랍니다.</span></p>"
+    },
+    {
+      "classCdNm": "상품",
+      "faqSubject": "상품리뷰는 어디서 작성할 수 있나요? ",
+      "faqBody": "<p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>상품리뷰는 고객님께서 구입하신 상품 배송완료 후 아래의 경로에서 작성하실 수 있습니다.<br><br><br>1. 마이페이지 &gt; My 리뷰활동 &gt; 작성가능한 리뷰 페이지에서 작성하실 수 있습니다.</span></p><p><span style=\"font-family: Malgun Gothic, serif;\"><span style=\"font-size: 14px;\">2. 마이페이지 &gt;My주문정보&gt;주문/배송조회&gt;상세보기 페이지에서 작성하실 수 있습니다.</span></span></p><p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>3. 구매하신 상품 상세 페이지 내 상품리뷰 등록하기 버튼을 클릭하셔서 작성하실 수 있습니다.<br>단, 상품과 관련 없는 글 또는 허위 글을 올리시는 경우 관리자에 의해 임의 삭제 및 마일리지 회수 될 수 있습니다.</span></p>"
+    },
+    {
+      "classCdNm": "회원",
+      "faqSubject": "실명확인 오류 시 어떻게 하나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>한국신용평가정보에서 정보입력과정에서 오류가 있어 실명확인에 문제가 발생하는 경우가 있습니다.&nbsp;</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>서울신용평가(전화번호 : 02-846-5000)로 문의하여 '주민번호/이름/주민등록증 발급일자'를 제시하신 후 실명등록 확인을 하시면 회원가입이 가능합니다.</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "앱 다운로드를 하면 마이 샘플마트 쿠폰이 자동으로 연동이 되나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>마이 샘플마트 멤버십을 보유한 회원님께서 로그인하시면 보유한 쿠폰들이 자동으로 연동됩니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>쿠폰들은 마이 샘플마트 앱 쿠폰 메뉴에서 확인 가능합니다.</span></p>"
+    },
+    {
+      "classCdNm": "기타",
+      "faqSubject": "현금영수증 발급내역을 어떻게 확인 하나요?",
+      "faqBody": "<p>상품수령(배송완료) 후 2~3일 후에 국세청 현금영수증 홈페이지에서 조회 가능 합니다.</p><p>(단, 판매자 택배 배송 상품은 배송완료 8일 후 조회 가능합니다)</p>"
+    },
+    {
+      "classCdNm": "상품",
+      "faqSubject": "상품리뷰 작성시 혜택은 무엇인가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>상품 기준 1~5번째 상품리뷰 등록 시 텍스트리뷰 100P, 포토리뷰 300P 지급되며, 이 후 상품리뷰 등록 시 텍스트리뷰 10P, 포토리뷰 30P 지급됩니다.<br><br>일반리뷰는 배송완료 후 31월 이내 작성 가능하며, 한달 사용리뷰는 배송완료 31일 후~61일 이내 작성 가능합니다.<br><br>한달 사용리뷰 상품은 리뷰작성 페이지에서 확인 할 수 있습니다.<br><br>한달 사용리뷰는 일반리뷰 작성여부와 관계없이 작성할 수 있으며 한달 사용리뷰 상품의 경우 일반리뷰와 한달 사용리뷰 모두 작성시 최대2번의 리뷰를 작성할 수 있습니다.<br><br>한달 사용리뷰 마일리지는 일반 리뷰와 동일하게 텍스트 리뷰 10P, 포토리뷰30P 지급됩니다.<br><br>1~5번째 리뷰 특별적립(텍스트리뷰 100P, 포토리뷰 300P)은 일반리뷰/한달사용 리뷰의 구분과 무관하게 상품기준 1~5번째 리뷰에 적용됩니다.<br><br>마일리지는 작성 후 실시간 자동 적립됩니다.( 발급 후 6개월까지 사용가능)<br><br>마일리지는 마이샘플마트 통합회원에 한하여 적립되고 주문취소/반품건에 대해서는 적립되지 않습니다.<br><br></span></p>"
+    },
+    {
+      "classCdNm": "기타",
+      "faqSubject": "현금영수증 신청 시 휴대전화번호를 잘못 등록 했어요",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>구매영수증 내 [현금영수증]전표를 확인 후 국세청에 직접 수정 요청하시면 됩니다. (국세청 고객센터 126)</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">※ 마이페이지 &gt; 주문배송조회 &gt; 상세보기 &gt; 구매영수증 &gt;</span></span><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>현금영수증</span></p>"
+    },
+    {
+      "classCdNm": "상품",
+      "faqSubject": "AI추천리뷰는 무엇이며 혜택이 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>AI추천리뷰는 작성해 주신 리뷰 중 구매에 도움이 되는 것으로 내부 시스템에 의해 자동 선정된 리뷰 입니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">AI추천리뷰는 상품리뷰 상단에 추가 노출되며 작성된 내용을 수정하는 경우 시스템 재선정 프로세스에 따릅니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">AI추천리뷰 선정시 추가적인 리워드를 지급하지는 않습니다.</span></span></p><p><br></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "배송 되는 매장이 변경되었어요.",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>고객님께서 주문하신 상품을 배송하는 매장이 변경될 수 있습니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플마트는 <u>온라인 배송이 가능한 매장의 변동</u>, <u>매장 주변 교통상황</u> 등을 고려하여 보다 나은 배송서비스를 제공하고 있습니다.</span></p>"
+    },
+    {
+      "classCdNm": "샘플 ONE 등급제",
+      "faqSubject": "오프라인에서 구매한 실적은 어떻게 확인하나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>마이샘플마트 앱 &gt; 하단 영수증<br>온라인 쇼핑몰 앱 &gt; 마이페이지 &gt; MY쇼핑활동 &gt; 매장 영수증 조회</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "주소지는 서울인데 부산으로 보낼 수 있어요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>배송받으실 주소로 배송지를 설정하시고 주문 하시면, 배송지로 배송가능한 매장에서 요청하신 시간에 배송 해 드립니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br></span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>* 배송지 변경방법 : 앱접속 &gt; 하단배너 (배송시간) &gt; 배송지 관리</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "종이(지류)상품권은 온라인에서 사용할 수 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>온라인에서는 핀번호가 있는 카드 형태인 디지털상품권과 모바일상품권만 사용이 가능합니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>* 샘플마트 상품권별 사용처는 상품권몰(https://giftcard.example.test) 확인 부탁드립니다.</span></p><p>&nbsp;&nbsp;</p><p>&nbsp; &nbsp;</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "주문상품이 품절인 경우 어떻게 처리되나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>주문 상품이 품절인 경우 대체 선택 여부에 따라 취소 혹은 가장 유사한 상품으로 대체하여 드리며,</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">대체 선택을 하셨다고 하더라도 적절한 대체 상품이 없는 경우 취소 될 수 있는 점 양해 부탁드립니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">(주문 상품의 품절시 장보기 당시의 매장 재고에 따라 대체 혹은 취소 처리 될 수 있습니다.)</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br></span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">품절 / 대체 발생 시 고객님께 즉시 알림톡 / 문자로 내용을 공유 드리며, 차액에 대해서는 아래와 같이 처리됩니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">- 높은 가격의 상품으로 대체 될 경우 : 차액 무상 제공</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">- 낮은 가격의 상품으로 대체 될 경우 : 환불 처리</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br></span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>단, 한가지 상품만 구매 하셨거나, 특정 상품군(분유, 기저귀등의 유아용품 및 가전, 완구 등) / 일부 매장의 경우 대체 처리가 되지 않습니다.</span></p>"
+    },
+    {
+      "classCdNm": "회원",
+      "faqSubject": "회원탈퇴는 어떻게 하나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>아래 경로에서 회원탈퇴가 가능합니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>PC : 홈 &gt; 회원정보 &gt; MY 회원정보 : 회원탈퇴</span><br><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>MOBILE : 홈 &gt; 마이페이지 &gt; 회원탈퇴</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>탈퇴 완료까지는(주말과 공휴일제외) 5일정도 소요됩니다. <br>다만 회원은 탈퇴를 요청하시기 전에 주문 상품의 구매절차를 완료하여야 하며, 철회 또는 취소로 인한 불이익은 회원이 부담합니다. <br>회원가입은 탈퇴처리 완료 후 5일 이후에 가입이 가능하며, 기존정보를 복원하여 사용할 수 없습니다</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "행사상품 구매 후 고객변심으로 일부상품만 취소가 가능한가요?",
+      "faqBody": "<p>N+1, 함께할인 상품은 수량 부분취소가 어렵습니다.</p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "나의 쿠폰은 어디서 확인할 수 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>로그인 &gt; 마이페이지 &gt; My 쇼핑혜택 &gt; 쿠폰 메뉴를 클릭하시면 확인하실 수 있습니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "[주류매직픽업] 선물용으로 주문한 경우, 쇼핑백 제공 또는 포장이 되나요?",
+      "faqBody": "<p><span style=\"font-size: 14px;\">별도의 포장서비스, 쇼핑백 등은 제공하고 있지 않습니다. 필요하신 경우 장바구니를 꼭 지참하여 주시길 부탁드립니다.</span></p>"
+    },
+    {
+      "classCdNm": "샘플 ONE 등급제",
+      "faqSubject": "등급 쿠폰을 다운로드 받았는데, 사용하려고 보니 없습니다. ",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>등급 쿠폰은 사용처 별로 통합쿠폰(온/오프라인 사용), 온라인 쿠폰, 오프라인 쿠폰이 있습니다.<br>온라인에서 모두 다운로드는 가능하지만, 오프라인 전용 쿠폰은 오프라인에서만 사용하실 수 있으니, 쿠폰에 기재된 사용처를 확인 해 주시기 바랍니다.</span></p>"
+    },
+    {
+      "classCdNm": "기타",
+      "faqSubject": "주문한 상품중에 일부상품에 대해서만 영수증을 발급받을수는 없나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>영수증 발급은 결제하신 주문 단위로 이루어지기 때문에 주문하신 내역중 일부 상품에 대해서만 영수증을 발급받으실 수는 없습니다.</span></p>"
+    },
+    {
+      "classCdNm": "회원",
+      "faqSubject": "회원정보 변경은 어떻게 하나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>아래 경로에서 이름(개명 일 경우), 휴대전화번호, 주소, 이메일 주소 등의 내용을 변경 하실 수 있습니다. (단, 변경하시고자하는 변경 정보는 가입자와 일치해야 함)</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">PC/MOBILE : 홈 &gt; 마이페이지 &gt; MY 회원정보 : 회원 정보 관리</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>모든 회원정보변경은 맨 하단에 저장을 선택해서 최종 저장을 하셔야 반영됩니다.</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "취소신청 했는데 상품이 배송이 되었습니다. 어떻게 해야하나요?",
+      "faqBody": "<p>[판매자 택배 배송상품]</p><p>&nbsp;\"배송지시\" 상태라도 판매자에서 상품을 먼저 출고한뒤 송장을 등록하는 경우가 있어, 취소 접수 후에도 상품이 배송될 수 있습니다.</p><p>따라서 고객님께서 취소접수한 시점이 상품의 출고시점보다 늦은 경우에는 반품 시 반송비가 부과될 수 있습니다.</p><p>* 초기 배송비가 무료배송이었던 상품인 경우는 왕복 반품배송비가 부과되며 유료 배송상품인 경우 초기배송비 제외하여 환불이 됩니다.</p><p><br></p><p>[매직배송상품]</p><p>고객님의 부득이한 사정으로 '결제완료' 단계 이후 취소를 요청하셨더라도 배송출발한 경우 반품배송료가 부과될 수 있습니다.&nbsp;</p><p>* 주문취소는 '결제완료' 단계에서만 가능합니다.</p>"
+    },
+    {
+      "classCdNm": "상품",
+      "faqSubject": "매직배송상품 중 온라인 판매가격과 매장 판매 가격이 다른 상품이 있나요?",
+      "faqBody": "<p>온라인 판매 가격과 오프라인(매장) 판매 가격은 동일한 가격으로 운영하고 있으나, 일부 온라인 / 오프라인(매장) 단독 행사 상품의 경우 상이할 수 있습니다.</p><p>(단, 매장 별 취급 상품 및 가격의 차이가 있을 수 있음)</p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "여러장의 쿠폰을 동시에 사용 할 수 있나요?",
+      "faqBody": "<p>쿠폰의 종류에 따라 사용법이 다릅니다.</p><p>- 상품쿠폰 : 상품당 1개 쿠폰만 적용 (적용 수량은 쿠폰에 따라 다름)</p><p>- 장바구니쿠폰 : 1개 주문에 1개 쿠폰만 적용 가능(단, 매직배송/판매자 택배상품 각각 1장의 쿠폰만 사용가능)</p><p>- 배송비쿠폰 : 주문시 할인 차감한 총 구매금액 기준에 적용 (한 주문당 1개만 적용)</p><p>- 마일리지 : 결제 시 할인 받고자 하는 금액을 10P 단위로 자유롭게 사용 가능하며 상품쿠폰, 장바구니쿠폰과 중복 할인 가능. 10P는 10원과 동일하게 사용할 수 있습니다.</p>"
+    },
+    {
+      "classCdNm": "기타",
+      "faqSubject": "디지털카드과 카드를 함께 결제했을 경우, 현금영수증 발급과 카드영수증 발행이 모두 가능한가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>상품권결제는 고객님께서 결제 시 [현금 영수증]을 신청하시면 되고, 카드결제는 카드사에서 [카드매출전표]로 각각 발급 받을 수 있습니다.</span></p><p><span dir=\"ltr\" style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>(디지털 상품권이란, 온/오프라인에서 사용이 가능한 상품권이며, 오프라인 고객센터를 통해 구매하거나, <span dir=\"ltr\">온/오프라인</span> 사은행사 시 지급되는 상품권(기프트카드)을 의미합니다.)</span></p>"
+    },
+    {
+      "classCdNm": "샘플 ONE 등급제",
+      "faqSubject": "VIP+등급에는 생일 쿠폰이 있다고 안내가 되어 있는데, 저는 보이지 않아요.",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>VIP+등급인 고객님의 생일이 있는 달인 경우에 생일 쿠폰이 노출됩니다.</span></p>"
+    },
+    {
+      "classCdNm": "상품",
+      "faqSubject": "상품리뷰 삭제는 어떻게 하나요?",
+      "faqBody": "<p><span style=\"font-size: 14px;\">작성된 상품리뷰의 경우 삭제는 불가하며 작성하신 내용의 수정은 등록완료일로부터 31일까지 가능합니다.</span></p><p><span style=\"font-size: 14px;\">※단, 상품과 관련없는 글 또는 허위 사실을 올리는 경우 관리자에 의해 마일리지 회수 및 임의삭제 될 수 있습니다.</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "반송장번호가 뭐예요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>반품송장번호는 상품 수거 시 택배기사가 드리는 용지에 기재되어 있는 송장번호입니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">반품 송장번호는 수거된 상품의 위치 파악과 도착 여부를 확인할 수 있는 환불시 꼭 참고가 되어야하는 중요한 정보입니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>반품접수 후 환불 완료 전까지는 반송장번호를 잘 보관해주시기 바라며, 고객센터로 통보해 주시면 신속한 환불처리 도와드리겠습니다.</span></p>"
+    },
+    {
+      "classCdNm": "회원",
+      "faqSubject": "광고성 메일/SMS를 수신하고 싶지 않은데 어떻게 하나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>광고 정보 수신 동의 변경은 아래 경로에서 가능합니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">PC/MOBILE : 홈 &gt; 마이페이지 &gt; MY 회원정보 : 마케팅 정보 수신 동의</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>동의하지 않음으로 변경하더라도 수정 전에 예약 발송된 메일 또는 문자메세지는 약 일주일 동안 발송될 수 있습니다. 이점 참고 하여 주세요.</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "쿠폰은 어떻게 발급받나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>쿠폰은 다운로드 방식과 쿠폰번호 입력방식으로 발급받을 수 있습니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">다운로드 쿠폰 - 장바구니쿠폰, 무료배송쿠폰, 중복쿠폰을 상품상세페이지, 혜택/쿠폰페이지, 이벤트 페이지 쿠폰다운로드 버튼을 눌러 발급</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">직접입력 발급쿠폰 - 다양한 이벤트를 통해 쿠폰번호를 지급받은 고객님이 직접 쿠폰번호를 입력하여 발급</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>(마이페이지 &gt; My 쇼핑혜택 &gt; 쿠폰 &gt;쿠폰 등록 &gt; 쿠폰번호 입력 후 발급)</span></p>"
+    },
+    {
+      "classCdNm": "상품",
+      "faqSubject": "상품의 대량구매가 가능한가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플마트 온라인은 최대한 고객님께서 만족하실 수 있도록 상품을 준비하고 있습니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">하지만 배송되는 매장의 재고 및 배송문제로 대량 구매가 어렵습니다.&nbsp;</span></span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "즉시취소가 무엇인가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>온라인몰에서 주문 즉시 결제 취소가 가능한 기능으로 마이페이지&gt;My주문정보의 결제완료 상태의 주문은 결제취소가 가능합니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">매직나우상품(Express) 의 경우 매장에서 바로 상품을 준비하여 배송해 드리기 때문에 주문 즉시 '상품준비중'으로 배송상태가 변경되어 고객센터로 연락 주셔야 합니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>다만 매장에서 준비가 시작된 경우 취소가 불가하고, 취소가 불가하여 교환/반품을 신청하시게 되면 고객님의 변심으로 반품배송료가 청구됩니다.</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "마일리지 포인트 유효기간은 어떻게 되나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>마일리지의 유효기간은 이벤트마다 다를 수 있으니 확인 후 기간 내 사용하시기 바랍니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">유효기간은 마이페이지 &gt; 나의 쇼핑 혜택 &gt; 마일리지에서 확인하실 수 있습니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">주문/결제 시에 마일리지를 사용할 경우, 유효기간이 먼저인 순서대로 적용됩니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>유효기간이 지난 마일리지는 자동 소멸되며 복원되지 않습니다.</span></p>"
+    },
+    {
+      "classCdNm": "회원",
+      "faqSubject": "마이 샘플마트 회원으로 가입하려면 어떻게 해야 하나요?",
+      "faqBody": "<p>마이 샘플마트 회원가입은 아래 경로에서 가능합니다.</p><p>PC/MOBILE: 홈 &gt; 로그인 &gt; 통합회원가입&nbsp;</p><p><br></p><p>샘플마트온라인과 전국샘플마트, 샘플마트익스프레스 매장에서 구매할 때마다 포인트(일반 0.1%, 체크 1.0%, 신용 2.0%) 가 적립되어 현금처럼 사용 가능합니다.<br>마이 샘플마트 신용, 체크, 일반 유형 선택 후 회원가입이 가능하며, 일반 유형은 즉시 가입됩니다.</p><p>- 마이 샘플마트 신용 : 2% 적립</p><p>* 연회비 : [국내전용] 1만 2천원 / [해외겸용] 1만 5천원</p><p>- 마이 샘플마트 체크 : 1% 적립</p><p>* 연회비 없음</p><p>- 마이 샘플마트 일반 : 0.1% 적립</p><p>* 즉시가입, 결제기능 없는 포인트 적립 카드</p>"
+    },
+    {
+      "classCdNm": "회원",
+      "faqSubject": "마이 샘플마트는 샘플마트 통합 멤버십이라고 하던데, 통합 멤버십은 무엇인가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>통합 멤버십 회원이 되시면, 샘플마트의 모든 온라인 서비스 (샘플마트온라인, 문화센터, 상품권 몰 등)를 별도의 가입 없이 마이 샘플마트에 가입된 개인정보로 이용할 수 있는 서비스입니다.</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "마이 샘플마트 포인트는 어떻게 쌓을 수 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플마트 온라인 구매 시 고객님의 멤버십 정보로 멤버십 회원을 인증하시면 포인트 적립이 가능합니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">회원님께서 가입하신 멤버십 유형에 따라, 사용하신 결제 카드에 따라 포인트 적립액은 상이합니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">[샘플마트 내 구매 시]</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">- 일반 멤버십 : 0.1% 적립</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">- 체크 멤버십 : 1.0% 적립 (단, 해당 체크카드로 결제 시)</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">- 신용 멤버십 : 2.0% 적립 (단, 해당 신용카드로 결제 시)</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">- 기타 제휴카드 : 기타 마이 샘플마트와 제휴된 삼성카드, 신한카드 결제 시 추가 포인트 적립</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">[샘플마트 외 구매 시]</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">- 체크 멤버십 : 1.0% 적립 (단, 해당 체크카드로 결제 시)</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>- 신용 멤버십 : 0.5% 적립 (단, 해당 신용카드로 결제 시)</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "카드취소는 바로 되나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>카드취소는 주문일과 취소일에 따라 다르게 처리됩니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">카드로 결제하실 경우, 신용카드전표가 주문 다음날 카드사로 전송 됩니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">따라서, 취소일자에 따라 카드취소가 즉시 이루어질 수도 있고, 카드사의 사정에 따라 몇일 걸릴 수도 있습니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">(1) 오늘 주문, 당일 취소 : 카드전표가 아직 카드사로 넘어가지 않은 상태이므로, 즉시 취소 가능합니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">(2) 주문 이후 1일 경과 혹은 배송받은 후 취소하실 경우</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">카드전표가 카드사로 넘어간 상태이므로, 카드사의 사정에 따라 5-7일 정도 소요됩니다. 카드결제일과 맞물릴 경우에는 카드 결제일에 따라 결제금액이 지불되실 수 있으나, 다음 달에 취소처리됩니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>카드지불과 관련된 문의사항은 각 카드사로 문의해주시기 바랍니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "주문 시 결제금액과 배송완료 후 영수증금액이 달라질 수 있나요?",
+      "faqBody": "<p>주문 시 영수증은 달라지지 않으며, 취소/반품으로 인한 환불 시 취소영수증이 따로 발급됩니다.</p><p>고객님께서 주문하신 행사의 조기마감, 품절로 인해 배송이 어려운 경우 상품 금액만큼 부분 결제 취소 되며, 매직배송상품이 품절되어 다른 상품으로 대체된 경우, 대체주문영수증으로 확인 가능합니다. 더 높은 가격의 상품으로 대체가 된 경우에는 최종 결제금액이 동일, 부득이하게 낮은 가격의 상품으로 대체가 된 경우 더 낮은 가격만큼 차액이 환불됩니다. 환불된 차액은 취소영수증에서 확인 가능합니다.</p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "주문한 상품을 취소하고싶은데 취소가 안돼요.",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>주문취소는 결제완료 단계의 상품에 대해서만 가능합니다. 상품준비중 이후에는 상품을 수령하신 후, 교환/반품 신청을 이용하여 반품을 해주시기 바랍니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br></span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">매직나우상품(Express) 의 경우 즉시 상품을 준비하여 배송해 드리기 때문에 주문즉시 '상품준비중'으로 배송 상태가 변경됩니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>따라서 매장에서 준비가 시작된 경우 취소가 불가하고, 교환/반품을 신청하게 되면 고객님의 변심으로 반품배송료가 청구됩니다.</span></p>"
+    },
+    {
+      "classCdNm": "상품",
+      "faqSubject": "상품정보가 달라요. (이미지, 설명)",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>잘못된 정보로 불편을 드려 죄송합니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">간혹 상품 리뉴얼 시 리뉴얼 전 상품과 공존하여 이미지나 정보가 다른경우가 있을 수 있습니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플마트 온라인 홈페이지 고객센터 혹은 상담봇, 1:1 문의하기 에 잘못된 정보를 남겨주시면 빠른 시간내에 수정하도록 하겠습니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "결제 수단에는 어떤 것들이 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플마트 온라인에서 사용하실 수 있는 결제수단은 아래와 같습니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">- 카드(신용/체크) / 카카오페이카드 / 간편결제(샘플페이(카드/계좌), 네이버페이, 카카오페이머니, 페이코, 토스페이)<br>&nbsp; / 스마트 상품권(디지털/모바일 상품권, 금액권) / 마일리지 / 마이샘플마트포인트 / OK캐시백포인트<br></span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>앞으로도 고객님의 편의를 위해 더 다양한 결제수단이 추가될 예정입니다.</span></p>"
+    },
+    {
+      "classCdNm": "회원",
+      "faqSubject": "마이 샘플마트 통합 멤버십 회원으로 가입하면 어떤 혜택이 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>마이 샘플마트 회원이 되시면 샘플마트온라인 구매 시, 멤버십 가입 유형 및 결제 카드에 따라 (일반 0.1%, 체크 1.0%, 신용 2.0%) 마이 샘플마트 포인트가 적립되며, <br>적립된 포인트는 계산 시, 현금처럼 사용하실 수 있습니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>또한 멤버십 회원만 누릴 수 있는 회원 전용 할인행사 및 쿠폰 행사 등 혜택을 누리실 수 있습니다.</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "샘플마트온라인에서 상품을 구매했는데 마이 샘플마트 포인트가 적립되지 않습니다. ",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>회원 로그인 후 결제 내역에 한해서만 포인트 적립이 가능합니다. 온라인 쇼핑몰 비회원으로 구매하신 경우에는 포인트 적립이 되지 않습니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "샘플페이 결제카드/계좌 변경 또는 비밀번호를 바꾸고 싶어요.",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플페이 관리 메뉴에서 결제카드(계좌) 변경 및 비밀번호 변경이 가능합니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br></span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">■ 변경 경로</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>- 마이페이지 &gt; MY 회원정보 &gt; 샘플페이 관리 &gt; 설정하기</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "원터치 결제란 무엇인가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플페이 결제수단에서 원터치 결제 사용을 설정하시면 샘플페이 결제인증(비밀번호, 생체인증) 없이 샘플페이 카드결제가 완료되는 서비스 입니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br></span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">■ 원터치결제 설정/해지 경로</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">- 마이페이지 &gt; MY 회원정보 &gt; 샘플페이 관리 &gt; 설정하기</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">※ 주문결제금액이 5만원 이하인 경우 결제인증 없이 샘플페이 카드결제가 완료됩니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">※ 주문결제금액이 5만원 초과한 경우 결제인증 후 샘플페이 카드결제가 완료됩니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>※ 이전 샘플페이 결제이력이 없는 첫 가입 또는 첫 결제 고객이 원터치 결제를 설정한 경우 이전 결제이력이 없어 비밀번호 인증 후 결제가 가능합니다.</span></p>"
+    },
+    {
+      "classCdNm": "회원",
+      "faqSubject": "외국인도 마이 샘플마트를 가입할 수 있나요? ",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>네, 외국인 고객님도 마이 샘플마트에 가입할 수 있습니다. 다만, 휴대폰 본인인증 절차가 필요하기 때문에 외국인등록증과 본인명의의 휴대폰을 보유한 외국인 고객님에 한해 가입이 가능합니다.</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "결제하는 카드에 따라 마이 샘플마트 멤버십 포인트 적립율이 다른가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>마이 샘플마트 멤버십은 총 3가지 타입이 운영되고 있으며 타입에 따른 적립율은 아래와 같습니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">- 일반 멤버십 : 0.1% 적립</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">- 체크 멤버십 : 1.0% 적립 (단, 해당 체크카드로 결제 시)</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>- 신용 멤버십 : 2.0% 적립 (단, 해당 신용카드로 결제 시)</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "샘플페이 결제수단 삭제는 어떻게 하나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>주문서 또는 샘플페이 관리 메뉴에서 등록된 결제수단 삭제 가능합니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br></span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">■ 결제수단 등록/삭제 경로</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">- 마이페이지 &gt; MY 회원정보 &gt; 샘플페이 관리 &gt; 설정하기</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">- 샘플마트 주문서 &gt; 결제정보 &gt; 샘플페이 &gt; 설정</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br></span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">※ 샘플페이 가입 해지 시 샘플페이로 등록한 모든 카드/계좌 정보가 초기화 됩니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>※ 샘플페이 가입 해지 시 기존 샘플페이 계좌 결제 취소가 불가능합니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "샘플페이 서비스 해지는 어떻게 하나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플페이 관리 메뉴에서 서비스 해지가 가능합니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br></span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">■ 샘플페이 회원탈퇴 경로</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">마이페이지 &gt; MY 회원정보 &gt; 샘플페이 관리 &gt; 설정하기</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br></span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">※ 샘플마트 회원 탈퇴 시 샘플페이 서비스도 해지됩니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">※ 샘플마트 회원 탈퇴 시 샘플페이로 등록한 모든 정보가 초기화 됩니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">※ 다시 이용을 원할 경우 서비스 약관에 재동의가 필요합니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>※ 샘플마트 회원 탈퇴 시 기존 샘플페이 계좌 결제 취소가 불가능합니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "샘플페이란 무엇인가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플페이란? 신용(체크)카드, 계좌 결제수단을 미리 등록하여 주문 시 비밀번호 또는 생체인증만으로 결제할 수 있는 간편 결제 서비스입니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">주문서 작성 단계에서 샘플페이 등록 후 샘플페이를 선택하면 결제할 수 있습니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br></span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">■ 샘플페이 가입 경로</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">- 마이페이지 &gt; MY 회원정보 &gt; 샘플페이 관리 &gt; 설정하기</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>- 샘플마트 주문서 &gt; 결제정보 &gt; 샘플페이</span></p><p><br></p><p>※ 본인 명의 신용(체크)카드 또는 결제은행으로만 등록이 가능하고 개수 제한은 없습니다.</p><p>※ 서비스 이용 약관 최초 1회 동의 필수입니다.</p><p>※ 본인인증이 완료된 회원만 샘플페이 등록이 가능합니다.</p><p>※ 해외 카드, 무기명 법인 카드, 씨티 카드, 선불카드는 등록이 가능할 수 없습니다.</p><p>※ 비씨 카드 로고가 있는 씨티 은행 연계 체크 카드 등은 등록 가능합니다.</p>"
+    },
+    {
+      "classCdNm": "상품",
+      "faqSubject": "베스트상품 선정기준은 어떻게 되나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>최근 가장 많은 고객이 구매한 상품을 기준으로 노출됩니다.</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "주문을 취소했는데도 신용카드 결제 취소가 안됐습니다. 어떻게 해야 하나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>카드매출 취소는 즉시 접수되나, 카드사 사정에 따라 매출취소 기간이 5~7일 정도 소요될 수 있습니다.&nbsp;</span><br><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>그리고 각 신용카드사 청구 작업이 끝난 이후에 취소 처리가 된 경우에는 선 납부 후 다음달 카드 대금에서 차감 후 처리될 수 있습니다.</span><br><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">결제일에 따라서 청구 작업 기간이 다른 점 양해 부탁드립니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">또한 결제 후 거래가 취소되었는데 카드대금 청구서에 취소된 상품이 포함 되어있다면 취소 전에 카드사에서 청구서를 작성하였기 때문입니다.</span></span><br><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">청구된 카드대금은 취소데이타를 접수한 해당 신용카드사에서 회원님께 환급, 승인취소, 한도 복원을 해 드리니 환불방법과 환불일자에 대한 자세한 사항은 해당 카드사로 직접 문의 부탁드립니다.</span></span><br><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">카드 승인 취소 기간은 취소 후 5~7일(주말/공휴일 제외)이 소요됨을 유의하시기 바랍니다.</span></span><br><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>자세한 사항은 해당 카드사에서 확인 가능합니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "무통장 입금으로도 주문이 가능한가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>무통장입금은 불가합니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">샘플마트 온라인에서 사용하실 수 있는 결제수단은 아래와 같습니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">- 카드(신용/체크) / 카카오페이카드 / 간편결제(샘플페이(카드/계좌), 네이버페이, 카카오페이머니, 페이코, 토스페이)<br>&nbsp; 스마트 상품권(디지털/모바일 상품권, 금액권) / 마일리지 / 마이샘플마트포인트 / OK캐시백포인트<br></span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>앞으로도 고객님의 편의를 위해 더 다양한 결제수단이 추가될 예정입니다!</span></p>"
+    },
+    {
+      "classCdNm": "회원",
+      "faqSubject": "마이 샘플마트 통합회원 연회비가 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>'마이 샘플마트 체크'와 '마이 샘플마트 일반'은 연회비가 없습니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>'마이 샘플마트 신용'은 국내전용은 12,000원, 해외겸용은 15,000원의 연회비가 있습니다.</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "마이 샘플마트 신용/체크카드를 사용하다 해지한 경우에도 마이 샘플마트 포인트는 정상 적립 및 사용이 가능한가요? ",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>고객님 카드를 해지한 경우에도 샘플마트 멤버십 회원으로의 자격은 유지됩니다. 다만, 해지된 카드를 이용한 적립/사용은 불가합니다.</span></p>"
+    },
+    {
+      "classCdNm": "상품",
+      "faqSubject": "상품리뷰 적립금은 상품 구매한 개수만큼 모두 적립해주나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>한 주문에 동일상품을 여러 개 구매하신 경우, 해당 상품의 일반리뷰는 1번만 작성하실 수 있습니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">동일한 상품을 여러 개 구매하셔도 배송 건 (원주문+합배송)기준으로 리뷰는 1건만 작성하실 수 있습니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>적립금(마일리지)는 작성리뷰 갯수를 기준으로 지급됩니다.</span></p><p><br></p><p><br></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "출하작업 중 품절로 인해 취소 안내를 받았는데 어떻게 해야 하나요? ",
+      "faqBody": "<p>출하작업 중 품절 취소 시 판매자에서 전화 혹은 문자 안내를 드리고 있습니다.</p><p>단, 문자 안내 후에는 동일 상품의 구매가 어려우니 이점 양해 부탁드립니다.</p>"
+    },
+    {
+      "classCdNm": "상품",
+      "faqSubject": "A/S를 받고 싶은데 어떻게 해야 하나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>A/S를 지원하는 브랜드의 상품일 경우 해당 A/S센터 이용이 가능합니다.&nbsp;</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "포인트 적립이 안되는 상품은 무엇인가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>상품권 구매 및 법률상 아래 품목은 각각 포인트 적립/사용이 불가합니다.<br>- 포인트 적립 불가상품 : 담배, 쓰레기봉투, 복권<br>- 포인트 사용 불가상품 : 주류, 담배, 쓰레기봉투, 복권</span></p>"
+    },
+    {
+      "classCdNm": "회원",
+      "faqSubject": "멤버십 가입을 신청하면, 즉시 포인트 적립이 가능한가요? ",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>네, 즉시 가입처리 되어 포인트 적립이 됩니다. 신용/체크카드를 발급하더라도 일반멤버십 회원자격이 즉시 부여되므로 포인트 적립/사용은 가입 즉시 가능합니다. 다만, 신용/체크 타입을 신청하신 경우&nbsp;</span><br><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>심사절차가 필요하므로 신용/체크 카드 수령까지는 3~7일정도 소요됩니다</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "하자 상품을 배송받았는데 다른 상품으로도 교환이 가능한가요? ",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>하자 상품을 배송받으신 경우 반품 및 교환이 가능하나 교환은 동일상품에 한해서만 가능합니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">다른 상품으로 교환을 받기 원하신다면 해당 상품은 환불을 받으시고, 원하시는 상품으로 재주문하시면 됩니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">위와 같은 경우 환불시 회수비용, 새로 주문시 배송비용은 고객님께 부담되는 점은 양해 부탁드립니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>* 하자 상품 교환,반품시에는 고객님께서 실질적으로 부담되는 배송,반품비는 없으나 다른상품으로 인한 교환이 이루어질시 새롭게 주문하신 것과 같으므로 상품에 대한 배송비는 고객님께 부과됩니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "무이자 할부로  결제 할 수 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>주문/결제 페이지에서 무이자할부 행사가 진행 중인 카드를 선택 하신 후 해당되는 할부기간을 선택하시면 자동으로&nbsp;</span><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">무이자 할부가 적용됩니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">(부분 취소로 인해 행사 기준 금액 조건보다 결제금액이 작아질 경우, 일부카드를 제외하고는 무이자 할부는 그대로&nbsp;</span></span><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">적용됩니다.&nbsp;</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">단, 고객님께서 구매 후 취소 하신 경우는 제외 됩니다. 당일 카드 최종승인 금액 기준)</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>카드 결제 전 무이자 할부 행사 진행 여부를 먼저 확인 부탁드립니다.</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "마이 샘플마트 신용카드로 무이자 결제 시, 포인트 적립율은 어떻게 되나요? ",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>무이자 결제 시에는 기본 포인트 적립율 0.1%가 적립됩니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>* 유이자 결제 시에는 신용카드 2%, 체크카드 1% 유지</span></p>"
+    },
+    {
+      "classCdNm": "회원",
+      "faqSubject": "마이 샘플마트 회원에서 탈퇴하고 싶어요 어떻게 해야 하나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>마이샘플마트만 탈퇴를 할 수 없으며, 원하실 경우 모든 샘플마트 서비스 사이트를 탈퇴 진행 하시면 됩니다.</span></p>"
+    },
+    {
+      "classCdNm": "상품",
+      "faqSubject": "품절 상품은 주문할수는 없나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>해당상품은 현재 재고가 부족하거나 판매가 중단된 상품입니다. 이러한 상품은 상품이 신규 입고되면 다시 주문이 가능하지만&nbsp;</span><br><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>오랜 기간동안 장기적으로 품절일 경우는 더 이상 입고되지 않는 판매 중단 상품이기에 구매가 어려운점 양해 부탁드립니다.</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "상품을 반품/취소했는데 카드대금이 청구되었습니다.",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>주문 전체를 취소하신 경우라도 결제하신 신용 카드사 결제 처리일에 따라 카드 대금이 청구 될 수 있습니다. 만일 카드 금액이 청구가 되었다면 다음달 고객님의 카드 사용액에서 차감 후 처리됩니다.</span><br><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>(청구한 다음달에 이용하신 금액이 없으신 경우에는 고객님의 결제계좌로 입금해드립니다.)</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>자세한 내용은 해당 카드사로 문의해 주시기 바랍니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "배송시간과 일자를 선택/예약할 수 있나요?",
+      "faqBody": "<p>매직배송 상품에 대하여 배송시간과 일자를 선택할 수 있습니다.</p><p>매직배송 상품 중 예약 판매 상품은 배송시간과 일자를 선택할 수 없습니다.</p><p>주문이 증가할 경우 조기마감될 수 있으니 양해 부탁드립니다.</p><p>자세한 정보는 상품상세정보를 확인해주세요.</p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "매직배송 상품 주문했는데 상품이 누락되었네요",
+      "faqBody": "<p>매직배송 상품의 누락 시 마이페이지 &gt; 고객센터에서 접수 해 주시기 바랍니다.</p><p><br></p><p>[접수 방법]</p><p>① 홈페이지 &gt; 고객센터&gt; 1:1 문의</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "장바구니 상품은 몇 개까지 보관되나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>장바구니에는 최대 100개의 상품을 담으실 수 있습니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "상품권/사은품/마일리지 증정기준금액 이상 주문했으나 상품권/사은품/마일리지가 증정되지 않았어요!",
+      "faqBody": "<p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>상품할인/카드할인 금액을 제외한 실결제 금액 기준으로 산정됩니다. 또한 합배송 금액은 합산이 불가합니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">증정 대상 고객은 결제 후 주문상세에서 하기 캡쳐본과 같이 안내됩니다. 주문 상세에서 확인 부탁드립니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">미충족된 경우, 주문상세의 사은품 정보 영역이 노출되지 않습니다.</span></span></p><p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>또한 마일리지 지급(증정)행사의 경우, 배송완료일로부터 8일 후 지급되며 마일리지 사용의 유효기간은 행사별로 다를 수 있으니 확인 후 기간 내 사용하시기 바랍니다.</span></p><p><span style=\"font-size: 12px;\"><img class=\"fr-dii\"></span><br></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "장바구니 상품은 언제까지 보관되나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>장바구니 상품은 고객님께서 장바구니에 담고 상품의 결제/주문을 완료하시기 전까지 계속 보관되며, 결제가 완료</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">된 후 장바구니에 담긴 상품은 삭제됩니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">단, 주문을 완료하지 않으신 경우 상품은 고객님께서 마지막으로 장바구니에 담은 날짜부터 90일간 보관됩니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>(장바구니에서 [계속보관] 으로 설정한 상품은 결제가 완료된 후 삭제되지 않으며 장바구니에 담은 날짜부터 90일간 보관됩니다. )</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "결제한 금액과 환불된 금액이 달라요!",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>신용/체크카드, 디지털 상품권, 마일리지, 마이샘플마트포인트는 모두 주 결제수단에 해당됩니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">이에 따라 위 결제 수단을 2가지 이상 사용하여 결제하실 경우, 각 결제수단별로 배분되어 환불됩니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">각 환불금액은 환불정보에서 취소영수증을 통해 확인 부탁 드립니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>(확인 : 마이페이지 &gt; 취소/반품/교환조회 &gt; 주문상세보기 &gt; 취소영수증)</span></p><p><img src=\"https://images.example.test/td/02e78bd5-55e1-4e3f-9963-5ed1d2885ddc\" class=\"fr-fic fr-dii\"></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "삼성페이 결제는 어디서 하나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>신용카드 선택 &gt; 결제하기 &gt; 각 카드사 결제창에서 결제 가능합니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>삼성페이 결제가능 카드는 신한, 삼성, 현대, KB국민, 롯데, 하나, NH이며 상세 내용은 카드사별 결제창에서 확인바랍니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "샘플마트 온라인을 이용 하려고 하는데 어떻게 하면 되죠?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플마트 온라인을 이용 하시려면 인터넷 (https://shop.example.test)로 접속하시거나, 샘플마트온라인을 검색하셔서 앱을 다운로드 하시면 됩니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">상품을 주문하시고 싶으신 경우 회원가입 또는 비회원으로 주문이 가능하며, 원하는 상품을 장바구니에 담아 결제하시면 됩니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>(단, 비회원의 경우 회원에게 제공되는 쿠폰이용 및 일부 상품할인, 행사적용, 이벤트 참여 등 다수의 회원 혜택이 제한됩니다.)</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "비회원도 주문가능한가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>비회원으로도 주문이 가능합니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>단, 비회원으로 주문 시 쿠폰이용 및 일부 상품할인, 행사적용, 이벤트 참여 등 다수의 회원 혜택이 제한 됩니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "배송 요청사항을 작성 할 수 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>주문 결제 시, 배송 시 유의사항이나 주소지 찾는 법 등을 [배송요청사항] 에 입력 가능하며, 한번 입력한 내용은 자동 저장되고, 고객님께서 직접 삭제 가능합니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">(단, 배송 시 요청사항 외 상품 / 주문관련 요청사항 등은 반영되지 않습니다.)</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br></span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>예) 문앞에 놓아주세요 / 공동현관번호 1111#</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "쿠폰사용 시 결제 취소 한 금액과 실제 환불금액이 달라요.",
+      "faqBody": "<p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>결제 당시 쿠폰을 사용한 경우, 할인금액이 각 상품에 분배되어 할인이 적용됩니다.<br><br>할인되어 결제하신 것과 동일한 방식으로, 환불 시에는 할인금액이 제외된 실결제 금액만큼 환불처리되고 있습니다.<br><br>다만 장바구니 쿠폰의 경우, 구매하시는 모든 상품에 나누어 할인적용되고, 상품 쿠폰의 경우 해당되는 상품에 나누어 할인적용됩니다.<br><br>품절로 인한 부분취소의 경우에도 동일하게 적용됩니다.</span><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'><br></span><br></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "마이샘플마트 포인트/마일리지 사용이 안돼요.",
+      "faqBody": "<p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>상품별 카드즉시할인을 적용하는 경우, 마이샘플마트 포인트나 마일리지와 중복 사용 불가합니다.</span></p>"
+    },
+    {
+      "classCdNm": "회원",
+      "faqSubject": "탈퇴 시, 개인정보는 모두 삭제 되나요? ",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>탈퇴하시면 개인정보와 고객님이 보유하고 계신 포인트도 모두 삭제됩니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>더불어 재가입은 탈퇴처리 완료 후 5일 이후(주말/공휴일 제외)에 가입이 가능하며, 기존정보를 복원하여 사용할 수 없습니다.</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "마이 샘플마트 포인트는 어떻게 쓸 수 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>마이 샘플마트 포인트는 샘플마트 온라인 구매 시 실시간으로 사용이 가능합니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>사용 가능 최소 포인트는 10점 이며, 5천점 이상 시 포인트 사용을 위한 인증번호 (최초 인증번호는 생일4자리)를 누르셔야 합니다.</span></p>"
+    },
+    {
+      "classCdNm": "상품",
+      "faqSubject": "동일상품인데 왜 타쇼핑몰과 가격이 다른가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플마트는 항상 고객님들에 최상의 품질과 서비스로 만족을 드리기위해 노력하고 있습니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">전품목을 경쟁력있게 만들기 위해 늘 노력하고 있으나 여러가지 구성품, 사은품, 무이자, 적립금등의</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">다양한 혜택과 조건으로 인해 타쇼핑몰과 표시가격의 차이가 날수도 있습니다. 이점 너그러이 양해 부탁드립니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>단, 샘플마트 온라인몰의 행사 시점에 따라 주문시점의 가격과 배송받으신 이후 해당 상품의 가격도 변동이 있을 수 있습니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "매직배송상품 쇼핑비닐봉투는 따로 주문해야 하나요?",
+      "faqBody": "<p>일반 쇼핑봉투 지급은 환경부 시책에 따라 무상제공 및 판매가 금지되어 있어. 배송시 배송전용 트레이(바구니)에 담아 배송됩니다.</p><p>문앞 배송 요청 시 환경 보호를 위해 담아드릴 장바구니를 내 놓아주시면 감사하겠습니다.</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "주문 후 배송지를 변경할 수 있나요?",
+      "faqBody": "<p>배송지 변경은 마이페이지 &gt; 주문배송조회 &gt; 주문상세 에서 변경가능하며, 자세한 내용은 아래와 같이 안내 드립니다.<br><br>[변경가능]<br>&nbsp;주문상태가 '결제완료' 상태인 경우, 동일매장에서 배송 되는 주소지에 한하여 상세주소만 변경 가능<br><br>[변경불가]<br>-주문상태가 '상품준비중' '배송중' 상태인 경우<br>-주소지가 처음 주문한 매장 배송지와 다른 경우 (점포별 취급 상품이 상이 하거나 가능한 배송일시가 상이하여 변경 불가)<br>-매직배송 상품과 판매자 택배 상품을 함께 주문하였으나 두 상품 중 하나라도 '결제완료'상태가 아닌경우</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "배송비는 얼마인가요?",
+      "faqBody": "<p>* 매직배송상품 주문시 배송비&nbsp;</p><p>&nbsp; - 결제금액이 4만원 미만일 경우 : 3천원</p><p>&nbsp; &nbsp; (단, 합배송 상품포함 결제금액이 4만원이 넘는경우 마일리지로 배송비를 Payback 해 드립니다.)</p><p>&nbsp; - 결제금액이 4만원 이상일 경우 : 무료배송</p><p><br></p><p>* 판매자택배상품 주문시 배송비</p><p>&nbsp; - 상품마다 배송비가 상이하므로, 상품상세에서 확인하시기 바랍니다.</p><p><br></p><p>단, 무료배송행사 등을 진행할 경우 일부 변경될 수 있습니다.</p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "주문 후 취소는 어떻게 해야하나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>마이페이지&gt; My주문정보에서 주문하신 상품의 처리상태가 결제완료 이면 주문취소하실 수 있습니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">만약, 처리 상태가 상품준비중, 배송중이면 홈페이지에서 처리가 어려우니, 샘플마트 온라인몰 고객센터로 접수 해 주시면 도움 드리겠습니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br></span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">매직나우상품(Express) 의 경우 주문 접수 시 바로 상품을 준비하여 배송해 드리기 때문에 주문 후 즉시 '상품준비중'으로 배송 상태가 변경됩니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>따라서 매장에서 준비가 시작된 경우 취소가 불가하고, 교환/반품을 신청하게 되면 고객님의 변심으로 반품배송료가 청구됩니다.</span></p>"
+    },
+    {
+      "classCdNm": "회원",
+      "faqSubject": "마이 샘플마트 체크/신용 카드를 해지하면, 샘플마트 멤버십 회원도 탈퇴가 되는건가요? ",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>신한카드사를 통해 체크/신용카드를 해지하실 경우, 해당 카드의 결제기능은 없어지나 샘플마트 멤버십 회원 자격은 유지됩니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">만일, 샘플마트 멤버십도 탈퇴를 원하실 경우, 아래 경로를 통해 탈퇴 하실 수 있습니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br></span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">PC : 홈 &gt; 회원정보 &gt; MY 회원정보 : 회원탈퇴</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>MOBILE : 홈 &gt; 마이페이지 &gt; 회원탈퇴</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "오늘 적립한 마이샘플마트 포인트를 오늘 바로 쓸 수 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>당사의 포인트 정책에 의거하여, 가용포인트 내에서만 포인트를 사용(실시간 사용)하실 수 있으며,</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>금일 적립된 포인트는 익일 가용포인트로 전환됩니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "당일배송도 가능 한가요?",
+      "faqBody": "<p>매직배송상품에 한하여, 배송 받으시는 점포에 따라 오후 1시 혹은 오후 2시까지 주문완료 하시면 당일 배송이 가능 합니다.</p><p>단, 주문량이 많은 경우 원하시는 배송시간대가 조기 마감 될 수 있으니, 이점 참고 부탁드립니다.</p><p><br></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "포인트 사용 시, 1회 사용 한도가 있나요? ",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>사용 가능 최소 포인트는 10원이며, 최대 한도 없이 고객님 가용포인트 내에서 사용할 수 있습니다.</span></p>"
+    },
+    {
+      "classCdNm": "회원",
+      "faqSubject": "탈퇴 후 재가입은 안되나요? ",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>재가입은 탈퇴처리 완료 후 5일 이후(주말/공휴일 제외)에 가입이 가능하며, 기존정보를 복원하여 사용할 수 없습니다.</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "부분취소한 것을 어떻게 확인하나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>1. [마이페이지 &gt; 주문/배송조회 &gt; 주문상세]에서 해당 주문에 대한 취소정보/환불정보를 확인하실수 있습니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">2. [마이페이지 &gt; 취소/반품/교환조회] 목록에서도 취소정보를 확인하실 수 있습니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>3. 카드사 명세서에서 확인하실 수 있습니다. 부분취소 처리 당일로부터 카드사 영업일 기준 3~5일 이후에 카드사에서 확인 가능합니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "전국 배송이 가능한가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플마트 온라인에 주소지를 등록 시 배송가능한 점포가 설정이 됩니다.&nbsp;</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">단, 인근지역에 매장이 없을 경우 배송이 어려운점 양해 부탁드립니다.</span></span></p><p><br></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "포인트 사용 시, 현금영수증 발행이 가능한가요? ",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>조세특례제한법에 의거 현금영수증 가맹점이 마일리지(적립금,포인트,사이버머니,쿠폰 등)로 결제하는 경우 마일리지 결제 금액에 대하여 현금 영수증 발급이 불가합니다.</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "다른 상품으로 대체하여 받은 경우 대체 된 내역은 어떻게 확인 하나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>행사조기마감, 품절 등의 사유로 대체 된 경우에도 결제금액의 변동은 없습니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">(단, 저렴한 상품으로의 대체 시 대체상품 금액으로 취소 후 결제)</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">하지만, 적당한 상품이 없어 대체되지 못하였다면 알림톡 또는 문자로 안내 후 상품의 금액만큼 취소 됩니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">결제 금액 변동 및 내역은 다음과 같이 확인 할 수 있습니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">1. 마이페이지 &gt; 취소/반품/교환조회 &gt; 상세내역에서 확인하실 수 있습니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>2. 카드사 명세서에서 확인하실 수 있습니다. 부분취소 처리 당일로부터 카드사 영업일 기준 3~5일 이후에 카드사 에서 확인하실 수 있습니다.</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "배송된 상품의 품질, 유통기한에 만족하지 못했습니다. 교환하고 싶어요.",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>상품의 품질이나 유통기한에 만족하지 못하시는 경우 아래와 같이 동일상품으로 교환 및 반품가능합니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">아래의 방법으로 접수 하시는 경우 배송점포로 접수하여 빠른 처리가 될 수 있도록 하겠습니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">1) 배송되는 시점에 발견하게 된 경우 : 배송기사님께 전달</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">2) 배송 완료 후 발견하게 된 경우 : 마이페이지 &gt; 고객센터 (1:1 문의 접수)</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">3) 배송 받은 점포 방문이 가능한 경우 : 해당 점포의 고객서비스센터에서 동일상품으로 교환 혹은</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>반품접수 가능하며, 반품 접수 시 약 1~2일 소요 될 수 있습니다. (접수 후 카드취소까지 약 3~5일 소요)</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "배송 예약 시간이 지났는데 상품을 못 받았어요. 어떻게 해야 하나요? ",
+      "faqBody": "<p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>교통체증, 기상악화와 같이 예상치 못한 사정으로 인하여 지연배송 되는 경우가 발생할 수 있습니다.</span></p><p><span style=\"font-family: Malgun Gothic, serif;\"><span style=\"font-size: 14px;\">지연배송의 경우 최대한 고객님께 연락드리고 있지만, 부득이하게 연락을 드리지 못하는 경우 양해 부탁&nbsp;</span></span><span style=\"font-family: Malgun Gothic, serif;\"><span style=\"font-size: 14px;\">드리겠습니다.</span></span></p><p><span style=\"font-family: Malgun Gothic, serif;\"><span style=\"font-size: 14px;\">만약 배송이 지연 될 경우 마이페이지 &gt; My 쇼핑활동 &gt; 1:1 문의내역로 전화 주시면 친절히 확인해 드리겠습니다.</span></span></p><p><span style=\"font-family: Malgun Gothic, serif;\"><span style=\"font-size: 14px;\">단, 20시 이후에는 고객센터 상담시간 종료로 주문상세내역에 기재된 배송기사님께 연락 부탁 드리며,</span></span></p><p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>다른 고객께 배송을 진행하고 있을 때는 신속하게 전화를 받지 못할 수도 있으니 이 점 양해 부탁드립니다</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "적립된 포인트를 현금으로 환불 받을 수 있나요? ",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>포인트는 현금으로 환불 불가합니다.</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "배송된 상품의 유통기한이 만족스럽지 않습니다.",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>상품의 유통기한에 만족하지 못하시는 경우,배송되는 시점에 발견하신 경우 배송기사님께 전달해 주시고,&nbsp;</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">배송이 완료 된 후 발견하게 되는 경우 마이페이지 &gt; My 쇼핑활동 &gt; 1:1 문의내역로 연락 주시거나 [마이페이지 &gt; 주문배송조회]에서 교환/반품신청하시면 해당 점포로 접수하여 빠른 교환/반품 처리가 될 수 있도록 하겠습니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>만일, 구매하신 점포 방문이 가능하시다면 구매하신 점포의 고객센터에서 교환 및 반품 가능합니다.</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "포인트 사용한 후 구매를 취소하면 포인트는 어떻게 처리되나요? ",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>사용한 포인트는 다시 가용포인트로 환원처리 됩니다.</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "포인트 사용 비밀번호는 무엇인가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>포인트 5천점 이상 사용 시에는 비밀번호 인증이 필요합니다. 최초 비밀번호는 고객님의 생일 숫자 4자리입니다.</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "부분취소한 것을 어떻게 확인하나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>1. [마이페이지&gt;취소/반품/교환 조회] 에서 확인하실 수 있습니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">2. 카드사 명세서에서 확인하실 수 있습니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>부분취소 처리 당일로부터 영업일 기준 4일 이후에 카드사에서 확인하실 수 있습니다.</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "부분취소란 무엇인가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>주문하신 상품을 배송 전 일부 취소하는 경우를 '부분취소'라고 합니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">결제완료 상태에서는 판매자 승인없 이 즉시 취소 처리 되며, 택배 상품의 경우 상품준비중상태에서 판매자의 동의 후 취소 처리 가능합니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br></span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">매직나우상품(Express) 의 경우 매장에서 바로 상품을 준비하여 배송해 드리기 때문에 주문 즉시 '상품준비중'으로 배송 상태가 변경됩니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">상품준비중인 경우 부분취소가 불가하여 고객센터로 연락 주셔야 합니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>매장에서 준비가 시작된 경우 취소가 불가하고, 취소가 불가 하여 교환/반품을 신청하게 되면 고객님의 변심으로 반품배송료가 청구됩니다.</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "포인트의 유효기간이 언제인가요? ",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>포인트의 유효기간은 2년이며, 2년이 지난 익월에 소멸처리됩니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "동일주문횟수 제한이 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>하루에 주문하실 수 있는 횟수에 제한이 없습니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>단, 무거운 상품들에 한하여 중량제한이 있을 수 있습니다.<br>상세한 내용은 상품 상세페이지 최대구매 수량 확인 부탁드립니다. </span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "디지털 상품권을 미리 등록 할 수 있나요? ",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플마트 앱에서 미리 등록 하고, 주문/결제 시 정보를 불러올 수 있습니다.&nbsp;</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">등록 방법<br>마이페이지 &gt; 스마트 상품권 &gt;상품권 추가</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">상품 결제 시 ‘ 주문/결제 페이지 - 디지털/모바일 상품권 - 사용 - 상품권 불러오기’의 과정을 통해 미리 등록해두었던 상품권을 불러올 수 있습니다.</span></span></p><p><span dir=\"ltr\" style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>(디지털 상품권이란, 온/오프라인에서 사용이 가능한 상품권이며, 오프라인 고객센터를 통해 구매하거나, <span dir=\"ltr\">온/오프라인</span> 사은행사 시 지급되는 상품권(기프트카드)을 의미합니다.)</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "왜 잔여 포인트가 계속 0인가요? ",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>고객님, 구매 취소 등으로 포인트 상태가 마이너스인 경우에는 0점으로 표기되오니 이점 양해부탁드립니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "디지털상품권 사용 기준은 어떻게 되나요?",
+      "faqBody": "<p>디지털 상품권의 경우 1회 주문시 1매만 사용이 가능하며 1매 최대 사용금액은 50만원입니다.</p><p>부득이 품절이 발생된 경우 고객님의 디지털 상품권으로 환불이 되오니 배송완료 시 까지 상품권을 보관하여 주시기 바랍니다.</p><p>(단, 상품권이 없으신 경우 마일리지로 적립 해 드리며, 고객님의 관리 소홀로 인한 손해에 대해서는 적립해 드리지 않습니다.)</p><p><br></p><p><span dir=\"ltr\">(디지털 상품권이란, 온/오프라인에서 사용이 가능한 상품권이며, 오프라인 고객센터를 통해 구매하거나, <span dir=\"ltr\">온/오프라인</span> 사은행사 시 지급되는 상품권(기프트카드)을 의미합니다.)</span></p><p>자세한 사항은 샘플마트 상품권 홈페이지 giftcard.example.test 에서 확인 부탁드립니다.</p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "탈퇴 시, 포인트는 어떻게 처리되나요? ",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>탈퇴 시, 고객님이 보유한 포인트는 모두 소멸 처리됩니다.</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "주문취소/교환/반품한 내용은 어떻게 확인할 수 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>마이페이지&gt; 취소/반품/교환조회 에서 확인하실 수 있습니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "매직픽업 서비스가 뭔가요?",
+      "faqBody": "<p>매직픽업 서비스는 온라인으로 매직배송상품 주문 후, 직접 매장에 방문하여 상품을 수령하실 수 있는 서비스입니다.</p><p>주문하실 때 배송 혹은 매직 픽업을 선택하실 수 있으며, 매직 픽업을 선택하실 경우 수령하실 매장을 선택하실 수 있습니다.</p><p><br></p><p>※ 주문 후 미 픽업 시, 다음날 고객님의 주문 상품은 취소됩니다.</p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "매직배송상품을 배송받았는데 교환/반품하고 싶어요.",
+      "faqBody": "<p>매직배송상품의 반품/교환은 배송완료 후 아래의 방법으로 접수 해 주시기 바랍니다.</p><p>동일상품으로 교환/ 반품 신청 시 상품 수거에 대해서는 고객님께 별도 연락을 드립니다.</p><p>단, 고객변심의 반품인 경우 반품배송료가 부과될 수 있습니다.</p><p><br></p><p>1) 마이페이지 &gt; My 쇼핑활동 &gt; 1:1 문의내역</p><p>2) 배송받은 매장을 직접 방문하여 고객서비스센터에 반품 상품을 반납 후 동일상품으로 교환 / 반품 접수</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "매장의 베이커리, 치킨, 초밥도 배송이 되나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>베이커리/치킨/초밥/김밥/샌드위치를 주문하시면, 주문하신 상품과 함께 원하는 시간에 배송해 드립니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>단, 매장에서 조리해서 판매하는 식품의 경우 상품 준비 시간이 필요하기에 14시 이후로 배송이 가능합니다.</span></p><p><br></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "카드 할부 개월수나 결제 변경이 가능 한가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>신용카드 결제 후 할부 개월 수 변경 혹은 카드 결제변경이 불가합니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>(단, 결제 완료 상태인 경우 취소 후 재 주문을 해 주셔야 합니다.)</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "쿠폰은 여러 번 사용 가능한가요? ",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>쿠폰에 따라 상이하며, 각 쿠폰 주의사항으로 표기하고 있사오니 이용에 참고 부탁드립니다.</span></p>"
+    },
+    {
+      "classCdNm": "취소/교환/반품",
+      "faqSubject": "이지웰 포인트가 환원되지 않았어요.",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>이지웰 포인트 사용기간이 만료되어 실제 환불되지 않을 수 있습니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">이지웰 고객센터로 환불 문의해주세요.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>(이지웰 복지몰 상담센터 1660-0011)</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "온라인 결제시 마이 샘플마트 포인트 결제 가능한가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>주문/결제 페이지에서 10P 이상 보유 시, 10원 단위로 [사용 가능 포인트] 내에서 포인트 사용이 가능합니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>5000P 이상 사용 시 비밀번호 확인이 필요합니다. (최초 비밀번호는 생일 4자리)</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "매직배송상품 품절일때 대체 받지 않고 싶어요.",
+      "faqBody": "<p>매직배송상품 주문 결제 시 품절 될 경우 장바구니전체 혹은 상품별로 대체 혹은 대체안함을 선택하실 수 있습니다.</p><p><br></p><p>※ 대체를 선택하셨음에도 불구하고 매장에 유사한 대체상품이 없을 경우 취소 될 수 있습니다.</p><p>※ 일부 대체가 불가한 상품 (유아용품 및 완구, 가전 상품) 은 대체선택을 하실 수 없습니다.</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "매직배송상품을 많이 주문하고 싶습니다. 제한이 있나요?",
+      "faqBody": "<p>상품 별 상세페이지를 통해 구매가능한 수량이 규정되어 있습니다.<br>규정되어 있는 구매수량의 제한 외 별도 대량주문은 어려우니 쇼핑에 참고 부탁드립니다.</p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "포인트 적립은 언제 되나요?",
+      "faqBody": "<p>주문/결제 시에 [보유 포인트]에 적립되고, 배송완료된 다음 날에 [사용 가능 포인트]로 전환됩니다.</p><p>- 한 주문에 매직배송상품과 판매자 택배상품을 같이 주문할 경우, 모든 상품이 배송완료 된 다음 날에 전환됩니다.</p><p>- 취소/반품의 경우, 환불완료 시점에 적립된 포인트가 차감됩니다.</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "모든 상품이 주문수량 제한이 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>상품 별 상세페이지를 통해 구매가능한 수량이 규정되어 있습니다.</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "포인트 적립내역은 어디서 보나요?",
+      "faqBody": "<p><span style=\"font-family: Malgun Gothic, serif;\"><span style=\"font-size: 14px;\">마이 샘플마트 앱&gt;마이샘플마트&gt;포인트조회 에서 적립/사용 내역 확인이 가능합니다.</span></span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "제휴주문 (지마켓/옥션/네이버/배민) 주문 에 대해서 문의하고 싶습니다.",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>고객님께서 문의하시는 문의 사항에 따라 아래의 고객센터로 문의 부탁드립니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br></span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">※ 상품 / 배송 문의 : 샘플마트온라인 마이페이지 &gt; My 쇼핑활동 &gt; 1:1 문의내역</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">※ 결제 / 전시 / 시스템문의 : 각 제휴사 고객센터</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">- 지마켓 고객센터 1566-5701</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">- 옥션 고객센터 1588-0184</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">- 네이버 고객센터 쇼핑&amp;페이 고객센터 &gt; 챗봇/톡톡상담 / 메일 문의</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>- 배민 고객센터 &gt; 1600-0025&nbsp;</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "온라인 결제시 마이 샘플마트 포인트와 다른 쿠폰(장바구니 쿠폰, 상품쿠폰, 마일리지)은 중복 사용이 가능한가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>모든 쿠폰과 중복 사용이 가능합니다.</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "마이샘플마트 바코드와 포인트는 어디에서 확인할 수 있나요? ",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>마이 샘플마트 바코드와 포인트 확인은 샘플마트온라인 앱과 웹에서 모두 이용하실 수 있습니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>마이페이지 내 &nbsp;마이 샘플마트 포인트를 바로 확인하실 수 있으며, &nbsp;바코드 클릭 시 열려서 이용 가능합니다. 오프라인 매장에서도 본 바코드를 이용하실 수 있습니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "샘플마트에 들어와 보니 배송 종류가 여러 개 있던데 어떤것들이 있나요?",
+      "faqBody": "<p>샘플마트는 매장에서 직접 배송해 드리는 [매직배송] , 매장에서 직접 지금 배송해 드리는 [매직나우] , 판매자가 택배를 통해 배송해 드리는 [판매자 택배] 서비스를 제공합니다.&nbsp;</p><p><br></p><p>[매직배송상품]</p><p>온라인을 운영중인 인근 매장에서 판매중인 상품을 고객님께서 원하는 날짜와 시간에 맞게 배송해 드립니다.</p><p>배송매장은 자동으로 설정되며 변경이 어렵습니다.&nbsp;</p><p><br></p><p>[ 판매자 택배상품]</p><p>판매자가 상품을 등록하여 판매하고 배송하므로 주문 후 3~5일 후 배송됩니다.</p><p>일반 상품과 상이한 제작상품, 설치상품, 쿠폰발송 등은 상품 상세 페이지를 참고하여 주시기 바랍니다.</p><p><br></p><p>[매직나우상품]</p><p>인근 Express 매장으로 주문 후 60분 내외로 배송됩니다.</p><p>매직나우는 인근에 여러매장이 있을 경우 그 중 원하는 매장을 선택하여 주문 가능합니다.</p><p>(인근 배송 가능한 매장이 모두 노출되며 지역에 따라 주문불가 혹은 매장선택이 불가합니다.)</p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "온라인(앱 / PC)에서 발급받은 쿠폰을 매장에서 사용할 수 있나요?",
+      "faqBody": "<p>온라인(앱 / PC)에서 발급받은 쿠폰은 매장에서 사용할 수 없습니다.</p><p>매직배송상품이라고 표기된 쿠폰은 온라인에서 구매 할 수 있는 매장상품에 적용되는 쿠폰 입니다.</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "택배상품은 전국 배송이 가능한가요?",
+      "faqBody": "<p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>샘플마트 온라인에서 판매자택배 상품을 주문하시면 배송이 가능합니다.</span></p><p><span style=\"font-family: Malgun Gothic, serif;\"><span style=\"font-size: 14px;\">택배배송은 일부 도서 산간 지역을 제외한 모든 지역에 배송됩니다.</span></span></p><p><span style='font-size: 14px; font-family: \"Malgun Gothic\", serif;'>(단, 도서 산간 지역의 경우 추가 운임비가 발생 할 수 있습니다.)</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "판매자 택배상품 배송료는 얼마 인가요?",
+      "faqBody": "<p>판매자 택배 상품은 판매자별 배송료가 다르며, 정확한 배송비는 상품상세정보에서 확인 가능합니다.</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "사은품&부품 배송은 별도로 하나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>상품별 사은품은 상품과 함께 배송되며,</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">홈페이지에서 진행하는 이벤트의 경우 경우에 따라 별도 배송이 될 수 있습니다. (이벤트 유의사항에 해당내용 기재)</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>※ 반품 요청 시 사은품과 본품을 모두 반품 배송이 완료되어야 환불이 진행됩니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "판매자 택배 배송이란 무엇인가요?",
+      "faqBody": "<p>해당 상품의 판매자가 택배 배송 하는 상품으로 판매자 별로 배송 기간이 다소 차이가 있을 수 있으며 평균 4~7일 이내에 배송 됩니다. 단, 가구 및 가전, 제작상품의 경우 1~2주 정도 배송기간이 소요될 수 있습니다.</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "판매자 택배상품 배송추적을 할 수 있나요?",
+      "faqBody": "<p>판매자 택배상품은 [마이페이지 &gt; 주문배송조회] 에서 상품 배송현황을 확인하실 수 있습니다.</p><p>상품의 미발송이나 처리상태 확인은 각 상품의 상세 페이지 내 판매자 연락처로 연락하셔서 문의 하실 수 있습니다.</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "주문한 상품과 배송된 상품이 다릅니다. 어떻게 해야 하나요? ",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플마트 마이페이지 &gt; My 쇼핑활동 &gt; 1:1 문의내역로 문의주시면 도움 드리겠습니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "ISP 서비스 이용시 유의사항은 무엇인가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>인터넷안전결제(ISP) 서비스 이용시 유의사항입니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">인터넷안전결제(ISP) 서비스를 사용할수 있는 PC의 브라우저 사양 MS Internet Explore 4.0 또는 Netscape 4.0 이상이면 가능합니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">* 장소 변경 시</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">인터넷안전결제(ISP) 서비스 이용가능여부 인터넷안전결(ISP) 안내 메뉴에서 \"ISP 재발급 신청\" 버튼을 클릭하시면 동일한 ISP서비스가 설치되어 이용이 가능합니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">* 인터넷안전결제(ISP)비밀번호 분실 시</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">비씨카드 및 국민카드 홈페이지에서 발급신청을 다시 하시거나, 인터넷안전결제(ISP) 안내 메뉴에서 \"ISP비밀번호변경\" 버튼을 클릭하여 필요한 정보를 입력한 후 새로운 비밀번호를 입력하시면 됩니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>인터넷안전결제(ISP) 관련한 좀 더 자세한 문의사항은 BC카드 홈페이지나 국민카드 홈페이지를 이용해 주십시오.</span></p>"
+    },
+    {
+      "classCdNm": "쿠폰/포인트",
+      "faqSubject": "마일리지는 얼마까지 사용 할 수 있나요?",
+      "faqBody": "<p><span style=\"font-size: 14px;\">결제 시 최대 20만 마일리지까지 사용 가능합니다.&nbsp;</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "판매자 택배 상품 여러 개를 한꺼번에 주문했는데 왜 배송이 따로되는건가요?",
+      "faqBody": "<p>상품을 생산 / 판매 하는 판매자에 따라 발송일자가 다르므로 배송일자가 다를 수 있습니다.</p><p>배송 관련 문의는 각 상품의 상세 페이지 내 판매자에게 연락하여 문의 하실 수 있습니다.</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "택배비를 결제했는데, 택배기사가 돈을 또 받아갔어요.",
+      "faqBody": "<p><span style=\"font-family: Malgun Gothic, serif;\">샘플마트 온라인 마이페이지 &gt; My 쇼핑활동 &gt; 1:1 문의내역로 연락주시면 확인 후 안내 도와드리겠습니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "상품을 주문하려고 하니 사라졌어요.",
+      "faqBody": "<p>행사 종료 및 품절로 인해 더 이상 판매되지 않는 상품은 장바구니에서 일시품절 상품으로 고객님께 안내됩니다.</p><p>매직배송상품의 경우, 대체상품을 안내해 드리고 있으니 마음에 드는 상품을 선택해서 장바구니에 담아주시면 됩니다.</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "신용카드 결제 중 모듈오류가 난경우 어떻게 하나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>일시적인 오류의 경우 결제창을 닫고 다시 시도하시면 정상적으로 결제가 가능합니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>이후에도 지속적으로 문제가 발생된다면, 샘플마트 온라인 마이페이지 &gt; My 쇼핑활동 &gt; 1:1 문의내역로 문의 부탁 드립니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "판매자 택배상품 사은품은 언제배송되나요?",
+      "faqBody": "<p>사은품은 주문 상품과 같이 배송되는 경우와 따로 배송되는 경우가 있습니다. 따로 배송되는 경우 상품상세 페이지에</p><p>공지되며, 보다 자세한 사항은 샘플마트 온라인 마이페이지 &gt; My 쇼핑활동 &gt; 1:1 문의내역로 문의 주시기 바랍니다.</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "주문했는데 주문완료 문자가 2개 왔어요 주문이 중복으로 2번결제된건가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>주문완료 시에 샘플마트 온라인에서 발송하는 안내 문자와 카드사에서 승인이 완료되었다는 문자를 동시에 받으실 수 있습니다. 결제가 2번 된 것은 아닙니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>만약 중복 결제가 의심되는 경우, 샘플마트 온라인 마이페이지 &gt; My 쇼핑활동 &gt; 1:1 문의내역로 연락주시면 바로 확인해 드리겠습니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "배송시간을 변경하고 싶으면 어떻게 해야 하나요?",
+      "faqBody": "<p>배송시간 변경은 매직배송상품에 한하여 가능합니다.</p><p><br></p><p>- 주문상태 : 결제완료</p><p>- 변경 페이지 : 마이페이지 &gt; 주문배송조회 &gt; 주문상세</p><p>- 변경 가능일 : 주문일자 포함 5일이내</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "카드즉시할인 적용을 받고싶어요. ",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>카드 즉시 할인이 적용되는 상품을 주문하실 때, 결제 페이지에서 [신용카드] 버튼을 클릭하시면 할인 대상 카드사를 확인할 수 있습니다.&nbsp;</span><br><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>결제 카드사를 선택하면 즉시 할인이 자동으로 적용되어 총 결제금액에서 할인 금액이 제외됩니다.<br>(* 단, 카드즉시할인 상품과 마일리지, 상품권, 마이샘플마트포인트, OK캐시백 중복 적용 불가)</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "매직배송상품 합배송은 언제까지 주문할 수 있나요?",
+      "faqBody": "<p>합배송은 예약한 배송건이 상품을 준비하기 전까지 신청하실 수 있습니다. (결제완료 상태)</p><p>주문하신 주문건이 있는 상태에서 추가로 결제를 시도하시는 경우, 합배송 가능 시 합배송 의사를 고객님께 확인하여 합배송에 체크하시면 합배송으로 결제를 하도록 해 드립니다.</p><p>만일 추가 주문시 기존 주문과의 결제 금액을 합산하여 배송비를 다시 계산하여, 차액이 있을 경우 마일리지로 돌려 드립니다.</p><p>(합주문 진행 시점에 배송비 계산으로 합주문 후 배송비 발생된 경우는 제외 / 무료배송 쿠폰 사용 후 취소 후 합배송 시 제외)</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "주문 후 카드 승인 문자를 받았는데 주문서가 없습니다.",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>주문이 정상적으로 완료되지 않아 카드 결제 내역은 자동 취소 됩니다. 카드사로 카드번호(or승인번호), 결제일, 결제 금액을 말씀해주시면 승인 취소 확인 또는 요청 가능합니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "디지털 상품권으로 샘플마트 인터넷 쇼핑몰에서 사용할려 하는데 어떻게 결제해야 하죠?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>주문결제에서 잔액조회 후 결제하실 수 있습니다. (상품권번호/핀번호/보안문자 입력 후 잔액 조회 가능)</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">부득이 품절이 발생된 경우 고객님의 디지털 상품권으로 환불이 되오니 배송완료 시 까지 상품권을 보관하여 주시기 바랍니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">(고객님의 관리소홀로 인한 손해에 대해서는 적립해 드리지 않습니다.)</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br></span></span></p><p><span dir=\"ltr\" style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>(디지털 상품권이란, 온/오프라인에서 사용이 가능한 상품권이며, 오프라인 고객센터를 통해 구매하거나, <span dir=\"ltr\">온/오프라인</span> 사은행사 시 지급되는 상품권(기프트카드)을 의미합니다.)</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "섬 지역 배송 가능한가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>다리로 연결되어 통행이 가능한 섬지역의 경우 일부 배송이 가능할 수 있으나</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">대부분의 섬지역은 배송시간이 오래 소요됨에 따른 선도 문제가 다수 발생되어 배송을 중단하였습니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>이점 고객님의 너그러운 양해 부탁드립니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "배송 매장은 어떻게 결정되나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>매장 배송은 고객님의 불편이 최소화 될 수 있도록 온라인 운영 매장별 배송 가능 건수와 인근 배송량, 도로 상황등을 분석하여 반영합니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>따라서 간혹 위치상 더 가까운 매장이 있다고 하더라도 다른 매장에서 배송될 수 있음을 양해 부탁드립니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "주문 후 일부상품만 변경(추가/취소)할 수 있나요?",
+      "faqBody": "<p>* 매직배송상품</p><p>- `결제완료` 상태일때 추가 주문(합배송) 서비스를 통해 깜박 잊으신 상품은 별도 배송비없이 추가 주문이 가능합니다.</p><p>(단, 매직배송상품을 택배로 받으시는 경우와 판매자 택배상품은 추가주문(합배송)이 불가합니다.)</p><p>- `결제완료` 상태에서 주문한 상품 중 일부를 취소하실수 있으며, 조건부 무료배송으로 주문 후 취소 시 남은 주문금액이 조건에 충족하지 않는 경우 배송비를 차감하고 환불됩니다.</p><p><br></p><p>* 판매자 택배상품</p><p>- `결제완료` 상태일 경우 상품별로 부분취소하실 수 있습니다. (단, 일부상품은 판매자 사정에 따라 제한될 수 있음)</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "매직배송상품 추가주문(합배송) 서비스 궁금합니다. ",
+      "faqBody": "<p>매직배송상품 추가주문(합배송)은 주문완료 후 추가로 주문이 필요한 경우, 별도의 배송료 없이 추가 주문이 가능한 서비스 입니다.</p><p><br></p><p>1. 상품이 준비되기 전인, 주문완료 상태일때까지 추가 주문이 가능 합니다.</p><p>2. 추가 주문시 기존 주문과의 결제 금액을 합산하여 배송비를 재계산하고 차액이 있을 경우 마일리지로 돌려 드립니다.</p><p>3. 합배송을 하였다가 취소하신 경우 재주문이 가능합니다. (합배송 횟수는 매장 상황에 따라 변경될 수 있으니 고객센터로 문의 부탁드립니다.)</p><p>4. 합배송은 매직배송 일반배송 상품 주문시 적용되며 예약배송, 사전예약, 판매자택배배송, 매직나우 상품은 제외됩니다.&nbsp;</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "택배상품 추가 또는 변경 주문하려고 하는데요 어떻게 해야하나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>이미 결제가 완료된 택배상품은 상품 옵션(사이즈,색상 등)변경 및 상품의 추가 주문은 어렵습니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>주문상태가 [결제완료] 인 경우, 취소 후 재주문 부탁드립니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "배송지를 변경 한 후 일부상품이 품절이어서 구매할 수 가 없어요.",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>배송지별 배송 매장이 다를 수 있습니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">배송매장이 달라지는 경우 매장별 취급하는 상품이나 수급상태가 다르기 때문에 품절이 발생될 수 있으며,</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>일부 행사의 경우 매장별로 적용여부가 달라 구매 가격이 달라질 수 있으니 구매 전 꼭 확인 부탁드립니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "매직배송상품과 판매자택배상품을 한꺼번에 주문하면 같은 날짜에 배송받을 수 있나요?",
+      "faqBody": "<p>매직배송상품과 판매자택배상품을 한 번에 결제 하셨더라도 각각 배송일시는 다를 수 있습니다.</p><p>- 매직배송상품 : 주문 시 선택하신 배송일시에 샘플마트 차량으로 배송</p><p>- 판매자택배상품 : 판매자별 / 상품별로 상품 상세페이지에 안내된 일정에 따라 배송</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "배송추적을 할 수 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>매직배송 상품은 실시간 배송조회가 가능합니다.<br>실시간 배송현황 조회 시 도착 예상시간을 표기하고, 출발지점과 도착지점, 그리고 현재의 차량 위치를 표기합니다. <br>배송조회는 마이페이지 &gt; 주문/배송 조회 &gt; 실시간 배송현황에서 확인 가능합니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "배송기사님의 연락처를 확인할 수 있나요?",
+      "faqBody": "<p>[마이페이지 &gt; 주문배송조회] 주문상세정보에서 배송정보를 확인 하실 수 있습니다.</p><p>단, 운전중 전화통화 시 안전 문제로 인해 원활한 통화 연결이 어려울 수 있으며, 판매자 택배 배송의 경우 배송지 도착 이후 택배기사 정보가 조회 가능합니다.</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "배송지별로 배송 가능한 시간을 알 수 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>배송지별 주문가능 시간 확인이 가능합니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>앱 실행 후, 하단의 배송시간 메뉴를 통해 배송시간 확인이 가능하며 각 주소지별로 배송가능 시간을 확인하실 수 있습니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "판매자택배상품의 배송 소요 시간은 얼마 인가요?",
+      "faqBody": "<p>판매자택배상품의 경우 판매자별로 배송 기간이 다소 차이가 있을 수 있으며 평균 3~5일 이내에 배송됩니다.</p><p>(자세한 배송 일정은 상품 상세설명에서 확인가능하며, 판매자 사정에 따라 품절 될 수도 있습니다.)</p><p><br></p><p>주문제작 상품(수제화, 귀금속, 가구 등) 또는 대형가전, 가구 등의 설치상품은 15일정도 소요될 수 있습니다.</p><p>배송일정에 관한 자세한 안내는 [마이페이지 &gt; 주문배송조회]에서 확인 가능합니다.</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "배송조회는 어디서 하나요?",
+      "faqBody": "<p>[마이페이지 &gt; 주문배송조회]에서 배송 상태 확인이 가능합니다.</p><p>[매직배송]&nbsp;</p><p>- 실시간 배송 현황 확인이 가능합니다.&nbsp;</p><p><br></p><p>[매직나우]</p><p>- 퀵서비스를 통해 배송되어 배송 현황 확인이 어렵습니다.&nbsp;</p><p><br></p><p>[판매자택배]</p><p>- 판매자가 상품 발송 이후 택배사를 통해 이동 현황을 확인하실 수 있습니다.</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "매직배송상품 배송전인데 배송 예약시간을 변경할 수 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>매직배송 '결제완료' 단계일 때, [마이페이지 &gt; 주문/배송조회]에서 원하는 시간으로 변경 가능합니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>상품준비중 ~ 배송중 인 경우 이미 고객님께 배송하기 위해 상품 준비 이후의 시간이므로 불가한 점 양해 바랍니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "상품을 한꺼번에 주문했는데 일부는 도착하지 않았어요.",
+      "faqBody": "<p>온라인으로 함께 주문하셨더라도 매직배송상품과 판매자택배상품 배송은 각각 배송됩니다.</p><p>주문배송조회 에서 고객님께서 주문하신 상품의 배송상태를 확인하여 주시고 확인이 불가능한 상품에 대해서는 고객센터로 연락주시면 친절하게 안내 해 드리겠습니다.</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "배송지 변경은 어떻게 해야 하나요?",
+      "faqBody": "<p>상품 주문결제 후 주문한 상품의 모든 상태가 `결제완료`단계에서 배송지 변경이 가능하며, 상품준비중 혹은 배송중일 땐 변경이 불가합니다.</p><p>매직배송상품, 판매자택배상품 함께 주문하셨다면 모든 상품의 배송지가 동일하게 변경됩니다.</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "온라인 결제시 마이 샘플마트 포인트 결제 가능한가요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>주문/결제 페이지에서 10P 이상 보유 시, 10원 단위로 [사용 가능 포인트] 내에서 포인트 사용이 가능합니다.</span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>5000P 이상 사용 시 비밀번호 확인이 필요합니다. (최초 비밀번호는 생일 4자리)</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "상품 주문 시 상품은 어디에 담아서 배송되나요",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>자원 재활용법에 따라 샘플마트온라인은 2018년 9월 1일부터 유상봉투를 판매하지 않습니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">고객님의 상품은 바구니에 담아 배송되며, 담았던 바구니는 배송 시 회수 됩니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br></span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">고객님께서 문앞 배송을 요청하시는 경우 놓아둘 장바구니를 놓아주시면 장바구니에 넣어 배송하여 드리고,</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">그렇지 않을 경우에는 부재 봉투에 담아 배송해드리고 있습니다.&nbsp;</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br></span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>매직픽업 주문을 하시는 고객님께서는 장바구니를 준비해 주시고, 장바구니가 없으신 경우 고객센터에서 유상 대여 가능합니다.</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "배송예정 시간에 집에 없으면 어떻게 되나요?",
+      "faqBody": "<p>배송기사님이 방문하였을 때 고객님께서 댁에 계시지 않으시면, 주문 시 기입하신 고객님의 연락처로 연락을 드립니다.</p><p><br></p><p>연락을 받으시는 경우, 고객님의 요청사항 대로 상품을 지정된 장소에 놓아두거나 회수합니다.</p><p>단, 고객님의 요청으로 부재중 봉투에 넣어 집앞에 놓아 드리는 경우 분실 시 책임지지 않으며, 상품의 변질이 우려되는 상품은 회수되어 반품 처리 될 수 있습니다.</p><p><br></p><p>직접 받기를 선택하셨으나 연락이 되지 않는 경우, 상품의 분실과 변질이 우려되어 회수됩니다.</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "집에 없는 사이 배송기사님이 방문하셨던 것 같은데, 전화를 못받았다면 어떻게 해야 하나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>직접 받기를 선택하셨으나 고객님께서 댁에 계시지 않았고, 연락을 받지 못하셨다면, 상품의 분실과 변질이 우려되어 배송상품을 회수/환불 합니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">배송요청 시간이 경과하지 않았더라도, 이후 배송일정으로 인해 재 배송을 해 드리기 어려운 점 너그러운 양해 부탁드립니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>(단, 문앞배송을 요청하신 경우 부재중 봉투에 넣어 집앞에 놓아드리니 상품이 분실되거나 변실 되지 않도록 빠른 수거 부탁드립니다. 고객님의 요청에 의한 문앞배송은 분실 및 선도저하에 대한 보상이 어렵습니다.)</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "언제 배송 받을 수 있나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>고객님께서 선택하신 배송시간 내에 배송 순서에 따라 배송하고 있습니다.</span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">따라서 요청하시 3시간 이내라 하더라도 배송시간 요청은 반영이 어려운 점 너그러운 양해 부탁드립니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br></span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>- 반영이 어려운 예시 : 가장 늦게 배송해 주세요, 가장 먼저 배송해 주세요, 5시 30분에 배송해 주세요 등</span></p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "상품을 매직픽업하고 싶은데, 먼 점포가 선택됩니다. 어떻게 해야 하나요?",
+      "faqBody": "<p>샘플마트의 경우 매직픽업 점포 설정이 배송점포와 동일점으로 설정됩니다.</p><p><br></p><p>매직픽업을 원하는 점포가 별도로 있으신 경우</p><p>[장바구니] 화면에서 [배송/픽업] 탭을 클릭하시면 픽업 매장 선택이 가능합니다.</p><p><br></p><p>단, 일부 점포에 한해 매직픽업서비스를 하고 있지 않는 점 고객님의 너그러운 양해 부탁드립니다.</p>"
+    },
+    {
+      "classCdNm": "주문/결제/배송",
+      "faqSubject": "배송 시간에 집에 없으면 어떻게 되나요?",
+      "faqBody": "<p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>샘플마트는 고객님께서 요청하신 시간에 배송해 드리기 위해 최선을 다하고 있습니다.</span></p><p><br></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">만일 고객님께서 배송시간에 댁에 계시지 않을 경우 아래와 같이 처리 가능합니다.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">1) 고객센터로 먼저 연락 주셔서 회수 혹은 맡겨놓을 장소를 말씀 해 주세요.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">2) 고객님의 요청이 없으신 경우 기사님께서 배송지에 도착하여 고객님께 연락 드려 처리 방법을 여쭤보면 말씀 해 주세요.</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\"><br></span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">단, 직접 받기를 선택하셨으나 도착 후 일정시간동안 고객님과 연락이 되지 않는 경우</span></span></p><p><span style=\"font-size: 14px;\"><span style=\"font-family: Malgun Gothic, serif;\">신선식품의 선도 등의 문제로 주문상품은 회수 후 취소되며, 이후 다른 고객님들의 배송 스케줄로 인하여 재 배송이 어렵습니다.</span></span></p><p><span style='font-family: \"Malgun Gothic\", serif; font-size: 14px;'>(문앞배송을 요청하신 경우 부재중 봉투에 담아 문앞에 놓아드리니 빠른 수거 부탁드립니다. 고객님의 요청에 의한 문앞배송은 분실 / 상품 선도 저하에 대한 보상이 어렵습니다.)</span></p>"
+    }
+  ]
+}
