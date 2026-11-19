@@ -3,9 +3,9 @@
 // 가리키는 개념(역링크)과 개념이 아닌 대상(번들에 없음, type 없는 파일)을 함께 보여 준다.
 // --mermaid: GitHub·에디터 미리보기에 붙여 넣을 Mermaid flowchart를 출력한다 (9회차).
 import { parseArgs } from 'node:util';
-import { loadBundle } from './src/okf/load.ts';
-import { DEFAULT_BUNDLE_DIR } from './src/okf/args.ts';
-import { buildGraph, formatGraph, toMermaid } from './src/okf/graph.ts';
+import { loadBundle } from '../src/okf/load.ts';
+import { DEFAULT_BUNDLE_DIR } from '../src/okf/args.ts';
+import { buildGraph, formatGraph, toMermaid } from '../src/okf/graph.ts';
 
 const { values } = parseArgs({
   options: {

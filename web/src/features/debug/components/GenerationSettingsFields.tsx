@@ -1,7 +1,8 @@
 // 생성 설정: 모델과 effort
 import { SegmentedControl, SegmentedControlItem } from '@astryxdesign/core/SegmentedControl';
 import { Selector } from '@astryxdesign/core/Selector';
-import { EFFORT_OPTIONS, MODEL_OPTIONS, type Effort, type GenerationSettings, type ModelId } from '@claude/models.ts';
+import { EFFORTS, type Effort, type GenerationSettings, type ModelId } from '@claude/models.ts';
+import { MODEL_SELECTOR_OPTIONS } from '@/config/models.ts';
 import { SettingsGroup } from './SettingsGroup.tsx';
 
 type GenerationSettingsFieldsProps = {
@@ -18,7 +19,7 @@ export function GenerationSettingsFields({ value, onChange }: GenerationSettings
         width="100%"
         value={value.model}
         onChange={(model) => model && onChange({ model: model as ModelId })}
-        options={MODEL_OPTIONS.map((m) => ({ value: m.id, label: m.label, description: `${m.id} · ${m.description}` }))}
+        options={MODEL_SELECTOR_OPTIONS}
       />
       <SegmentedControl
         label="effort"
@@ -26,8 +27,8 @@ export function GenerationSettingsFields({ value, onChange }: GenerationSettings
         size="sm"
         value={value.effort}
         onChange={(effort) => onChange({ effort: effort as Effort })}>
-        {EFFORT_OPTIONS.map((o) => (
-          <SegmentedControlItem key={o.value} value={o.value} label={o.label} />
+        {EFFORTS.map((effort) => (
+          <SegmentedControlItem key={effort} value={effort} label={effort} />
         ))}
       </SegmentedControl>
     </SettingsGroup>

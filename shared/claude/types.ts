@@ -1,5 +1,5 @@
 // 생성 단계의 입력·결과 타입. 화면은 SDK 타입 대신 이 타입만 본다 (서버로 옮겨도 화면 코드는 그대로).
-import type { ModelRequest } from '../okf/request.ts';
+import type { ModelRequest } from '../../src/okf/request.ts';
 import type { Effort, GenerationSettings } from './models.ts';
 
 export type GenerateParams = {

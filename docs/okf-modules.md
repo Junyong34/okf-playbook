@@ -2,13 +2,13 @@
 
 `src/okf/`의 TS 파일이 각각 무엇을 하고 서로 어떻게 이어지는지 정리한다. 용어는 [GLOSSARY.md](../GLOSSARY.md)를 따른다. 명세 절 번호(§)는 OKF v0.3 기준이다 (2026-11-19 v0.2에서 이전).
 
-모든 모듈은 파일 시스템을 모른다. 입력은 `Bundle`(번들 루트 기준 경로 → 파일 내용)이고 출력은 값이다. 디스크를 읽는 곳은 `load.ts` 하나, 화면에 찍는 곳은 루트 CLI뿐이다. 그래서 나중의 웹 화면도 같은 모듈을 그대로 쓴다.
+`src/okf/`의 검증·검색 함수는 `Bundle`(번들 루트 기준 경로 → 파일 내용)을 받아 결과 값을 돌려준다. CLI는 `load.ts`로 디스크에서 번들을 읽고 웹은 Vite로 번들을 읽는다. 양쪽 모두 같은 OKF 모듈을 호출한다.
 
 ## 1. 한눈에 보기
 
 ```mermaid
 flowchart TB
-  subgraph cli["루트 CLI"]
+  subgraph cli["cli/ 진입점"]
     c_validate["validate.ts"]
     c_retrieve["retrieve.ts"]
     c_prompt["prompt.ts"]
@@ -93,6 +93,8 @@ flowchart LR
 - 프롬프트에는 frontmatter가 들어가지 않는다. 메타 필드는 검색 단계에서만 쓰고, 근거는 본문에서만 온다.
 
 ## 4. CLI별 흐름
+
+루트의 `pnpm <명령>`은 `package.json`을 통해 `cli/<명령>.ts`를 실행한다. CLI가 인자를 읽고 `src/okf/`의 함수를 호출한 뒤 결과를 터미널에 출력한다. 번들과 답변 파일의 상대 경로는 저장소 루트 기준이다.
 
 ### `pnpm validate [dir]`
 
@@ -243,5 +245,6 @@ flowchart LR
 - **새 frontmatter 필드 읽기:** `Concept.frontmatter`에서 바로 읽는다. 빈 값은 `isBlank`, 목록 필드는 `asList`, 시각은 `parseTimestamp`로 읽는다. 공통 해석이 필요하면 `concept.ts`에 둔다.
 - **새 경로 필드:** `concept.ts`의 `PathFieldName`·`pathFields`와 `graph.ts`의 `FIELD_KIND`를 함께 고친다.
 - **웹 화면 (`web/`):** 브라우저는 `load.ts`·`args.ts`를 가져오지 않는다. 번들은 `web/src/lib/bundles/loadBundles.ts`가 `import.meta.glob`으로 `Bundle`을 만들고, 질문 하나는 `features/qa/prepareRun.ts`가 `ask` → `buildModelRequest` 순서로 조립한 뒤 `lib/claude/generate.ts`가 Vite 프록시를 통해 Express의 `POST /api/generate`를 호출한다. Express는 Claude SDK를 실행하고 NDJSON으로 텍스트와 최종 결과를 보낸다. 연결이 끊기면 SDK 요청도 취소한다. 브라우저가 `checkAnswer`로 인용을 검사한다.
+- **Claude 모델 설정과 요청 형식:** `shared/claude/`에 모델 ID, 생성 옵션, 요청 변환, 스트림 이벤트 타입을 둔다. 웹의 디버깅 미리보기와 Express의 실제 호출이 같은 `toApiRequest()`를 사용한다. 화면별 기본 모델과 표시 이름·설명은 `web/src/config/models.ts`에 둔다. Claude SDK 호출과 API 키는 `server/`에서 처리한다.
 - **번들 추가:** `bundles/<이름>/`를 만들고 `index.md`에 `okf_version`을 넣는다. 웹 화면은 `bundles/*/`를 glob 하나로 읽어 디렉터리별로 나누고(`web/src/lib/bundles/groupByBundle.ts`), `okf_version`이 없는 디렉터리는 건너뛴다. 화면 이름·설명은 `index.md`의 `title`·`description`이다. 예시 질문·말투 설정만 `web/src/config/bundles.ts`의 `BUNDLE_SETTINGS`에 적는다. CLI는 `--dir bundles/<이름>`으로 고른다.
 - **웹 지시문·말투 규칙 바꾸기:** `request.ts`의 `MODEL_INSTRUCTION`. 0005의 `INSTRUCTION`(CLI용)은 그대로 둔다.

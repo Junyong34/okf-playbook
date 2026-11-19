@@ -170,12 +170,17 @@ describe('T3단계 assess', () => {
 });
 
 describe('T4단계 실제 번들', () => {
-  test('모든 개념을 판정할 수 있고, 2026-11-18 기준 낡았거나 deprecated인 개념이 없다', async () => {
-    const b = await loadBundle('bundles/knowledge');
-    for (const c of readConcepts(b)) {
-      const a = assess(readFrontmatter(b, c.path)!, NOW);
-      assert.equal(a.stale, false, c.path);
-      assert.notEqual(a.status, 'deprecated', c.path);
+  test('2026-11-18 기준 낡은 개념이 없고 반품 예외에만 deprecated 주의가 붙는다', async () => {
+    const knowledge = await loadBundle('bundles/knowledge');
+    const deprecatedPaths: string[] = [];
+    for (const { path } of readConcepts(knowledge)) {
+      const frontmatter = readFrontmatter(knowledge, path);
+      assert.ok(frontmatter, path);
+      const assessment = assess(frontmatter, NOW);
+      assert.equal(assessment.stale, false, path);
+      assert.equal(assessment.cautions.includes('deprecated'), assessment.status === 'deprecated', path);
+      if (assessment.status === 'deprecated') deprecatedPaths.push(path);
     }
+    assert.deepEqual(deprecatedPaths, ['policies/return-exceptions.md']);
   });
 });

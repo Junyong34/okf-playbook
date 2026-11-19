@@ -1,7 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import express, { type ErrorRequestHandler, type Response } from 'express';
-import { EFFORT_OPTIONS, MODEL_OPTIONS } from '../src/claude/models.ts';
-import type { GenerateInput, GenerationEvent } from '../src/claude/types.ts';
+import { EFFORTS, MODEL_OPTIONS } from '../shared/claude/models.ts';
+import type { GenerateInput, GenerationEvent } from '../shared/claude/types.ts';
 import { toGenerationError } from './errors.ts';
 import { generate } from './generate.ts';
 
@@ -17,7 +17,7 @@ function isGenerateInput(body: GenerateInput | undefined): body is GenerateInput
     && request.messages[0]?.role === 'user'
     && typeof request.messages[0]?.content === 'string'
     && MODEL_OPTIONS.some(({ id }) => id === settings?.model)
-    && EFFORT_OPTIONS.some(({ value }) => value === settings?.effort);
+    && EFFORTS.some((effort) => effort === settings?.effort);
 }
 
 function writeEvent(response: Response, event: GenerationEvent): void {

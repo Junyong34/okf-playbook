@@ -40,10 +40,10 @@
 | 5 | [0005 근거를 붙인 답변](lessons/0005-grounded-answer.html) | `src/okf/answer.ts` 구현, 답변 저장·검사, `evaluation.md` 5회차 표 | 코드 완료 (에이전트 구현). 모델 답변 저장·검사는 남음 |
 | 6 | [0006 검색 설정 비교](lessons/0006-compare-settings.html) | `src/okf/compare.ts` 구현, `pnpm compare` 결과표, `evaluation.md` 6회차 | 코드 완료 (에이전트 구현, 2026-11-18). 예측·결론 메모는 남음 |
 | 심화 1 | [0007 원문으로 거슬러 올라가기](lessons/0007-sources-footnotes.html) | `src/okf/provenance.ts` 구현, `references/returns-faq.md`, `sources`·각주, `pnpm trace`, `evaluation.md` 7회차. 선택 레슨이던 FAQ 실습을 여기에 합쳤다 | 완료 (에이전트 구현, 2026-11-18). 팀 규칙 결정은 사용자 확인 필요 |
-| 심화 2 | [0008 검토 상태와 낡은 개념](lessons/0008-trust-lifecycle.html) | `src/okf/trust.ts` 구현, 직접 대조한 개념에 `verified`, 낡은 사본에서 `pnpm retrieve --now` 주의 표시, `evaluation.md` 8회차 소비자 정책 (계획 §6-2, v0.3 명세 §5.2~§5.5·§7) | 코드 완료 (에이전트 구현, 2026-11-18). 사용자가 `returns.md`에 `verified`(`human:`)를 적었다. 소비자 정책 메모는 남음. T4단계 1개는 진짜 번들의 `status: deprecated` 때문에 실패 |
+| 심화 2 | [0008 검토 상태와 낡은 개념](lessons/0008-trust-lifecycle.html) | `src/okf/trust.ts` 구현, 직접 대조한 개념에 `verified`, 낡은 사본에서 `pnpm retrieve --now` 주의 표시, `evaluation.md` 8회차 소비자 정책 (계획 §6-2, v0.3 명세 §5.2~§5.5·§7) | 코드 완료 (에이전트 구현, 2026-11-18). 사용자가 `returns.md`에 `verified`(`human:`)를 적었다. 소비자 정책 메모는 남음. T4단계는 실제 번들의 반품 예외에 붙는 `deprecated` 주의를 확인한다 |
 | 심화 3 | [0009 같은 번들을 다른 방식으로 읽기](lessons/0009-read-bundle-differently.html) | `src/okf/graph.ts` 구현, `pnpm graph [--mermaid]`, 공식 뷰어와 비교, `evaluation.md` 9회차, §10 계산 검증 예제 읽기 (계획 §6-3, v0.3 명세 §6.4·§10) | 코드 완료 (에이전트 구현, 2026-11-19). 공식 뷰어 비교·사본 실험·§10 표는 남음 |
 
-2026-11-19에 OKF v0.3 기준으로 코드·실습·레슨을 갱신했다. 0001~0009의 설명·퀴즈·모범 답안이 v0.3 명세와 지금 `src/okf` 코드를 따른다. 갱신 뒤 `pnpm test`는 174개 중 173개 통과다(남은 1개는 위 T4단계). v0.2에서 바뀐 점은 [docs/okf-v0.3-changes.md](../docs/okf-v0.3-changes.md)에 있다. `learning-records/`의 기존 기록은 v0.2 기준으로 남긴다.
+2026-11-19에 OKF v0.3 기준으로 코드·실습·레슨을 갱신했다. 0001~0009의 설명·퀴즈·모범 답안이 v0.3 명세와 지금 `src/okf` 코드를 따른다. v0.2에서 바뀐 점은 [docs/okf-v0.3-changes.md](../docs/okf-v0.3-changes.md)에 있다. `learning-records/`의 기존 기록은 v0.2 기준으로 남긴다.
 
 기본 과정은 0006(6회차)까지이고, 심화까지 포함하면 0009가 마지막 레슨이다. 그 뒤의 웹 화면(Vite + React + TS + Claude SDK)은 사용자가 요청할 때 별도로 시작한다.
 

@@ -48,7 +48,7 @@ okf-playbook/
 │       ├── index.md · log.md  # 번들 목차와 변경 기록
 │       ├── faqs/              # 카테고리별 목차와 질문별 Markdown
 │       └── references/        # 원본 JSON 사본과 자료 목차
-├── src/claude/                # 웹·서버 공용 모델 설정, 요청 매퍼, 응답 타입
+├── shared/claude/             # 웹·서버 공용 모델 옵션, 요청 변환, 스트림 이벤트 타입
 ├── src/okf/                   # 검증·검색 로직 (파일 시스템과 분리, 웹 UI에서 재사용)
 │   ├── types.ts               # Bundle = Map<경로, 내용>, Issue
 │   ├── load.ts                # 디렉터리 → Bundle
@@ -64,13 +64,14 @@ okf-playbook/
 │   ├── trust.ts               # verified 신뢰 등급, status·stale_after 주의 (8회차 실습)
 │   └── graph.ts               # 링크·출처 그래프, 역링크, Mermaid (9회차 실습)
 ├── tests/                     # node:test (pnpm test)
-├── validate.ts                # 번들 검증 CLI (pnpm validate [dir])
-├── retrieve.ts                # 질문별 개념 검색 CLI, 고른 개념마다 신뢰·주의 표시 (pnpm retrieve "질문" [--fields --no-links --max --min --now])
-├── prompt.ts                  # 모델에 붙여 넣을 프롬프트 출력 (pnpm prompt "질문")
-├── check-answer.ts            # 저장한 답변의 인용 검사 (pnpm check-answer "질문" answers/qN.txt [--prompt answers/qN.prompt.txt])
-├── compare.ts                 # 질문 목록 × 세 설정 비교표 출력 (pnpm compare [--max --min])
-├── trace.ts                   # 개념의 출처를 원문까지 따라가기 (pnpm trace policies/returns.md)
-├── graph.ts                   # 번들 그래프 출력 (pnpm graph [--mermaid])
+├── cli/                       # 루트 pnpm 명령이 실행하는 OKF CLI 진입점
+│   ├── validate.ts                # 번들 검증 CLI (pnpm validate [dir])
+│   ├── retrieve.ts                # 질문별 개념 검색 CLI, 고른 개념마다 신뢰·주의 표시 (pnpm retrieve "질문" [--fields --no-links --max --min --now])
+│   ├── prompt.ts                  # 모델에 붙여 넣을 프롬프트 출력 (pnpm prompt "질문")
+│   ├── check-answer.ts            # 저장한 답변의 인용 검사 (pnpm check-answer "질문" answers/qN.txt [--prompt answers/qN.prompt.txt])
+│   ├── compare.ts                 # 질문 목록 × 세 설정 비교표 출력 (pnpm compare [--max --min])
+│   ├── trace.ts                   # 개념의 출처를 원문까지 따라가기 (pnpm trace policies/returns.md)
+│   └── graph.ts                   # 번들 그래프 출력 (pnpm graph [--mermaid])
 ├── answers/                   # 질문별 모델 답변 (q1.txt ~ q6.txt)
 ├── evaluation.md              # 질문별 검색·답변 평가표 (4~9회차에 채움)
 ├── package.json · tsconfig.json  # Node 22.18+ TS 직접 실행, yaml 패키지
@@ -80,7 +81,7 @@ okf-playbook/
 │   ├── vite.config.ts · tsconfig.json · index.html
 │   └── src/
 │       ├── app/               # 앱 틀: 테마·라우터·좌측 메뉴(AppShell + SideNav)
-│       ├── config/            # 번들 자동 탐색·번들별 설정(bundles.ts)·라우트 설정
+│       ├── config/            # 번들 자동 탐색·번들별 설정(bundles.ts)·라우트·모델 표시 및 기본값(models.ts)
 │       ├── lib/               # 브라우저 번들 로딩과 Claude API 호출
 │       ├── features/          # 화면별 기능: bundles·qa(공용 처리)·chat(상담)·debug(디버깅)·graph(준비 중)
 │       ├── shared/            # 화면 공용 UI·유틸

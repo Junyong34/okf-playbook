@@ -1,7 +1,8 @@
 // 디버깅 화면 입력 상태: 질문, 검색 설정, 말투 설정 켜기·끄기, 모델·effort.
 import { useCallback, useState } from 'react';
 import { DEFAULT_OPTIONS, type Options as RetrievalOptions } from '@okf/retrieve.ts';
-import { DEBUG_DEFAULT_GENERATION, type GenerationSettings } from '@claude/models.ts';
+import type { GenerationSettings } from '@claude/models.ts';
+import { DEBUG_DEFAULT_GENERATION } from '@/config/models.ts';
 
 export type DebugForm = {
   question: string;

@@ -8,7 +8,7 @@ import { Icon } from '@astryxdesign/core/Icon';
 import { Layout, LayoutContent } from '@astryxdesign/core/Layout';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import * as stylex from '@stylexjs/stylex';
-import { CHAT_GENERATION } from '@claude/models.ts';
+import { CHAT_GENERATION } from '@/config/models.ts';
 import { DEFAULT_OPTIONS } from '@okf/retrieve.ts';
 import { useBundles } from '@/features/bundles/BundleContext.ts';
 import { useQaRuns } from '@/features/qa/useQaRuns.ts';

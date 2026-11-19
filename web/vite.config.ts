@@ -20,7 +20,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
-      '@claude': fileURLToPath(new URL('../src/claude', import.meta.url)),
+      '@claude': fileURLToPath(new URL('../shared/claude', import.meta.url)),
       '@okf': fileURLToPath(new URL('../src/okf', import.meta.url)),
     },
   },

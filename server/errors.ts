@@ -1,5 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
-import type { GenerationError } from '../src/claude/types.ts';
+import type { GenerationError } from '../shared/claude/types.ts';
 
 export function toGenerationError(error: unknown): GenerationError {
   if (error instanceof Anthropic.AuthenticationError) {

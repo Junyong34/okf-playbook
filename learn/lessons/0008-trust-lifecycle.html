@@ -120,7 +120,7 @@ stale_after: 2026-12-31T00:00:00Z                                           # �
 <pre><code>node --test --test-name-pattern="T1단계" "tests/**/*.test.ts"
 node --test --test-name-pattern="T2단계" "tests/**/*.test.ts"
 node --test --test-name-pattern="T3단계" "tests/**/*.test.ts"</code></pre>
-  T4단계(실제 번들)는 진짜 <code>bundles/knowledge/</code>에 낡았거나 deprecated인 개념이 없어야 통과한다. 4단계 실험을 사본이 아니라 진짜 번들에 하면 실패한다. 지금 저장소는 <code>policies/return-exceptions.md</code>에 <code>status: deprecated</code>가 있어 T4단계 1개가 실패한다. 코드 버그가 아니라 번들 상태다.</li>
+  T4단계는 <code>bundles/knowledge/</code>의 실제 상태를 확인한다. 2026-11-18 기준 낡은 개념이 없고 <code>policies/return-exceptions.md</code>에만 <code>deprecated</code> 주의가 붙는지 검사한다. 4단계에서 다른 상태를 실험할 때는 번들 사본을 쓴다.</li>
   <li><strong>기준점을 본다.</strong> 3단계 전이라면 모든 개념이 unverified다. <code>evaluation.md</code> 8회차에 예측을 먼저 적는다. "3·4단계를 하고 나면 질문 5의 출력이 어떻게 바뀔까?"
 <pre><code>pnpm retrieve "할인 상품을 반품할 수 있나요? 환불은 언제 들어오나요?" --now 2026-11-18T00:00:00Z</code></pre></li>
   <li><strong>직접 확인하고 기록한다.</strong> <code>bundles/knowledge/policies/returns.md</code>와 <code>bundles/knowledge/references/returns-faq.md</code>를 나란히 연다. "7일 이내"와 "할인 상품 포함"이 같은지 눈으로 대조한다. 같으면 <code>returns.md</code> frontmatter에 대시 없는 매핑으로 한 줄 적는다. <code>&lt;id&gt;</code>는 여러분의 아이디, <code>at</code>은 지금 시각이다. <code>at</code>을 빼면 기록이 무시된다(<code>pnpm validate</code>가 <code>incomplete-verified</code> 경고를 낸다).
@@ -278,7 +278,7 @@ WARN 상한 3개에 걸려 policies/return-exceptions.md를 추가하지 않았�
 <div class="box">
   <h3>완료 기준 (학습 계획 §6 심화 2)</h3>
   <ul>
-    <li><code>pnpm test</code>의 T1~T3단계 통과. T4단계는 진짜 번들 상태에 달렸다(1단계 설명).</li>
+    <li><code>pnpm test</code>의 T1~T4단계 통과.</li>
     <li>직접 대조한 개념에만 <code>verified</code>(<code>human:</code>, <code>by</code>·<code>at</code> 모두)를 적었다. <code>pnpm validate</code> 오류 0개.</li>
     <li>낡은 사본에서 <code>pnpm retrieve</code>가 stale·deprecated 주의를 붙이는 것을 보고, <code>--now</code>로 주의가 바뀌는 것을 확인했다. v0.3 규칙(대체 개념, 이력, 읽을 수 없는 시각)의 출력도 봤다.</li>
     <li>낡은·deprecated 개념을 소비자가 어떻게 다룰지 <code>evaluation.md</code> 8회차에 적었다.</li>

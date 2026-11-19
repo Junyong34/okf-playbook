@@ -1,6 +1,6 @@
 import type Anthropic from '@anthropic-ai/sdk';
-import { toApiRequest } from '../src/claude/apiRequest.ts';
-import type { GenerateParams, GenerationResult, Refusal, StopReason, TokenUsage } from '../src/claude/types.ts';
+import { toApiRequest } from '../shared/claude/apiRequest.ts';
+import type { GenerateParams, GenerationResult, Refusal, StopReason, TokenUsage } from '../shared/claude/types.ts';
 
 type FinalMessage = Anthropic.Beta.BetaMessage;
 

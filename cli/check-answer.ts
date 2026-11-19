@@ -3,10 +3,10 @@
 //           (그 사이 번들이나 설정이 바뀌었으면 실제로 준 문서와 다를 수 있다).
 // 사실 확인(인용한 파일에 정말 그 내용이 있는가)은 사람이 파일을 열어 한다.
 import { readFile } from 'node:fs/promises';
-import { loadBundle } from './src/okf/load.ts';
-import { searchArgsOrExit } from './src/okf/args.ts';
-import { ask } from './src/okf/ask.ts';
-import { checkAnswer, providedPaths } from './src/okf/answer.ts';
+import { loadBundle } from '../src/okf/load.ts';
+import { searchArgsOrExit } from '../src/okf/args.ts';
+import { ask } from '../src/okf/ask.ts';
+import { checkAnswer, providedPaths } from '../src/okf/answer.ts';
 
 const usage = 'pnpm check-answer "질문" answers/q5.txt [--prompt answers/q5.prompt.txt]';
 const { options, dir, now, positionals, extra } = searchArgsOrExit(process.argv.slice(2), usage, { extra: { prompt: { type: 'string' } } });

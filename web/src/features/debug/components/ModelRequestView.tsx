@@ -5,7 +5,7 @@ import { Icon } from '@astryxdesign/core/Icon';
 import { HStack, StackItem, VStack } from '@astryxdesign/core/Layout';
 import { MetadataList, MetadataListItem } from '@astryxdesign/core/MetadataList';
 import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
-import { modelLabel } from '@claude/models.ts';
+import { modelLabel } from '@/config/models.ts';
 import type { QaRun } from '@/features/qa/types.ts';
 import { downloadJson, timestampForFile } from '@/shared/utils/download.ts';
 import { formatNumber } from '@/shared/utils/format.ts';

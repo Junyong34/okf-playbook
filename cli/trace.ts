@@ -1,9 +1,9 @@
 // 사용법: pnpm trace policies/returns.md [--dir bundles/knowledge]
 // 개념의 각주 주장과 sources를 따라 원문까지 거슬러 올라간다.
 import { parseArgs } from 'node:util';
-import { loadBundle } from './src/okf/load.ts';
-import { DEFAULT_BUNDLE_DIR } from './src/okf/args.ts';
-import { formatTrace, trace } from './src/okf/provenance.ts';
+import { loadBundle } from '../src/okf/load.ts';
+import { DEFAULT_BUNDLE_DIR } from '../src/okf/args.ts';
+import { formatTrace, trace } from '../src/okf/provenance.ts';
 
 const { values, positionals } = parseArgs({
   allowPositionals: true,
