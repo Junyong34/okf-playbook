@@ -62,6 +62,8 @@ v0.2가 비워 두거나 모호하게 둔 곳을 채웠다. 아래는 이 저장
 
 `okf-generate`의 v0.2 → v0.3 이전 절차는 일곱 단계다. 루트 `index.md`에 `okf_version: "0.3"`·`title`·`description` 추가, 번들 루트 기준으로 쓴 `/` 없는 경로 필드에 `/` 추가, `log.md` frontmatter 제거, 스칼라 `tags`를 목록으로 바꾸기, 대체 개념이 있는 deprecated 개념에 `superseded_by` 추가, 오프셋 없는 date-time에 오프셋 추가(시간대를 모르면 사용자에게 묻는다), 검증기 실행 뒤 신뢰 등급을 잃은 개념 알리기 순이다. [이전 절차](https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/skills/okf-generate/references/migration.md)
 
+두 스킬은 저장소의 `.agents/skills/`(Codex)와 `.claude/skills/`(Claude Code)에 그대로 들어 있다(2026-11-19). 검증은 공식 `scripts/validate.py` 대신 TS 검증기 `pnpm validate`가 기준이다. 공식 검증기 규칙을 `src/okf/validate.ts`로 옮겼고(Attested Computation 규칙 제외), 30개 사례에서 두 검증기의 판정이 같은 것을 확인했다. 공식 검증기는 `pnpm okf:validate`로 대조할 때만 쓴다. 자세한 운영 규칙은 [AGENTS.md](../AGENTS.md)의 "공식 OKF 스킬"에 있다.
+
 다른 외부 스킬과의 비교는 [외부 OKF 스킬 비교](okf-skills-comparison.md)에 있다.
 
 ## 6. 절 번호 대응표

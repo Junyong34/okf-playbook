@@ -5,7 +5,7 @@ import { mkdtemp, mkdir, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import {
-  allowsLegacyPaths, asList, bundleVersion, isBlank, parseTimestamp, pathFields, readBundle, readConcepts, readFile, resolvePathField,
+  allowsLegacyPaths, asList, bundleVersion, isBlank, parseTimestamp, pathFields, readBundle, readBundleFile, readConcepts, readFile, resolvePathField,
 } from '../src/okf/concept.ts';
 import { loadBundle } from '../src/okf/load.ts';
 import { readProvenance } from '../src/okf/provenance.ts';
@@ -62,7 +62,7 @@ describe('readBundle · readConcepts', () => {
 describe('파싱할 수 없는 개념을 소비자마다 정한 대로 다룬다', () => {
   const b = bundle({ 'bad.md': '---\ntags:[x]\n---\n본문[^s]' });
   test('validate는 오류, retrieve는 건너뜀, provenance는 출처 없음, trust는 null', () => {
-    assert.deepEqual(validateBundle(b).map((i) => i.rule), ['yaml-parse']);
+    assert.deepEqual(validateBundle(b).map((i) => i.rule).filter((r) => r !== 'missing-root-index'), ['yaml-parse']);
     assert.deepEqual(readConcepts(b), []);
     assert.deepEqual(readProvenance(b, 'bad.md')!.sources, []);
     assert.equal(readFrontmatter(b, 'bad.md'), null);
@@ -164,5 +164,16 @@ describe('loadBundle (§3.2-4)', () => {
     await writeFile(join(root, 'policies', '.drafts', 'b.md'), '---\ntype: P\n---\n');
     await writeFile(join(root, '.obsidian', 'c.md'), '---\ntype: P\n---\n');
     assert.deepEqual([...(await loadBundle(root)).keys()], ['policies/a.md']);
+  });
+  test('.md가 아닌 파일은 asset으로 경로만 담고, readBundle은 문서만 읽는다 (§3.2-3)', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'okf-asset-'));
+    await mkdir(join(root, 'assets'), { recursive: true });
+    await writeFile(join(root, 'a.md'), '---\ntype: P\n---\n');
+    await writeFile(join(root, 'assets', 'rules.pdf'), '%PDF');
+    const b = await loadBundle(root);
+    assert.deepEqual([...b.keys()].sort(), ['a.md', 'assets/rules.pdf']);
+    assert.equal(b.get('assets/rules.pdf'), '');
+    assert.deepEqual(readBundle(b).map((f) => f.path), ['a.md']);
+    assert.equal(readBundleFile(b, 'assets/rules.pdf'), null);
   });
 });

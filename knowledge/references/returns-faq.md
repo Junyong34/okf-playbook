@@ -2,7 +2,7 @@
 type: Reference
 title: 반품·환불 FAQ
 description: 고객센터 반품·환불 FAQ 원문.
-verified: { by: human, at: 2026-11-18T15:00:00+09:00 }
+verified: { by: "human:jun", at: 2026-11-18T15:00:00+09:00 }
 tags: [반품, 환불, FAQ]
 ---
 

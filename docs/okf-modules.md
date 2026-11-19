@@ -58,9 +58,9 @@ flowchart TB
 | 파일 | 역할 | 주요 export | 쓰는 모듈 | 회차 |
 | --- | --- | --- | --- | --- |
 | `types.ts` | 공용 타입. 번들은 `Map<경로, 내용>`이다 | `Bundle`, `Issue`, `Rule`, `Level` | 전부 | 3 |
-| `load.ts` | 디렉터리 아래 `.md`를 읽어 `Bundle`로 만든다. `.`으로 시작하는 파일·디렉터리는 번들이 아니라 읽지 않는다(§3.2-4). 유일하게 디스크를 읽는다 | `loadBundle` | CLI, 실제 번들 테스트 | 3 |
-| `concept.ts` | **개념 읽기.** 파일 하나를 frontmatter와 본문으로 나누고 YAML을 한 번 파싱하고 링크를 뽑는다. 예약 파일(`index.md`·`log.md`)과 개념이 아닌 파일(type 없음, §3.2)을 구분한다. 빈 값·단일 값(§11.2), 시각(§5), 번들 버전(§8.1), 경로 필드와 v0.2 대체 해석(§6.2, §12.1)도 여기서 공통으로 읽는다 | `readBundle`, `readFile`, `readBundleFile`, `readConcepts`, `toConcept`, `conceptType`, `isConceptPath`, `frontmatterData`, `splitFrontmatter`, `resolveLink`, `extractLinks`, `dateText`, `isBlank`, `asList`, `parseTimestamp`, `bundleVersion`, `allowsLegacyPaths`, `classifyResource`, `pathFields`, `resolvePathField` | 모든 소비자 모듈 | 3·4 (리팩터링으로 모음) |
-| `validate.ts` | 명세 §11.1 적합성 오류(YAML 파싱, 예약 파일 frontmatter)와, 개념이 아닌 파일·버전 선언·시각·검토 기록·링크 경고, 팀 규칙 경고를 낸다 | `validateBundle` (+ concept.ts 함수 다시 내보냄) | `validate` CLI | 3 |
+| `load.ts` | 디렉터리 아래 파일을 `Bundle`로 만든다. `.md`는 내용을 읽고, `.md`가 아닌 파일은 asset이라 경로만 담는다(내용은 빈 문자열, §3.2-3). `.`으로 시작하는 파일·디렉터리는 번들이 아니라 읽지 않는다(§3.2-4). 유일하게 디스크를 읽는다 | `loadBundle` | CLI, 실제 번들 테스트 | 3 |
+| `concept.ts` | **개념 읽기.** 파일 하나를 frontmatter와 본문으로 나누고 YAML을 한 번 파싱하고 링크를 뽑는다. 예약 파일(`index.md`·`log.md`)과 개념이 아닌 파일(type 없음, §3.2)을 구분한다. 빈 값·단일 값(§11.2), 시각(§5), 번들 버전(§8.1), 경로 필드와 v0.2 대체 해석(§6.2, §12.1)도 여기서 공통으로 읽는다 | `readBundle`(`.md`만), `readFile`, `readBundleFile`(asset이면 `null`), `isMarkdown`, `readConcepts`, `toConcept`, `conceptType`, `isConceptPath`, `frontmatterData`, `splitFrontmatter`, `resolveLink`, `extractLinks`, `dateText`, `isBlank`, `asList`, `parseTimestamp`, `bundleVersion`, `allowsLegacyPaths`, `classifyResource`, `pathFields`, `resolvePathField` | 모든 소비자 모듈 | 3·4 (리팩터링으로 모음) |
+| `validate.ts` | **이 저장소의 검증 기준.** 명세 §11.1 적합성 오류(YAML 파싱, 예약 파일 구조)와, 공식 검증기(`okf-generate`의 `validate.py`)에서 옮긴 경고·정보(행위자 형식, status 어휘, sources·각주, 경로 필드 대상, 시각, 검토 기록이 낡음 …), 팀 규칙 경고를 낸다. Attested Computation 규칙(§10)은 아직 없다 | `validateBundle(bundle, { now? })`, `ValidateOptions` (+ concept.ts 함수 다시 내보냄) | `validate` CLI | 3 |
 | `retrieve.ts` | **검색 단계.** 질문과 개념의 두 글자 묶음(bigram) 겹침으로 점수를 매기고, 기준·상한으로 고른 뒤 링크 확장을 한 단계 한다 | `retrieve`, `score`, `bigrams`, `DEFAULT_OPTIONS`, `Options`, `Pick` | `ask`, `compare`, `args` | 4 |
 | `answer.ts` | **생성 단계의 입력과 출력.** 고른 개념의 본문으로 프롬프트를 만들고, 모델 답변의 인용을 검사한다 | `buildPrompt`, `providedPaths`, `checkAnswer`, `extractCitations`, `splitSentences`, `INSTRUCTION` | `ask`, `check-answer` CLI | 5 |
 | `compare.ts` | 질문 목록 × 검색 설정 세 가지로 검색을 돌려 기대 근거와 비교한다 (빠진 근거, 불필요한 개념, 링크가 살린 근거) | `compare`, `judge`, `settings`, `QUESTIONS`, `toMarkdown`, `summarize` | `compare` CLI | 6 |
@@ -99,11 +99,12 @@ flowchart LR
 flowchart LR
   load[loadBundle] --> rb[readBundle]
   rb --> k{kind}
-  k -->|index| ci[checkIndex<br/>§8 · §8.1 index-frontmatter · missing-okf-version · unquoted-version]
-  k -->|concept · other| cc[checkConcept<br/>§4 yaml-parse · §3.2 not-a-concept<br/>§5 bad-timestamp · incomplete-verified]
-  k -->|log| cl2[checkLog<br/>§9 log-frontmatter]
+  load --> root[missing-root-index]
+  k -->|index| ci[checkIndex<br/>§8 · §8.1 index-frontmatter · missing-okf-version · unquoted-version · bad-license]
+  k -->|concept · other| cc[checkConcept<br/>§4 yaml-parse · unquoted-value · tags-not-list · §3.2 not-a-concept<br/>§5 bad-timestamp · bad-generated · incomplete-verified · date-only-trust-time · stale-verification<br/>§5.1 sources·각주 · §5.4 status · §6.2 경로 필드 · §7 bad-actor]
+  k -->|log| cl2[checkLog<br/>§9 log-frontmatter · log-date-heading · log-order]
   rb --> cl[checkLinks<br/>broken-link · link-outside-bundle · team/relative-links]
-  ci & cc & cl2 & cl --> out[Issue 목록 → ERROR/WARN 출력, 오류 있으면 종료 코드 1]
+  root & ci & cc & cl2 & cl --> out[Issue 목록 → ERROR/WARN/INFO 출력, 오류 있으면 종료 코드 1]
 ```
 
 ### `pnpm retrieve "질문"` · `pnpm prompt "질문"`
@@ -219,8 +220,8 @@ flowchart LR
 
 | 테스트 | 대상 |
 | --- | --- |
-| `tests/concept.test.ts` | 파일 읽기, frontmatter 상태, kind, 소비자별 파싱 실패 처리, 빈 값·단일 값, 시각, 번들 버전, 경로 필드·대체 해석, 점 경로 |
-| `tests/validate.test.ts` | 0003 1~7단계 (4단계는 v0.3 규칙) |
+| `tests/concept.test.ts` | 파일 읽기, frontmatter 상태, kind, 소비자별 파싱 실패 처리, 빈 값·단일 값, 시각, 번들 버전, 경로 필드·대체 해석, 점 경로, asset |
+| `tests/validate.test.ts` | 0003 1~7단계 (4단계는 v0.3 규칙), 8단계 공식 검증기에서 옮긴 규칙 |
 | `tests/retrieve.test.ts` | 0004 bigram·score·retrieve, 실제 번들 기록 |
 | `tests/answer.test.ts` | 0005 buildPrompt·checkAnswer |
 | `tests/compare.test.ts` | 0006 judge·compare, 실제 번들 기록 |

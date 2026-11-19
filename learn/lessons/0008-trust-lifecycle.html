@@ -239,7 +239,7 @@ export function trustTier(verified: Verification[], generated?: string): Tier {
 </details>
 
 <details><summary>모범 답안: 사본에서 본 출력 (직접 돌려 본 뒤에 열기)</summary>
-<p>3단계에서 <code>returns.md</code>에 사람 확인을 적은 뒤, 4단계 사본으로 질문 4를 <code>--now 2026-11-18T00:00:00Z</code>로 돌린 결과다. 아이디와 시각은 예시다. FAQ 줄은 FAQ에 <code>verified</code>가 없으면 unverified다. 지금 저장소 FAQ에는 <code>{ by: human, at: … }</code>가 있어 machine-confirmed로 나온다(<code>human:</code> 스킴이 아니다).</p>
+<p>3단계에서 <code>returns.md</code>에 사람 확인을 적은 뒤, 4단계 사본으로 질문 4를 <code>--now 2026-11-18T00:00:00Z</code>로 돌린 결과다. 아이디와 시각은 예시다. FAQ 줄은 FAQ에 <code>verified</code>가 없으면 unverified다. 지금 저장소 FAQ에는 사용자가 대조한 <code>{ by: "human:jun", at: … }</code>가 있어 human-reviewed로 나온다. 2026-11-19 전에는 <code>by: human</code>(콜론 없음)이라 <code>human:</code> 스킴이 아니어서 machine-confirmed였다.</p>
 <pre><code>[키워드] references/returns-faq.md  점수 7  일치: 나요, 되나, 반품, 승인, 언제, 품이, 환불
          신뢰: unverified · 검토 기록 없음
 [키워드] policies/returns.md  점수 3  일치: 반품, 승인, 환불

@@ -35,7 +35,7 @@
 | --- | --- | --- | --- |
 | 1 | [0001 개념 문서 한 장](lessons/0001-concept-document.html) | 검사기를 통과한 `policies/returns.md` | 완료 (`knowledge/policies/returns.md` 저장) |
 | 2 | [0002 첫 번들 완성](lessons/0002-first-bundle.html) | 개념 3개 + 루트 `index.md`, 링크 형식 팀 규칙 | 완료 (상대 경로 규칙 → `docs/team-rules.md`) |
-| 3 | [0003 검증기](lessons/0003-validate.html) | `src/okf/validate.ts` 구현, 테스트 통과 (v0.3 기준 `tests/validate.test.ts` 40개) | 완료 (에이전트 구현, 2026-11-18) |
+| 3 | [0003 검증기](lessons/0003-validate.html) | `src/okf/validate.ts` 구현, 테스트 통과 (v0.3 기준, 공식 검증기 규칙 이식 뒤 `tests/validate.test.ts` 54개) | 완료 (에이전트 구현, 2026-11-18) |
 | 4 | [0004 질문별 문서 찾기](lessons/0004-retrieve.html) | `src/okf/retrieve.ts` 구현, `evaluation.md` 4회차 표 | 완료 (에이전트 구현, 2026-11-18) |
 | 5 | [0005 근거를 붙인 답변](lessons/0005-grounded-answer.html) | `src/okf/answer.ts` 구현, 답변 저장·검사, `evaluation.md` 5회차 표 | 코드 완료 (에이전트 구현). 모델 답변 저장·검사는 남음 |
 | 6 | [0006 검색 설정 비교](lessons/0006-compare-settings.html) | `src/okf/compare.ts` 구현, `pnpm compare` 결과표, `evaluation.md` 6회차 | 코드 완료 (에이전트 구현, 2026-11-18). 예측·결론 메모는 남음 |

@@ -155,15 +155,20 @@ export function readFile(path: string, text: string): BundleFile {
   return { path, kind: fileKind(path, fm), frontmatter: fm, body, links: extractLinks(body) };
 }
 
-// 번들의 모든 파일을 경로순으로 읽는다.
-export function readBundle(bundle: Bundle): BundleFile[] {
-  return [...bundle.keys()].sort((a, b) => a.localeCompare(b)).map((path) => readFile(path, bundle.get(path)!));
+// .md 파일만 문서다. 그 밖의 파일은 asset이라 읽지 않는다 (§3.2-3).
+export function isMarkdown(path: string): boolean {
+  return path.endsWith('.md');
 }
 
-// 번들에 없으면 null.
+// 번들의 모든 .md 파일을 경로순으로 읽는다. asset은 빠진다.
+export function readBundle(bundle: Bundle): BundleFile[] {
+  return [...bundle.keys()].filter(isMarkdown).sort((a, b) => a.localeCompare(b)).map((path) => readFile(path, bundle.get(path)!));
+}
+
+// 번들에 없거나 asset이면 null.
 export function readBundleFile(bundle: Bundle, path: string): BundleFile | null {
   const text = bundle.get(path);
-  return text === undefined ? null : readFile(path, text);
+  return text === undefined || !isMarkdown(path) ? null : readFile(path, text);
 }
 
 // 파싱된 frontmatter. 없거나 파싱할 수 없으면 null.

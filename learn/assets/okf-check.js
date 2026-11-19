@@ -7,6 +7,9 @@
 //      data-mode="concept|index"                           // optional, default concept
 //      data-team-rules="on"                                // optional: report team/* rules as warnings (default: info)
 //      data-placeholder="..."></div>
+// Scope: the lesson rules of src/okf/validate.ts steps 1-6 only. Step 8 (rules ported from the official
+// okf-generate validator on 2026-11-19: bad-actor, unknown-status, sources/footnote checks, …) is not checked here;
+// run `pnpm validate` for the full rule set.
 // Levels follow src/okf/validate.ts (rule ids in [brackets]): only unparsable frontmatter and reserved-file
 // structure are errors; a .md without frontmatter or `type` is "not a concept" (warning, SPEC §3.2).
 // Checks follow SPEC v0.3 §3.1, §3.2, §4, §4.1, §5, §6, §8, §8.1, §11. YAML parsing is a heuristic subset
