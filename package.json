@@ -7,7 +7,7 @@
   },
   "scripts": {
     "validate": "node validate.ts",
-    "test": "node --test \"tests/**/*.te원st.ts\"",
+    "test": "node --test \"tests/**/*.test.ts\"",
     "typecheck": "tsc --noEmit && tsc --noEmit -p web/tsconfig.json",
     "retrieve": "node retrieve.ts",
     "prompt": "node prompt.ts",

@@ -141,7 +141,7 @@ describe('P2단계 trace', () => {
 
 describe('P3단계 실제 번들 (0007 실습 결과)', () => {
   test('반품 정책의 출처를 따라가면 FAQ 원문 개념에 닿고, 각주 문제가 없다', async () => {
-    const n = trace(await loadBundle('knowledge'), 'policies/returns.md')!;
+    const n = trace(await loadBundle('bundles/knowledge'), 'policies/returns.md')!;
     assert.deepEqual(n.claims.map((c) => c.labels), [['returns-faq']]);
     assert.equal(n.sources[0].kind, 'bundle');
     assert.equal(n.sources[0].next?.path, 'references/returns-faq.md');

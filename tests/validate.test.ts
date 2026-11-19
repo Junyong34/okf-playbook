@@ -238,11 +238,11 @@ describe('8단계 공식 검증기에서 옮긴 규칙 (okf-generate validate.py
 });
 
 describe('7단계 실제 번들', () => {
-  test('knowledge/는 오류도 경고도 없다', async () => {
-    assert.deepEqual(summary(await loadBundle('knowledge')), []);
+  test('bundles/knowledge/는 오류도 경고도 없다', async () => {
+    assert.deepEqual(summary(await loadBundle('bundles/knowledge')), []);
   });
   test('루트 index.md가 v0.3을 선언하고 title·description을 둔다 (§8.1)', async () => {
-    const b = await loadBundle('knowledge');
+    const b = await loadBundle('bundles/knowledge');
     const fm = readFile('index.md', b.get('index.md')!).frontmatter;
     assert.equal(fm.state, 'ok');
     if (fm.state === 'ok') {
@@ -251,7 +251,7 @@ describe('7단계 실제 번들', () => {
     }
   });
   test('루트 index.md와 개념 3개, 0007의 원문 개념이 모두 있다', async () => {
-    const b = await loadBundle('knowledge');
+    const b = await loadBundle('bundles/knowledge');
     assert.deepEqual([...b.keys()].sort(), [
       'index.md',
       'policies/return-exceptions.md',

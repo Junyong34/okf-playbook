@@ -77,7 +77,7 @@ flowchart TB
 
 ```mermaid
 flowchart LR
-  dir[(knowledge/)] -->|loadBundle| B[Bundle<br/>Map 경로→문자열]
+  dir[(bundles/knowledge/)] -->|loadBundle| B[Bundle<br/>Map 경로→문자열]
   B -->|readBundle| F[BundleFile 목록<br/>kind · frontmatter 상태 · body · links]
   F -->|toConcept<br/>kind가 concept인 것만| C[Concept 목록<br/>메타 필드 · body · links · frontmatter]
   C -->|retrieve<br/>점수·기준·상한·링크 확장| P[Pick 목록<br/>path · via · score · matched]
@@ -233,6 +233,7 @@ flowchart LR
 | `tests/args.test.ts` | 검색 설정 인자 검증 |
 | `tests/request.test.ts` | 웹 화면의 모델 요청 조립: system/user 분리, 말투 설정 켜기·끄기, 날짜, 순서, 모델 요청 생략 |
 | `tests/web-citations.test.ts` | 웹 화면의 인용 칩 준비 (`web/src/features/qa/citations.ts`) |
+| `tests/web-bundles.test.ts` | 웹 화면의 번들 자동 탐색: 디렉터리별 묶기, 점 디렉터리 제외, 정렬 (`web/src/lib/bundles/groupByBundle.ts`) |
 
 ## 8. 바꿀 때 손댈 곳
 
@@ -242,5 +243,5 @@ flowchart LR
 - **새 frontmatter 필드 읽기:** `Concept.frontmatter`에서 바로 읽는다. 빈 값은 `isBlank`, 목록 필드는 `asList`, 시각은 `parseTimestamp`로 읽는다. 공통 해석이 필요하면 `concept.ts`에 둔다.
 - **새 경로 필드:** `concept.ts`의 `PathFieldName`·`pathFields`와 `graph.ts`의 `FIELD_KIND`를 함께 고친다.
 - **웹 화면 (`web/`):** 브라우저는 `load.ts`·`args.ts`를 가져오지 않는다. 번들은 `web/src/lib/bundles/loadBundles.ts`가 `import.meta.glob`으로 `Bundle`을 만들고, 질문 하나는 `features/qa/prepareRun.ts`가 `ask` → `buildModelRequest` 순서로 조립한 뒤 `lib/claude/generate.ts`가 스트리밍으로 생성하고 `checkAnswer`로 인용을 검사한다. 배포할 때는 `loadBundles()`와 `generate()` 두 함수의 내부만 서버 호출로 바꾼다.
-- **번들 추가 (웹):** `web/src/config/bundles.ts`에 `import.meta.glob` 두 줄과 `BUNDLE_SOURCES` 항목을 더한다. CLI는 `--dir`로 고른다.
+- **번들 추가:** `bundles/<이름>/`를 만들고 `index.md`에 `okf_version`을 넣는다. 웹 화면은 `bundles/*/`를 glob 하나로 읽어 디렉터리별로 나누고(`web/src/lib/bundles/groupByBundle.ts`), `okf_version`이 없는 디렉터리는 건너뛴다. 화면 이름·설명은 `index.md`의 `title`·`description`이다. 예시 질문·말투 설정만 `web/src/config/bundles.ts`의 `BUNDLE_SETTINGS`에 적는다. CLI는 `--dir bundles/<이름>`으로 고른다.
 - **웹 지시문·말투 규칙 바꾸기:** `request.ts`의 `MODEL_INSTRUCTION`. 0005의 `INSTRUCTION`(CLI용)은 그대로 둔다.

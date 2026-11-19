@@ -1,4 +1,4 @@
-// 사용법: pnpm retrieve "질문" [--fields body|body+meta] [--no-links] [--max N] [--min N] [--dir knowledge] [--now ISO시각]
+// 사용법: pnpm retrieve "질문" [--fields body|body+meta] [--no-links] [--max N] [--min N] [--dir bundles/knowledge] [--now ISO시각]
 // --now: 낡음(stale_after) 판정에 쓸 현재 시각. 없으면 지금 (8회차).
 import { loadBundle } from './src/okf/load.ts';
 import { searchArgsOrExit } from './src/okf/args.ts';

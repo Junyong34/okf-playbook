@@ -25,11 +25,14 @@ const intAtLeast = (raw: string, min: number): number | null => {
   return n >= min ? n : null;
 };
 
+// CLI가 --dir 없이 읽는 번들. 번들은 모두 bundles/ 아래에 둔다.
+export const DEFAULT_BUNDLE_DIR = 'bundles/knowledge';
+
 export function parseSearchArgs(argv: string[], config: ParseConfig = {}): ParsedArgs {
   const base: ParseArgsOptionsConfig = {
     max: { type: 'string', default: String(DEFAULT_OPTIONS.maxDocs) },
     min: { type: 'string', default: String(DEFAULT_OPTIONS.minScore) },
-    dir: { type: 'string', default: 'knowledge' },
+    dir: { type: 'string', default: DEFAULT_BUNDLE_DIR },
     now: { type: 'string' },
   };
   if (!config.fixedSetting) {

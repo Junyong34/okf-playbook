@@ -157,7 +157,7 @@ q7·q8은 레슨 모범 답안의 예시 질문이다 (에이전트가 넣음).
 
 ## 7회차: 원문 개념을 더한 뒤의 검색
 
-`knowledge/references/returns-faq.md`(`type: Reference`)를 더하기 전과 뒤의 `pnpm -s compare` 결과를 비교한다. 레슨: `learn/lessons/0007-sources-footnotes.html`.
+`bundles/knowledge/references/returns-faq.md`(`type: Reference`)를 더하기 전과 뒤의 `pnpm -s compare` 결과를 비교한다. 레슨: `learn/lessons/0007-sources-footnotes.html`.
 
 2026-11-18, 사용자 요청으로 에이전트가 모범 답안을 적용하고 CLI 결과로 채움. 판단은 사용자가 검토할 것.
 
@@ -219,7 +219,7 @@ q7·q8은 레슨 모범 답안의 예시 질문이다 (에이전트가 넣음).
 
 관찰:
 
-- 진짜 번들(`knowledge/`)은 지금 모든 개념이 unverified이고 주의가 없다. q5 출력에도 신뢰 줄만 붙는다.
+- 진짜 번들(`bundles/knowledge/`)은 지금 모든 개념이 unverified이고 주의가 없다. q5 출력에도 신뢰 줄만 붙는다.
 - 신뢰 신호는 순위를 바꾸지 않는다. 사본에서도 FAQ(unverified)가 q3·q4 모두 1순위다.
 - q3에서 deprecated인 `return-exceptions.md`가 7점으로 2순위다. 이 질문의 핵심 근거라서, 빼면 "최종 판매는 반품 제외"를 받칠 개념이 FAQ밖에 남지 않는다.
 - `pnpm validate /tmp/okf-stale`는 오류 0개, 경고 0개. 낡음과 deprecated는 검증 문제가 아니다.

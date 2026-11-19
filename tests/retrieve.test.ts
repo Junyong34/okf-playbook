@@ -112,7 +112,7 @@ describe('R5단계 실제 번들과 학습 계획의 질문 6개', () => {
   ];
   for (const [q, expected] of cases) {
     test(q, async () => {
-      assert.deepEqual(picks(withoutReferences(await loadBundle('knowledge')), q), expected);
+      assert.deepEqual(picks(withoutReferences(await loadBundle('bundles/knowledge')), q), expected);
     });
   }
 });

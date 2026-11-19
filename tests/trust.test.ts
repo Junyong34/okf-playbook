@@ -171,7 +171,7 @@ describe('T3단계 assess', () => {
 
 describe('T4단계 실제 번들', () => {
   test('모든 개념을 판정할 수 있고, 2026-11-18 기준 낡았거나 deprecated인 개념이 없다', async () => {
-    const b = await loadBundle('knowledge');
+    const b = await loadBundle('bundles/knowledge');
     for (const c of readConcepts(b)) {
       const a = assess(readFrontmatter(b, c.path)!, NOW);
       assert.equal(a.stale, false, c.path);

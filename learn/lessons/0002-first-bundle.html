@@ -69,7 +69,7 @@ description: 쇼핑몰 반품 신청 기한, 반품 예외, 환불 절차를 담
     <li>루트 <code>index.md</code> frontmatter에 둘 수 있는 키는 <code>okf_version</code>(따옴표 문자열), <code>title</code>, <code>description</code>, <code>license</code>(SPDX 식 또는 번들 안 라이선스 파일 경로)와 확장 키다. 모두 선택이고, 번들에 적용되지 개념에 적용되지 않는다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#81-bundle-metadata">§8.1</a></li>
     <li><code>description</code>은 번들 범위와 언제 쓰는지를 한 문장으로 적는다. 여러 번들을 가진 에이전트가 이 문장으로 번들을 고른다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#81-bundle-metadata">§8.1</a></li>
     <li>생산자는 각 번들에 <code>okf_version</code>을 둔 루트 <code>index.md</code>를 두는 편이 좋다(SHOULD). 인덱스를 다시 만드는 생산자는 기존 frontmatter를 지켜야 한다(MUST).<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#81-bundle-metadata">§8.1</a></li>
-    <li>v0.2는 루트 <code>index.md</code>에 <code>okf_version</code> 하나만 허용했다. 이 실습의 <code>knowledge/index.md</code>도 v0.3으로 올리면서 <code>title</code>·<code>description</code>을 넣었다. <code>license</code>는 정할 정보가 없어 넣지 않았다.</li>
+    <li>v0.2는 루트 <code>index.md</code>에 <code>okf_version</code> 하나만 허용했다. 이 실습의 <code>bundles/knowledge/index.md</code>도 v0.3으로 올리면서 <code>title</code>·<code>description</code>을 넣었다. <code>license</code>는 정할 정보가 없어 넣지 않았다.</li>
   </ul>
 </div>
 
@@ -192,18 +192,18 @@ description: 쇼핑몰 반품 신청 기한, 반품 예외, 환불 절차를 담
 - [반품 정책](policies/returns.md) - 반품 신청 기한과 할인 상품 규칙.
 - [반품 예외](policies/return-exceptions.md) - 최종 판매 상품의 처리 기준.
 - [환불 절차](processes/refunds.md) - 반품 승인부터 환불까지의 기간.</code></pre>
-<p class="note"><strong>개념 ID와 <code>resource</code>가 없는 이유.</strong> 개념 ID는 frontmatter에 쓰는 필드가 아니라 파일 경로에서 정해지는 값이다. <code>knowledge/processes/refunds.md</code>의 ID는 <code>processes/refunds</code>다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#2-terminology">§2</a> <code>resource</code>는 테이블·API처럼 가리킬 실물 자산이 있을 때만 쓰는 권장 필드라서, 규칙이나 절차를 설명하는 개념에서는 생략한다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#41-frontmatter">§4.1</a> 비교: Acme Retail <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/bundles/acme_retail/tables/orders.md"><code>tables/orders.md</code></a>는 BigQuery 테이블을 가리키므로 <code>resource</code>가 있다.</p>
+<p class="note"><strong>개념 ID와 <code>resource</code>가 없는 이유.</strong> 개념 ID는 frontmatter에 쓰는 필드가 아니라 파일 경로에서 정해지는 값이다. <code>bundles/knowledge/processes/refunds.md</code>의 ID는 <code>processes/refunds</code>다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#2-terminology">§2</a> <code>resource</code>는 테이블·API처럼 가리킬 실물 자산이 있을 때만 쓰는 권장 필드라서, 규칙이나 절차를 설명하는 개념에서는 생략한다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#41-frontmatter">§4.1</a> 비교: Acme Retail <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/bundles/acme_retail/tables/orders.md"><code>tables/orders.md</code></a>는 BigQuery 테이블을 가리키므로 <code>resource</code>가 있다.</p>
 </details>
 
 <h3>5-4. 저장하고 걸어가 보기</h3>
 <ol>
-  <li>세 파일을 저장소의 <code>knowledge/</code> 아래 같은 경로로 저장한다. <code>knowledge/policies/returns.md</code>는 이미 있다.</li>
-  <li>에디터의 Markdown 미리보기(VS Code는 <kbd>⌘⇧V</kbd>)로 <code>knowledge/index.md</code>를 연다.</li>
+  <li>세 파일을 저장소의 <code>bundles/knowledge/</code> 아래 같은 경로로 저장한다. <code>bundles/knowledge/policies/returns.md</code>는 이미 있다.</li>
+  <li>에디터의 Markdown 미리보기(VS Code는 <kbd>⌘⇧V</kbd>)로 <code>bundles/knowledge/index.md</code>를 연다.</li>
   <li>질문 "할인 상품을 반품할 수 있나요? 환불은 언제 들어오나요?"의 근거를 링크만 눌러서 찾는다: 인덱스 → 반품 정책 → 반품 예외, 반품 정책 → 환불 절차.</li>
   <li><strong>링크 하나는 미리보기에서 열리지 않는다.</strong> 어느 링크인지, 왜 그런지 적는다.</li>
 </ol>
 <details><summary>4번을 직접 찾은 뒤에 열기</summary>
-<p><code>returns.md</code>의 <code>/processes/refunds.md</code>다. OKF 소비자는 <code>/</code>를 <strong>번들 루트</strong>(<code>knowledge/</code>)로 해석하지만<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#6-links-and-paths">§6</a>, 일반 Markdown 미리보기나 GitHub는 <code>/</code>를 <strong>저장소 루트</strong>로 해석해 <code>okf-playbook/processes/refunds.md</code>를 찾는다.</p>
+<p><code>returns.md</code>의 <code>/processes/refunds.md</code>다. OKF 소비자는 <code>/</code>를 <strong>번들 루트</strong>(<code>bundles/knowledge/</code>)로 해석하지만<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#6-links-and-paths">§6</a>, 일반 Markdown 미리보기나 GitHub는 <code>/</code>를 <strong>저장소 루트</strong>로 해석해 <code>okf-playbook/processes/refunds.md</code>를 찾는다.</p>
 <p>v0.3 명세는 두 형식을 동등하게 두고 어느 쪽도 권장하지 않는다(v0.2는 링크에 <code>/</code>를 권장했다).<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#132-clarifications-and-errata">§13.2</a> 학습 계획은 미리보기 탐색을 위해 상대 경로를 택했다. 둘 다 명세에 맞는다. 이 실습에서 어느 쪽을 <em>팀 규칙</em>으로 삼을지 정해서 적어 둔다. 3회차 "명세 요구사항과 팀 규칙 대조"의 첫 항목이 된다. 상대 경로로 정했다면 <code>../processes/refunds.md</code>로 고친다.</p>
 </details>
 

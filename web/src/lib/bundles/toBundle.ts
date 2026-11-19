@@ -3,7 +3,7 @@
 //  - 이름이 '.'으로 시작하는 파일·디렉터리는 번들이 아니다 (§3.2-4)
 import type { Bundle } from '@okf/types.ts';
 
-// "../../../knowledge/policies/returns.md" → "policies/returns.md"
+// "../../../bundles/knowledge/policies/returns.md" (root: bundles/knowledge) → "policies/returns.md"
 export function bundleKey(globKey: string, root: string): string | null {
   const marker = `/${root}/`;
   const at = globKey.indexOf(marker);

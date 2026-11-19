@@ -66,16 +66,16 @@ Markdown과 Git 사용 경험이 있고, YAML과 RAG는 처음 접해도 따라�
 | 실습 산출물 | 담을 내용 |
 | --- | --- |
 | `source/returns-faq.md` | 실습용 원본 FAQ. 아래 세 문서와 동일한 정책 사실을 담는다. |
-| `knowledge/index.md` | 번들 메타데이터(`okf_version`, `title`, `description`), 번들 목차와 각 문서의 한 줄 설명. |
-| `knowledge/policies/returns.md` | 수령 후 7일 이내 신청, 할인 상품에도 적용. 예외 상품과 환불 절차에 링크. |
-| `knowledge/policies/return-exceptions.md` | 주문 시 최종 판매 표시 상품은 반품 제외. |
-| `knowledge/processes/refunds.md` | 반품 승인 후 영업일 기준 3~5일. |
+| `bundles/knowledge/index.md` | 번들 메타데이터(`okf_version`, `title`, `description`), 번들 목차와 각 문서의 한 줄 설명. |
+| `bundles/knowledge/policies/returns.md` | 수령 후 7일 이내 신청, 할인 상품에도 적용. 예외 상품과 환불 절차에 링크. |
+| `bundles/knowledge/policies/return-exceptions.md` | 주문 시 최종 판매 표시 상품은 반품 제외. |
+| `bundles/knowledge/processes/refunds.md` | 반품 승인 후 영업일 기준 3~5일. |
 | `validate.ts` · `retrieve.ts` | 파일 검증과 질문별 문서 검색. 출력에 파일 경로와 선택 이유를 포함한다. |
 | `evaluation.md` | 질문별 기대 근거, 실제로 고른 문서, 답변 정확도와 인용 검증 결과. |
 
 ### 복사해서 따라가 볼 최소 번들
 
-아래 블록을 `knowledge/` 밑에 표시된 경로대로 저장한다. 상대 링크를 사용하므로 Markdown 미리보기에서 탐색할 수 있다.
+아래 블록을 `bundles/knowledge/` 밑에 표시된 경로대로 저장한다. 상대 링크를 사용하므로 Markdown 미리보기에서 탐색할 수 있다.
 
 **`index.md`**
 

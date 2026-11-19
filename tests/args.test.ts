@@ -16,10 +16,10 @@ const err = (argv: string[], config = {}) => {
 };
 
 describe('parseSearchArgs', () => {
-  test('기본값은 DEFAULT_OPTIONS, 번들은 knowledge', () => {
+  test('기본값은 DEFAULT_OPTIONS, 번들은 bundles/knowledge', () => {
     const a = ok(['질문', '하나']);
     assert.deepEqual(a.options, DEFAULT_OPTIONS);
-    assert.equal(a.dir, 'knowledge');
+    assert.equal(a.dir, 'bundles/knowledge');
     assert.deepEqual(a.positionals, ['질문', '하나']);
   });
   test('옵션을 검색 설정으로 바꾼다', () => {

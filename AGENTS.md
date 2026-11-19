@@ -34,19 +34,21 @@ okf-playbook/
 │   └── okf-web-ui/            # 웹 화면(상담·디버깅·그래프) 스펙
 ├── source/                    # OKF로 변환하기 전 데이터
 │   └── sample-faq.json       # FAQ 테스트 샘플
-├── sample_mart_faq/           # 테스트용 FAQ의 OKF v0.3 번들
-│   ├── index.md · log.md      # 번들 목차와 변경 기록
-│   ├── faqs/                  # 카테고리별 목차와 질문별 Markdown
-│   └── references/            # 원본 JSON 사본과 자료 목차
-├── knowledge/                 # OKF 번들 루트
-│   ├── index.md               # 번들 메타데이터(okf_version: "0.3", title, description), 목차
-│   ├── references/
-│   │   └── returns-faq.md     # 원문 개념 (type: Reference), returns.md의 출처
-│   ├── policies/
-│   │   ├── returns.md
-│   │   └── return-exceptions.md
-│   └── processes/
-│       └── refunds.md
+├── bundles/                   # OKF 번들 모음. 번들 하나 = 하위 디렉터리 하나 (CLI 기본값은 bundles/knowledge)
+│   ├── knowledge/             # 반품·환불 실습 번들 (번들 루트)
+│   │   ├── index.md           # 번들 메타데이터(okf_version: "0.3", title, description), 목차
+│   │   ├── references/
+│   │   │   └── returns-faq.md # 원문 개념 (type: Reference), returns.md의 출처
+│   │   ├── policies/
+│   │   │   ├── returns.md
+│   │   │   └── return-exceptions.md
+│   │   └── processes/
+│   │       └── refunds.md
+│   └── sample_mart_faq/       # 테스트용 마트 FAQ의 OKF v0.3 번들
+│       ├── index.md · log.md  # 번들 목차와 변경 기록
+│       ├── faqs/              # 카테고리별 목차와 질문별 Markdown
+│       └── references/        # 원본 JSON 사본과 자료 목차
+├── src/claude/                # 웹·서버 공용 모델 설정, 요청 매퍼, 응답 타입
 ├── src/okf/                   # 검증·검색 로직 (파일 시스템과 분리, 웹 UI에서 재사용)
 │   ├── types.ts               # Bundle = Map<경로, 내용>, Issue
 │   ├── load.ts                # 디렉터리 → Bundle
@@ -77,7 +79,7 @@ okf-playbook/
 │   ├── vite.config.ts · tsconfig.json · index.html
 │   └── src/
 │       ├── app/               # 앱 틀: 테마·라우터·좌측 메뉴(AppShell + SideNav)
-│       ├── config/            # 번들 목록(bundles.ts)·모델·라우트 설정
+│       ├── config/            # 번들 자동 탐색·번들별 설정(bundles.ts)·모델·라우트 설정
 │       ├── lib/               # 서버로 옮길 경계: bundles/loadBundles.ts, claude/generate.ts
 │       ├── features/          # 화면별 기능: bundles·qa(공용 처리)·chat(상담)·debug(디버깅)·graph(준비 중)
 │       ├── shared/            # 화면 공용 UI·유틸
@@ -88,7 +90,7 @@ okf-playbook/
 └── (다음) 그래프 화면(sigma.js), 배포용 서버
 ```
 
-디렉터리를 추가하거나 옮기면 이 구조도를 함께 갱신한다.
+디렉터리를 추가하거나 옮기면 이 구조도를 함께 갱신한다. 새 번들은 `bundles/<이름>/`에 두고 그 `index.md`에 `okf_version`을 넣는다. 웹 화면은 `bundles/` 아래를 자동으로 찾는다. 예시 질문이나 다른 말투 설정이 필요할 때만 `web/src/config/bundles.ts`의 `BUNDLE_SETTINGS`에 적는다.
 
 ## 실습 코드 주의
 
@@ -100,7 +102,7 @@ okf-playbook/
 
 `okf-generate`(번들 작성·수정·이전·검증)와 `okf-consume`(번들에서 답하기, 읽기 전용)는 공식 저장소 `open-knowledge-format/open-knowledge-format`의 스킬을 그대로 넣은 것이다. Codex는 `.agents/skills/`, Claude Code는 `.claude/skills/`에서 읽는다. 두 사본은 같아야 하므로 직접 고치지 않고 `pnpm okf:sync-skills [커밋]`으로만 갱신한다. 이 저장소에 맞춘 규칙은 스킬 파일이 아니라 이 문서와 `docs/team-rules.md`에 둔다.
 
-**검증은 TS 검증기(`pnpm validate`)가 기준이다.** `okf-generate` 8단계의 `python3 scripts/validate.py <bundle-root>`는 이 저장소에서 `pnpm validate <bundle-root>`로 바꿔 실행한다. 공식 검증기 규칙은 `src/okf/validate.ts`로 옮겨 두었고(규칙 이름과 공식 코드 W103 등의 대응은 `src/okf/types.ts`의 `Rule` 주석), Attested Computation 규칙(§10)만 아직 없다. 새 검증 규칙은 Python이 아니라 `validate.ts`와 `tests/validate.test.ts`에 추가한다. 공식 검증기는 판정을 대조할 때만 쓴다: `pnpm okf:validate knowledge`(Python과 PyYAML이 필요하고 `uv`가 PyYAML을 임시로 받는다). 두 결과가 다르면 명세를 읽고 어느 쪽이 맞는지 확인한 뒤 TS를 고친다. `okf-consume`의 `scripts/scan.py`는 `pnpm okf:scan knowledge [--current --stale --deprecated --unverified --grep 텍스트]`로 돌린다. `okf-generate`의 `verified` 규칙(이번 실행에서 만든 내용에 검토 기록 금지, `human:` id는 본인이 알려 줄 때만)은 이 문서의 `human:` 규칙과 같은 뜻이다.
+**검증은 TS 검증기(`pnpm validate`)가 기준이다.** `okf-generate` 8단계의 `python3 scripts/validate.py <bundle-root>`는 이 저장소에서 `pnpm validate <bundle-root>`로 바꿔 실행한다. 공식 검증기 규칙은 `src/okf/validate.ts`로 옮겨 두었고(규칙 이름과 공식 코드 W103 등의 대응은 `src/okf/types.ts`의 `Rule` 주석), Attested Computation 규칙(§10)만 아직 없다. 새 검증 규칙은 Python이 아니라 `validate.ts`와 `tests/validate.test.ts`에 추가한다. 공식 검증기는 판정을 대조할 때만 쓴다: `pnpm okf:validate bundles/knowledge`(Python과 PyYAML이 필요하고 `uv`가 PyYAML을 임시로 받는다). 두 결과가 다르면 명세를 읽고 어느 쪽이 맞는지 확인한 뒤 TS를 고친다. `okf-consume`의 `scripts/scan.py`는 `pnpm okf:scan bundles/knowledge [--current --stale --deprecated --unverified --grep 텍스트]`로 돌린다. `okf-generate`의 `verified` 규칙(이번 실행에서 만든 내용에 검토 기록 금지, `human:` id는 본인이 알려 줄 때만)은 이 문서의 `human:` 규칙과 같은 뜻이다.
 
 ### Issue tracker
 

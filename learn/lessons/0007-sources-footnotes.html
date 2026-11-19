@@ -97,7 +97,7 @@
 node --test --test-name-pattern="P2단계" "tests/**/*.test.ts"</code></pre></li>
   <li><strong>검색 실험의 기준점을 남긴다.</strong> 번들을 바꾸기 전에 지금 결과를 저장해 둔다. 그리고 <code>evaluation.md</code> 7회차에 예측을 적는다. "FAQ 개념을 넣으면 질문 1~8의 고른 개념이 어떻게 바뀔까?"
 <pre><code>pnpm -s compare &gt; /tmp/compare-before.txt</code></pre></li>
-  <li><strong>FAQ 개념을 쓴다.</strong> <code>knowledge/references/returns-faq.md</code>를 만든다. <code>type: Reference</code>를 쓰고, 본문에는 학습 계획 §5의 정책 사실 네 가지를 고객이 묻는 말투로 쓴다. 수령 후 7일, 할인 상품도 신청 가능, 최종 판매 표시는 제외, 승인 후 영업일 기준 3~5일 환불.</li>
+  <li><strong>FAQ 개념을 쓴다.</strong> <code>bundles/knowledge/references/returns-faq.md</code>를 만든다. <code>type: Reference</code>를 쓰고, 본문에는 학습 계획 §5의 정책 사실 네 가지를 고객이 묻는 말투로 쓴다. 수령 후 7일, 할인 상품도 신청 가능, 최종 판매 표시는 제외, 승인 후 영업일 기준 3~5일 환불.</li>
   <li><strong>정책에 출처를 단다.</strong> <code>policies/returns.md</code>에 <code>sources</code> 항목(<code>id: returns-faq</code>)을 더하고, "7일 이내" 문장 끝에 <code>[^returns-faq]</code>를, 본문 끝에 각주 정의를 단다. <code>resource</code>를 <code>/</code> 경로로 쓸지 상대 경로로 쓸지 정하고, 그 결정을 <code>docs/team-rules.md</code>에 한 줄로 남긴다. 그다음 확인한다.
 <pre><code>pnpm validate
 pnpm trace policies/returns.md</code></pre></li>
@@ -107,7 +107,7 @@ pnpm trace policies/returns.md</code></pre></li>
 diff /tmp/compare-before.txt /tmp/compare-after.txt</code></pre>
   <code>evaluation.md</code> 7회차에 예측과 비교해 적는다. 특히 q4·q8을 본다. FAQ 개념이 왜 그 자리에 들어왔는지, 무엇을 밀어냈는지, 소비자는 이것을 어떻게 다뤄야 하는지를 한두 줄 쓴다. 단서: <code>type</code>은 소비자가 라우팅과 필터링에 쓴다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#41-frontmatter">§4.1</a> 검색기는 고치지 않는다.</li>
 </ol>
-<p class="note">여유가 있으면 <code>refunds.md</code>와 <code>return-exceptions.md</code>에도 같은 출처를 단다. 각주 라벨을 일부러 틀리게 써서 <code>pnpm trace</code>가 <code>WARN</code>을 내는지도 본다. v0.2 대체 해석도 사본에서 볼 수 있다. <code>cp -r knowledge /tmp/okf-v02</code>로 사본을 만들고 <code>returns.md</code>의 <code>resource</code>를 <code>references/returns-faq.md</code>(<code>/</code> 없음)로 바꿔 <code>pnpm trace policies/returns.md --dir /tmp/okf-v02</code>를 돌린다. 출처가 <code>policies/references/returns-faq.md (번들에 없음)</code>으로 나온다. 사본 <code>index.md</code>의 <code>okf_version</code>을 <code>"0.2"</code>로 바꿔 다시 돌리면 <code>(번들 안 개념, v0.2 대체 해석: 번들 루트 기준으로 찾음)</code>으로 바뀐다.</p>
+<p class="note">여유가 있으면 <code>refunds.md</code>와 <code>return-exceptions.md</code>에도 같은 출처를 단다. 각주 라벨을 일부러 틀리게 써서 <code>pnpm trace</code>가 <code>WARN</code>을 내는지도 본다. v0.2 대체 해석도 사본에서 볼 수 있다. <code>cp -r bundles/knowledge /tmp/okf-v02</code>로 사본을 만들고 <code>returns.md</code>의 <code>resource</code>를 <code>references/returns-faq.md</code>(<code>/</code> 없음)로 바꿔 <code>pnpm trace policies/returns.md --dir /tmp/okf-v02</code>를 돌린다. 출처가 <code>policies/references/returns-faq.md (번들에 없음)</code>으로 나온다. 사본 <code>index.md</code>의 <code>okf_version</code>을 <code>"0.2"</code>로 바꿔 다시 돌리면 <code>(번들 안 개념, v0.2 대체 해석: 번들 루트 기준으로 찾음)</code>으로 바뀐다.</p>
 
 <details><summary>모범 답안: <code>checkAttribution</code>과 <code>trace</code> (테스트를 직접 통과시킨 뒤에 열기)</summary>
 <pre><code>export function checkAttribution(p: ConceptProvenance): AttributionIssue[] {
@@ -150,7 +150,7 @@ export function trace(bundle: Bundle, path: string, visited: Set&lt;string&gt; =
 </details>
 
 <details><summary>모범 답안: FAQ 개념과 정책의 출처 (직접 쓴 뒤에 열기)</summary>
-<p><code>knowledge/references/returns-faq.md</code></p>
+<p><code>bundles/knowledge/references/returns-faq.md</code></p>
 <pre><code>---
 type: Reference
 title: 반품·환불 FAQ
@@ -168,7 +168,7 @@ tags: [반품, 환불, FAQ]
 
 **Q. 환불은 언제 되나요?**
 반품이 승인되면 영업일 기준 3~5일 안에 환불됩니다.</code></pre>
-<p><code>knowledge/policies/returns.md</code></p>
+<p><code>bundles/knowledge/policies/returns.md</code></p>
 <pre><code>---
 type: Policy
 title: 반품 정책

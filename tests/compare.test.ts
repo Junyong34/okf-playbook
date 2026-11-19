@@ -80,7 +80,7 @@ describe('C2단계 compare', () => {
     assert.deepEqual(rows()[4].missing, []);
   });
   test('실제 번들(원문 개념을 더하기 전, 6회차): 질문 6개 × 설정 3개 = 18행', async () => {
-    const all = await loadBundle('knowledge');
+    const all = await loadBundle('bundles/knowledge');
     const b6: Bundle = new Map([...all].filter(([path]) => !path.startsWith('references/')));
     const real = compare(b6, QUESTIONS.slice(0, 6), settings());
     assert.equal(real.length, 18);

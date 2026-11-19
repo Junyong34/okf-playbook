@@ -14,7 +14,7 @@
 | `learning-records/` | 실제로 익힌 것과 바로잡은 오해 (첫 기록이 생길 때 만든다) |
 | `NOTES.md` | 진행 방식 선호와 작업 메모 |
 
-실습 산출물(`knowledge/`, `source/`, `validate.ts`, `retrieve.ts`, `evaluation.md`)은 저장소 루트에 둔다.
+실습 산출물(`bundles/knowledge/`, `source/`, `validate.ts`, `retrieve.ts`, `evaluation.md`)은 저장소 루트에 둔다.
 
 ## 한 회차 진행 순서 (90분)
 
@@ -33,7 +33,7 @@
 
 | 회차 | 레슨 | 손에 남는 것 | 상태 |
 | --- | --- | --- | --- |
-| 1 | [0001 개념 문서 한 장](lessons/0001-concept-document.html) | 검사기를 통과한 `policies/returns.md` | 완료 (`knowledge/policies/returns.md` 저장) |
+| 1 | [0001 개념 문서 한 장](lessons/0001-concept-document.html) | 검사기를 통과한 `policies/returns.md` | 완료 (`bundles/knowledge/policies/returns.md` 저장) |
 | 2 | [0002 첫 번들 완성](lessons/0002-first-bundle.html) | 개념 3개 + 루트 `index.md`, 링크 형식 팀 규칙 | 완료 (상대 경로 규칙 → `docs/team-rules.md`) |
 | 3 | [0003 검증기](lessons/0003-validate.html) | `src/okf/validate.ts` 구현, 테스트 통과 (v0.3 기준, 공식 검증기 규칙 이식 뒤 `tests/validate.test.ts` 54개) | 완료 (에이전트 구현, 2026-11-18) |
 | 4 | [0004 질문별 문서 찾기](lessons/0004-retrieve.html) | `src/okf/retrieve.ts` 구현, `evaluation.md` 4회차 표 | 완료 (에이전트 구현, 2026-11-18) |

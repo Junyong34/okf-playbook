@@ -120,16 +120,16 @@ stale_after: 2026-12-31T00:00:00Z                                           # �
 <pre><code>node --test --test-name-pattern="T1단계" "tests/**/*.test.ts"
 node --test --test-name-pattern="T2단계" "tests/**/*.test.ts"
 node --test --test-name-pattern="T3단계" "tests/**/*.test.ts"</code></pre>
-  T4단계(실제 번들)는 진짜 <code>knowledge/</code>에 낡았거나 deprecated인 개념이 없어야 통과한다. 4단계 실험을 사본이 아니라 진짜 번들에 하면 실패한다. 지금 저장소는 <code>policies/return-exceptions.md</code>에 <code>status: deprecated</code>가 있어 T4단계 1개가 실패한다. 코드 버그가 아니라 번들 상태다.</li>
+  T4단계(실제 번들)는 진짜 <code>bundles/knowledge/</code>에 낡았거나 deprecated인 개념이 없어야 통과한다. 4단계 실험을 사본이 아니라 진짜 번들에 하면 실패한다. 지금 저장소는 <code>policies/return-exceptions.md</code>에 <code>status: deprecated</code>가 있어 T4단계 1개가 실패한다. 코드 버그가 아니라 번들 상태다.</li>
   <li><strong>기준점을 본다.</strong> 3단계 전이라면 모든 개념이 unverified다. <code>evaluation.md</code> 8회차에 예측을 먼저 적는다. "3·4단계를 하고 나면 질문 5의 출력이 어떻게 바뀔까?"
 <pre><code>pnpm retrieve "할인 상품을 반품할 수 있나요? 환불은 언제 들어오나요?" --now 2026-11-18T00:00:00Z</code></pre></li>
-  <li><strong>직접 확인하고 기록한다.</strong> <code>knowledge/policies/returns.md</code>와 <code>knowledge/references/returns-faq.md</code>를 나란히 연다. "7일 이내"와 "할인 상품 포함"이 같은지 눈으로 대조한다. 같으면 <code>returns.md</code> frontmatter에 대시 없는 매핑으로 한 줄 적는다. <code>&lt;id&gt;</code>는 여러분의 아이디, <code>at</code>은 지금 시각이다. <code>at</code>을 빼면 기록이 무시된다(<code>pnpm validate</code>가 <code>incomplete-verified</code> 경고를 낸다).
+  <li><strong>직접 확인하고 기록한다.</strong> <code>bundles/knowledge/policies/returns.md</code>와 <code>bundles/knowledge/references/returns-faq.md</code>를 나란히 연다. "7일 이내"와 "할인 상품 포함"이 같은지 눈으로 대조한다. 같으면 <code>returns.md</code> frontmatter에 대시 없는 매핑으로 한 줄 적는다. <code>&lt;id&gt;</code>는 여러분의 아이디, <code>at</code>은 지금 시각이다. <code>at</code>을 빼면 기록이 무시된다(<code>pnpm validate</code>가 <code>incomplete-verified</code> 경고를 낸다).
 <pre><code>verified: { by: human:&lt;id&gt;, at: 2026-11-18T15:00:00+09:00 }</code></pre>
   다르거나 확인하지 않았다면 적지 않는다. 그것도 결과다. 그다음 확인한다.
 <pre><code>pnpm validate
 pnpm retrieve "할인 상품을 반품할 수 있나요?" --now 2026-11-18T00:00:00Z</code></pre></li>
   <li><strong>낡은 사본으로 주의를 본다.</strong> 진짜 번들은 건드리지 않고 사본을 만든다. 사본의 <code>processes/refunds.md</code>에 이미 지난 <code>stale_after</code>를, <code>policies/return-exceptions.md</code>에 <code>status: deprecated</code>를 넣는다.
-<pre><code>rm -rf /tmp/okf-stale &amp;&amp; cp -r knowledge /tmp/okf-stale
+<pre><code>rm -rf /tmp/okf-stale &amp;&amp; cp -r bundles/knowledge /tmp/okf-stale
 # /tmp/okf-stale/processes/refunds.md frontmatter에:          stale_after: 2026-10-01T00:00:00Z
 # /tmp/okf-stale/policies/return-exceptions.md frontmatter에:  status: deprecated
 pnpm validate /tmp/okf-stale

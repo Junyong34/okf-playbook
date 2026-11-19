@@ -28,7 +28,7 @@
 <details><summary>명세 위반이라 <em>오류</em>인 것과, 거부하면 안 되어 <em>경고</em>에 그치는 것을 두 개씩 꼽는다.</summary>
 <p>오류: frontmatter 블록이 YAML 매핑으로 파싱되지 않음, 예약 파일(<code>index.md</code>·<code>log.md</code>)이 §8·§9를 어김. 거부 금지: 끊어진 링크, 모르는 <code>type</code>, 확장 키, 선택 필드 누락, <code>index.md</code> 누락. v0.3에서는 frontmatter나 <code>type</code>이 없는 <code>.md</code>도 오류가 아니다. 개념이 아닌 파일이라 건너뛰고, 검증기는 경고한다. <a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#111-bundle-conformance">§11.1</a><a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#112-consumer-rules">§11.2</a><a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#32-concepts-assets-and-other-files">§3.2</a></p></details>
 <details><summary><code>/processes/refunds.md</code>가 OKF 소비자와 GitHub에서 다르게 해석되는 이유는?</summary>
-<p>OKF 소비자는 <code>/</code>를 번들 루트(<code>knowledge/</code>)로, GitHub와 에디터 미리보기는 저장소 루트로 해석한다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#6-links-and-paths">§6</a> 그래서 이 실습은 본문 링크에 <strong>상대 경로만</strong>을 팀 규칙으로 정했다.</p></details>
+<p>OKF 소비자는 <code>/</code>를 번들 루트(<code>bundles/knowledge/</code>)로, GitHub와 에디터 미리보기는 저장소 루트로 해석한다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#6-links-and-paths">§6</a> 그래서 이 실습은 본문 링크에 <strong>상대 경로만</strong>을 팀 규칙으로 정했다.</p></details>
 <details><summary>frontmatter에 개념 ID를 쓰지 않는 이유는? <code>refunds.md</code>에 <code>resource</code>가 없는 이유는?</summary>
 <p>ID는 파일 경로에서 정해진다(<a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#2-terminology">§2</a>). <code>resource</code>는 가리킬 실물 자산이 있을 때만 쓰는데, 환불 절차는 자산이 없다(<a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#41-frontmatter">§4.1</a>).</p></details>
 
@@ -105,7 +105,7 @@ tests/validate.test.ts 1~8단계 테스트 54개  (제공, v0.3 갱신과 공식
 <pre><code>node --test --test-name-pattern="1단계" "tests/**/*.test.ts"</code></pre></li>
   <li><strong>1단계</strong> <code>splitFrontmatter</code> → <strong>2단계</strong> <code>resolveLink</code>(레슨 0002 경로 연습 그대로) → <strong>4단계</strong> <code>checkConcept</code>·<code>checkIndex</code> → <strong>5·6단계</strong> <code>checkLinks</code>. 3단계 <code>extractLinks</code>와 YAML 파싱 코드는 이미 들어 있다. 지금 저장소에서는 이 함수들과 YAML 파싱이 개념 읽기 모듈 <code>src/okf/concept.ts</code>로 옮겨졌고, <code>validate.ts</code>는 1·2단계 함수를 다시 내보내며 <code>checkConcept</code>·<code>checkIndex</code>·<code>checkLog</code>·<code>checkLinks</code>가 이미 읽은 파일(<code>BundleFile</code>)을 받는다. 개념 판별(<code>kind</code>: <code>concept</code>·<code>index</code>·<code>log</code>·<code>other</code>)과 시각 파서(<code>parseTimestamp</code>)도 <code>concept.ts</code>에 있다. 아래 모범 답안은 지금 코드 그대로다.</li>
   <li>7단계까지 초록이면 <code>pnpm validate</code>. 기대 출력:
-<pre><code>knowledge: 문서 5개, 오류 0개, 경고 0개, 정보 0개</code></pre>
+<pre><code>bundles/knowledge: 문서 5개, 오류 0개, 경고 0개, 정보 0개</code></pre>
   처음 8단계 규칙을 옮겼을 때는 경고가 하나 있었다. <code>returns-faq.md</code>의 <code>verified.by</code>가 <code>human</code>(콜론 없음)이라 §7 행위자 형식이 아니어서 <code>bad-actor</code>가 났다. 사용자가 대조 기록을 <code>human:jun</code>으로 고친 뒤(2026-11-19) 경고가 사라졌고, 이 개념도 human-reviewed가 되었다. 문서 5개는 루트 <code>index.md</code>, 개념 3개, 0007에서 더한 원문 개념 <code>references/returns-faq.md</code>다. 이 레슨을 처음 할 때는 4개였다.</li>
   <li><strong>일부러 망가뜨리기</strong>(학습 계획 3회차). 실제 번들에서 아래를 하나씩 바꾸고 <code>pnpm validate</code>를 돌린 뒤 되돌린다.
     <ul>
@@ -119,12 +119,12 @@ WARN  policies/return-exceptions.md  [broken-link] `/policies/shipping.md` → `
 ERROR policies/returns.md  [yaml-parse] YAML을 파싱할 수 없습니다: Implicit keys need to be on a single line … (§4, §11.1)
 WARN  processes/refunds.md  [not-a-concept] 비어 있지 않은 `type`이 없습니다. 개념이 아닌 파일로 건너뜁니다 (§3.2).
 
-knowledge: 문서 5개, 오류 1개, 경고 3개, 정보 0개</code></pre>
+bundles/knowledge: 문서 5개, 오류 1개, 경고 3개, 정보 0개</code></pre>
     오류가 있으면 종료 코드가 1이다. 경고만 있으면 0이다. v0.2 기준일 때는 <code>refunds.md</code>가 <code>[missing-type]</code> 오류였고 결과가 "오류 2개, 경고 2개"였다. YAML 오류 문구는 <code>yaml</code> 패키지 버전에 따라 다를 수 있다.</li>
   <li><code>docs/team-rules.md</code>에 오늘 검사로 확인한 팀 규칙을 적는다. 첫 줄(상대 경로)은 들어 있다. 하나 더 정하고 싶은 규칙이 있으면 추가하고 명세 규칙인지 팀 규칙인지 표시한다.</li>
 </ol>
 
-<div class="box"><p><strong>8단계: 공식 검증기 규칙 옮기기 (2026-11-19).</strong> 공식 스킬 <code>okf-generate</code>의 검증기는 Python(<code>.agents/skills/okf-generate/scripts/validate.py</code>)이다. 이 저장소는 TS 검증기를 기준으로 삼기로 하고, 공식 규칙을 <code>validate.ts</code>로 옮겼다. 규칙 이름과 공식 코드의 대응은 <code>src/okf/types.ts</code>의 <code>Rule</code> 주석에 있다(예: <code>bad-actor</code> = W103). 수준은 오류·경고에 <strong>정보</strong>(<code>info</code>)가 더해졌다. 고칠 필요는 없지만 알아 둘 것이다(예: <code>stale-verification</code> = I204, 모든 검토 기록이 <code>generated.at</code>보다 이르다). 두 검증기의 판정이 같은지는 <code>pnpm okf:validate knowledge</code>로 대조한다. 아직 옮기지 않은 것은 Attested Computation 규칙(§10)이다. 이 레슨의 1~6단계 실습 범위는 그대로이고, 8단계는 읽기 자료다.</p></div>
+<div class="box"><p><strong>8단계: 공식 검증기 규칙 옮기기 (2026-11-19).</strong> 공식 스킬 <code>okf-generate</code>의 검증기는 Python(<code>.agents/skills/okf-generate/scripts/validate.py</code>)이다. 이 저장소는 TS 검증기를 기준으로 삼기로 하고, 공식 규칙을 <code>validate.ts</code>로 옮겼다. 규칙 이름과 공식 코드의 대응은 <code>src/okf/types.ts</code>의 <code>Rule</code> 주석에 있다(예: <code>bad-actor</code> = W103). 수준은 오류·경고에 <strong>정보</strong>(<code>info</code>)가 더해졌다. 고칠 필요는 없지만 알아 둘 것이다(예: <code>stale-verification</code> = I204, 모든 검토 기록이 <code>generated.at</code>보다 이르다). 두 검증기의 판정이 같은지는 <code>pnpm okf:validate bundles/knowledge</code>로 대조한다. 아직 옮기지 않은 것은 Attested Computation 규칙(§10)이다. 이 레슨의 1~6단계 실습 범위는 그대로이고, 8단계는 읽기 자료다.</p></div>
 
 <details><summary>모범 답안: <code>src/okf/concept.ts</code> 1·2단계와 <code>src/okf/validate.ts</code> 전체 (테스트를 직접 통과시킨 뒤에 열기)</summary>
 <p>1·2단계 함수와 파일 읽기는 <code>src/okf/concept.ts</code>에 있다. 아래는 그 일부다.</p>

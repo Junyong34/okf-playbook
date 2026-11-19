@@ -133,7 +133,7 @@ cd /tmp/okf-official</code></pre>
   <strong>정식 방법</strong>은 README대로 설치한다. google-adk, BigQuery 클라이언트 같은 의존성이 함께 설치되므로 무겁다.
 <pre><code>python3.13 -m venv .venv
 .venv/bin/pip install --index-url https://pypi.org/simple/ -e .
-.venv/bin/python -m reference_agent visualize --bundle ~/workspace/junD/okf-playbook/knowledge --out /tmp/okf-viz.html --name "반품·환불"</code></pre>
+.venv/bin/python -m reference_agent visualize --bundle ~/workspace/junD/okf-playbook/bundles/knowledge --out /tmp/okf-viz.html --name "반품·환불"</code></pre>
   <strong>가벼운 방법</strong>도 있다. 뷰어가 필요로 하는 것은 <code>pyyaml</code>뿐이라서 생성 함수를 직접 부를 수 있다. 아래는 <code>uv</code>를 쓰는 예다. 받은 저장소 안이 아니라 다른 디렉터리에서 돌리고, 경로는 인자로 넘긴다.
 <pre><code>cd /tmp
 uv run --no-project --python 3.13 --with pyyaml python -I -c "
@@ -141,12 +141,12 @@ import sys; sys.path.insert(0, '/tmp/okf-official/src')
 from pathlib import Path
 from reference_agent.viewer.generator import generate_visualization
 print(generate_visualization(Path(sys.argv[1]), Path('/tmp/okf-viz.html'), bundle_name='반품·환불'))
-" ~/workspace/junD/okf-playbook/knowledge
+" ~/workspace/junD/okf-playbook/bundles/knowledge
 open /tmp/okf-viz.html</code></pre>
   <strong>CDN이 막혀</strong> 그림이 안 나오면, 같은 방식으로 <code>_walk_concepts</code>와 <code>_build_graph</code>를 불러 개념과 간선을 텍스트로 출력한다(모범 답안의 스크립트 참고). 화면에서는 FAQ 노드, 상세 패널의 Sources와 배지, Cited by, 검색 상자를 본다. 검색 상자에는 "3~5일"과 "환불"을 넣어 본다.</li>
   <li><strong>표로 비교한다.</strong> <code>evaluation.md</code> 9회차 첫 표를 채운다. 비교할 것은 간선 수(링크·출처), FAQ가 어떻게 이어지는지, 신뢰 등급과 낡음 표시, 검색이 무엇을 보는지다.</li>
   <li><strong>갈리는 지점을 찾는다.</strong> 진짜 번들은 건드리지 않고 사본에서 다섯 가지를 바꾼다. 그다음 두 소비자로 읽는다.
-<pre><code>rm -rf /tmp/okf-exp &amp;&amp; cp -r knowledge /tmp/okf-exp
+<pre><code>rm -rf /tmp/okf-exp &amp;&amp; cp -r bundles/knowledge /tmp/okf-exp
 # (가) /tmp/okf-exp/policies/returns.md 본문:           (../processes/refunds.md) → (/processes/refunds.md)
 # (나) /tmp/okf-exp/processes/refunds.md frontmatter:   stale_after: 2026-10-01        ← 날짜만
 # (다) /tmp/okf-exp/policies/return-exceptions.md:      verified: { by: human, at: 2026-11-18T15:00:00+09:00 }

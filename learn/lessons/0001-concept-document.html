@@ -53,7 +53,7 @@ tags: [반품, 할인]
 <p class="note">검색기 관점: frontmatter는 <em>고르는 데</em>(분류·필터·미리보기), 본문은 <em>답하는 데</em> 쓴다. 6회차에서 "본문만" 검색과 "+분류" 검색을 비교하는 이유가 여기 있다.</p>
 
 <h2>2. 이름이 곧 ID다</h2>
-<p><strong>개념 ID</strong>는 번들 루트 기준 경로에서 <code>.md</code>를 뺀 값이다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#2-terminology">§2</a> 이 실습의 번들 루트는 <code>knowledge/</code>이므로 <code>knowledge/policies/returns.md</code>의 ID는 <code>policies/returns</code>다.</p>
+<p><strong>개념 ID</strong>는 번들 루트 기준 경로에서 <code>.md</code>를 뺀 값이다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#2-terminology">§2</a> 이 실습의 번들 루트는 <code>bundles/knowledge/</code>이므로 <code>bundles/knowledge/policies/returns.md</code>의 ID는 <code>policies/returns</code>다.</p>
 <p><code>index.md</code>와 <code>log.md</code>는 예약 이름이라 개념 문서에 쓸 수 없다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#31-reserved-filenames">§3.1</a> 예약 파일은 frontmatter가 있어도 개념이 아니다. 하위 디렉터리 인덱스는 frontmatter를 갖지 않고, 번들 루트 <code>index.md</code>만 <code>okf_version: "0.3"</code>, <code>title</code>, <code>description</code>, <code>license</code> 같은 번들 메타데이터를 둘 수 있다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#8-index-files">§8</a><a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#81-bundle-metadata">§8.1</a></p>
 
 <h2>3. 링크가 관계를 만든다</h2>
@@ -77,9 +77,9 @@ tags: [반품, 할인]
   <ol><li><code>title</code> 키 하나</li><li><code>tags</code> 키 하나</li><li><code>type</code> 키 하나</li><li><code>resource</code> 키 하나</li></ol>
 </div>
 
-<div class="quiz" data-answer="2" data-why="번들 루트가 <code>knowledge/</code>이므로 그 아래 경로에서 <code>.md</code>만 뺀다 (§2).">
-  <p class="q">Q2. 번들 루트가 <code>knowledge/</code>일 때 <code>knowledge/policies/returns.md</code>의 개념 ID는?</p>
-  <ol><li><code>knowledge/policies/returns</code></li><li><code>policies/returns</code></li><li><code>policies/returns.md</code></li><li><code>returns</code></li></ol>
+<div class="quiz" data-answer="2" data-why="번들 루트가 <code>bundles/knowledge/</code>이므로 그 아래 경로에서 <code>.md</code>만 뺀다 (§2).">
+  <p class="q">Q2. 번들 루트가 <code>bundles/knowledge/</code>일 때 <code>bundles/knowledge/policies/returns.md</code>의 개념 ID는?</p>
+  <ol><li><code>bundles/knowledge/policies/returns</code></li><li><code>policies/returns</code></li><li><code>policies/returns.md</code></li><li><code>returns</code></li></ol>
 </div>
 
 <div class="quiz" data-answer="4" data-why="끊어진 링크로 번들을 거부하면 안 된다. 아직 쓰지 않은 지식일 수 있다 (§6.1, §11.2).">
@@ -121,7 +121,7 @@ tags: [반품, 할인]
   <summary>힌트 (막혔을 때만 열기)</summary>
   <p>링크는 본문에 문장으로 넣는다. 관계는 문장이 설명한다. 예: "예외 상품은 [반품 예외](……)를 확인한다." 같은 디렉터리라면 파일 이름만으로도 된다.</p>
 </details>
-<p>통과한 내용을 저장소의 <code>knowledge/policies/returns.md</code>로 옮겨 저장하면 2회차 준비가 된다.</p>
+<p>통과한 내용을 저장소의 <code>bundles/knowledge/policies/returns.md</code>로 옮겨 저장하면 2회차 준비가 된다.</p>
 
 <h2>7. 다음 회차 시작 질문</h2>
 <p>다음 회차를 시작할 때 노트 없이 답한다. 빈 곳이 생기면 그것부터 다시 본다.</p>

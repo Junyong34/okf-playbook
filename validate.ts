@@ -1,12 +1,13 @@
-// 사용법: pnpm validate [번들 디렉터리] [--now 시각]   (기본값 knowledge, 지금 시각)
+// 사용법: pnpm validate [번들 디렉터리] [--now 시각]   (기본값 bundles/knowledge, 지금 시각)
 // 공식 검증기와 같은 규칙을 TS로 검사한다. 대조할 때는 pnpm okf:validate [번들 디렉터리].
 import { parseArgs } from 'node:util';
 import { loadBundle } from './src/okf/load.ts';
 import { isMarkdown } from './src/okf/concept.ts';
 import { validateBundle } from './src/okf/validate.ts';
+import { DEFAULT_BUNDLE_DIR } from './src/okf/args.ts';
 
 const { values, positionals } = parseArgs({ allowPositionals: true, options: { now: { type: 'string' } } });
-const root = positionals[0] ?? 'knowledge';
+const root = positionals[0] ?? DEFAULT_BUNDLE_DIR;
 const now = values.now ? new Date(values.now) : new Date();
 if (Number.isNaN(now.getTime())) {
   console.error(`--now를 시각으로 읽을 수 없습니다: ${values.now}`);

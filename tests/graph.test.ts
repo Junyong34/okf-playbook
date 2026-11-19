@@ -142,7 +142,7 @@ describe('G2단계 backlinks', () => {
 
 describe('G3단계 실제 번들', () => {
   test('링크 3개와 출처 1개. FAQ는 출처 간선으로만 이어진다', async () => {
-    const g = buildGraph(await loadBundle('knowledge'));
+    const g = buildGraph(await loadBundle('bundles/knowledge'));
     assert.deepEqual(pairs(g), [
       'policies/return-exceptions.md -link-> policies/returns.md',
       'policies/returns.md -link-> policies/return-exceptions.md',
