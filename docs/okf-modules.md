@@ -234,6 +234,8 @@ flowchart LR
 | `tests/ask.test.ts` | 질의응답: 고른 개념별 신뢰 판정, 대체 경로, 프롬프트, providedPaths |
 | `tests/args.test.ts` | 검색 설정 인자 검증 |
 | `tests/request.test.ts` | 웹 화면의 모델 요청 조립: system/user 분리, 말투 설정 켜기·끄기, 날짜, 순서, 모델 요청 생략 |
+| `tests/claude-protocol.test.ts` | 생성 이벤트 프로토콜 (`shared/claude/protocol.ts`): 인코딩·디코딩 왕복(청크 경계), error·중간 끊김, 요청 검증 |
+| `tests/server.test.ts` | 로컬 API 서버 (`server/app.ts`): 가짜 생성기로 스트림·400·413·503·연결 끊김, SDK 메시지 → 생성 결과 매핑 |
 | `tests/web-citations.test.ts` | 웹 화면의 인용 칩 준비 (`web/src/features/qa/citations.ts`) |
 | `tests/web-bundles.test.ts` | 웹 화면의 번들 자동 탐색: 디렉터리별 묶기, 점 디렉터리 제외, 정렬 (`web/src/lib/bundles/groupByBundle.ts`) |
 
@@ -244,7 +246,7 @@ flowchart LR
 - **새 검색 설정 옵션:** `retrieve.ts`의 `Options`와 `args.ts`의 `parseSearchArgs`를 함께 고친다.
 - **새 frontmatter 필드 읽기:** `Concept.frontmatter`에서 바로 읽는다. 빈 값은 `isBlank`, 목록 필드는 `asList`, 시각은 `parseTimestamp`로 읽는다. 공통 해석이 필요하면 `concept.ts`에 둔다.
 - **새 경로 필드:** `concept.ts`의 `PathFieldName`·`pathFields`와 `graph.ts`의 `FIELD_KIND`를 함께 고친다.
-- **웹 화면 (`web/`):** 브라우저는 `load.ts`·`args.ts`를 가져오지 않는다. 번들은 `web/src/lib/bundles/loadBundles.ts`가 `import.meta.glob`으로 `Bundle`을 만들고, 질문 하나는 `features/qa/prepareRun.ts`가 `ask` → `buildModelRequest` 순서로 조립한 뒤 `lib/claude/generate.ts`가 Vite 프록시를 통해 Express의 `POST /api/generate`를 호출한다. Express는 Claude SDK를 실행하고 NDJSON으로 텍스트와 최종 결과를 보낸다. 연결이 끊기면 SDK 요청도 취소한다. 브라우저가 `checkAnswer`로 인용을 검사한다.
-- **Claude 모델 설정과 요청 형식:** `shared/claude/`에 모델 ID, 생성 옵션, 요청 변환, 스트림 이벤트 타입을 둔다. 웹의 디버깅 미리보기와 Express의 실제 호출이 같은 `toApiRequest()`를 사용한다. 화면별 기본 모델과 표시 이름·설명은 `web/src/config/models.ts`에 둔다. Claude SDK 호출과 API 키는 `server/`에서 처리한다.
+- **웹 화면 (`web/`):** 브라우저는 `load.ts`·`args.ts`를 가져오지 않는다. 번들은 `web/src/lib/bundles/loadBundles.ts`가 `import.meta.glob`으로 `Bundle`을 만들고, 질문 하나는 `features/qa/prepareRun.ts`가 `ask` → `buildModelRequest` 순서로 조립한 뒤 `lib/claude/generate.ts`가 Vite 프록시를 통해 Express의 `POST /api/generate`를 호출한다. Express는 Claude SDK를 실행하고 NDJSON으로 텍스트와 최종 결과를 보낸다. NDJSON 인코딩·디코딩과 요청 검증은 `shared/claude/protocol.ts` 하나를 서버와 브라우저가 같이 쓴다. 연결이 끊기면 SDK 요청도 취소한다. 브라우저가 `checkAnswer`로 인용을 검사한다.
+- **Claude 모델 설정과 요청 형식:** `shared/claude/`에 모델 ID, 생성 옵션, 요청 변환, 스트림 이벤트 타입을 둔다. 웹의 디버깅 미리보기와 Express의 실제 호출이 같은 `toApiRequest()`를 사용한다. 화면별 기본 모델과 표시 이름·설명은 `web/src/config/models.ts`에 둔다. Claude SDK 호출과 API 키는 `server/`에서 처리한다. 생성기 seam은 `Generate` 타입(`shared/claude/types.ts`)이다. 서버 `createApp({ generate })`는 SDK adapter(`server/index.ts`) 또는 테스트용 가짜를 받고, 키가 없으면 `null`을 받아 503을 돌려준다.
 - **번들 추가:** `bundles/<이름>/`를 만들고 `index.md`에 `okf_version`을 넣는다. 웹 화면은 `bundles/*/`를 glob 하나로 읽어 디렉터리별로 나누고(`web/src/lib/bundles/groupByBundle.ts`), `okf_version`이 없는 디렉터리는 건너뛴다. 화면 이름·설명은 `index.md`의 `title`·`description`이다. 예시 질문·말투 설정만 `web/src/config/bundles.ts`의 `BUNDLE_SETTINGS`에 적는다. CLI는 `--dir bundles/<이름>`으로 고른다.
 - **웹 지시문·말투 규칙 바꾸기:** `request.ts`의 `MODEL_INSTRUCTION`. 0005의 `INSTRUCTION`(CLI용)은 그대로 둔다.

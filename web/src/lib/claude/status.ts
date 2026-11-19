@@ -1,4 +1,5 @@
 import { useRouteLoaderData } from 'react-router';
+import { MISSING_KEY_MESSAGE } from '@claude/protocol.ts';
 
 type ClaudeStatus = 'ready' | 'missing-key' | 'offline';
 export const CLAUDE_STATUS_ROUTE = 'app';
@@ -20,7 +21,7 @@ export function useClaudeStatus() {
   return {
     keyReady: status === 'ready',
     message: status === 'missing-key'
-      ? '저장소 루트 .env에 ANTHROPIC_API_KEY를 넣고 API 서버를 다시 시작하세요.'
+      ? MISSING_KEY_MESSAGE
       : 'pnpm dev:api로 로컬 API 서버를 실행한 뒤 페이지를 새로고침하세요.',
     label: { ready: 'API 키 설정됨', 'missing-key': 'API 키 없음', offline: 'API 서버 연결 안 됨' }[status],
   };

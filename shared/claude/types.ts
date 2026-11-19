@@ -9,6 +9,10 @@ export type GenerateParams = {
   onText: (delta: string) => void;
 };
 
+// 생성기 seam. 서버는 SDK를 부르는 adapter, 브라우저는 /api/generate를 부르는 adapter를 쓴다. 테스트는 가짜를 넣는다.
+// signal이 끊기면 reject해야 한다.
+export type Generate = (params: GenerateParams) => Promise<GenerationResult>;
+
 export type TokenUsage = {
   input: number;
   output: number;

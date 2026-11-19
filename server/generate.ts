@@ -2,7 +2,7 @@ import type Anthropic from '@anthropic-ai/sdk';
 import { toApiRequest } from '../shared/claude/apiRequest.ts';
 import type { GenerateParams, GenerationResult, Refusal, StopReason, TokenUsage } from '../shared/claude/types.ts';
 
-type FinalMessage = Anthropic.Beta.BetaMessage;
+export type FinalMessage = Anthropic.Beta.BetaMessage;
 
 const KNOWN_STOP_REASONS: readonly StopReason[] = ['end_turn', 'max_tokens', 'stop_sequence', 'refusal', 'pause_turn'];
 
@@ -37,10 +37,8 @@ function refusalOf(message: FinalMessage): Refusal | null {
   return { category: details?.category ?? null, explanation: details?.explanation ?? null };
 }
 
-export async function generate(client: Anthropic, { request, settings, signal, onText }: GenerateParams): Promise<GenerationResult> {
-  const stream = client.beta.messages.stream(toApiRequest(request, settings), { signal });
-  stream.on('text', onText);
-  const message = await stream.finalMessage();
+// SDK 최종 메시지 → 생성 결과. SDK를 부르지 않는 순수 매퍼라 메시지 예시로 테스트한다.
+export function toGenerationResult(message: FinalMessage): GenerationResult {
   return {
     text: textOf(message),
     stopReason: stopReasonOf(message),
@@ -49,4 +47,11 @@ export async function generate(client: Anthropic, { request, settings, signal, o
     usage: usageOf(message),
     refusal: refusalOf(message),
   };
+}
+
+// 생성기 seam의 SDK adapter
+export async function generate(client: Anthropic, { request, settings, signal, onText }: GenerateParams): Promise<GenerationResult> {
+  const stream = client.beta.messages.stream(toApiRequest(request, settings), { signal });
+  stream.on('text', onText);
+  return toGenerationResult(await stream.finalMessage());
 }

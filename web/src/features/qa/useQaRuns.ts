@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useReducer, useRef } from 'react';
 import { checkAnswer } from '@okf/answer.ts';
 import { generate } from '@/lib/claude/generate.ts';
-import { isAbortError, toGenerationError } from '@/lib/claude/errors.ts';
+import { toClientError } from '@claude/protocol.ts';
 import type { LoadedBundle } from '@/lib/bundles/loadBundles.ts';
 import { prepareRun } from './prepareRun.ts';
 import { runReducer } from './runReducer.ts';
@@ -81,8 +81,8 @@ export function useQaRuns(): QaRunsApi {
           dispatch({ type: 'done', id, result, check, at: Date.now() });
         })
         .catch((error: unknown) => {
-          if (isAbortError(error)) dispatch({ type: 'stopped', id, at: Date.now() });
-          else dispatch({ type: 'error', id, error: toGenerationError(error), at: Date.now() });
+          if (abort.signal.aborted) dispatch({ type: 'stopped', id, at: Date.now() });
+          else dispatch({ type: 'error', id, error: toClientError(error), at: Date.now() });
         })
         .finally(() => {
           if (controller.current === abort) controller.current = null;

@@ -48,7 +48,7 @@ okf-playbook/
 │       ├── index.md · log.md  # 번들 목차와 변경 기록
 │       ├── faqs/              # 카테고리별 목차와 질문별 Markdown
 │       └── references/        # 원본 JSON 사본과 자료 목차
-├── shared/claude/             # 웹·서버 공용 모델 옵션, 요청 변환, 스트림 이벤트 타입
+├── shared/claude/             # 웹·서버 공용 모델 옵션, 요청 변환, 타입, 생성 이벤트 프로토콜(protocol.ts: NDJSON 인코딩·디코딩·요청 검증·오류 문구)
 ├── src/okf/                   # 검증·검색 로직 (파일 시스템과 분리, 웹 UI에서 재사용)
 │   ├── types.ts               # Bundle = Map<경로, 내용>, Issue
 │   ├── load.ts                # 디렉터리 → Bundle
@@ -76,7 +76,7 @@ okf-playbook/
 ├── evaluation.md              # 질문별 검색·답변 평가표 (4~9회차에 채움)
 ├── package.json · tsconfig.json  # Node 22.18+ TS 직접 실행, yaml 패키지
 ├── .env.example               # 로컬 Express용 ANTHROPIC_API_KEY 예시 (.env로 복사)
-├── server/                    # 로컬 Express API (pnpm dev:api), 서버 의존성은 server/package.json
+├── server/                    # 로컬 Express API (pnpm dev:api). app.ts = createApp({ generate }), index.ts = 키 읽기·SDK adapter·listen. 의존성은 server/package.json
 ├── web/                       # 웹 화면 (pnpm dev / pnpm build:web), 웹 의존성은 web/package.json
 │   ├── vite.config.ts · tsconfig.json · index.html
 │   └── src/
