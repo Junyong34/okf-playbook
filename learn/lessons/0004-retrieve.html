@@ -14,8 +14,10 @@
   <p class="kicker">Lesson 0004 · 4회차</p>
   <h1>질문별 문서 찾기, 키워드와 링크 한 단계</h1>
   <p class="lede"><code>src/okf/retrieve.ts</code>를 채워서 질문마다 고른 개념, 링크로 더한 개념, 고른 이유를 출력한다.</p>
-  <div class="meta"><span>약 90분</span><span>회상 5 · 읽기 15 · 퀴즈 5 · 실습 50 · 검토 15</span><span>용어: <a href="../reference/okf-v0.2-core.html">핵심 규칙과 용어집</a></span></div>
+  <div class="meta"><span>약 90분</span><span>회상 5 · 읽기 15 · 퀴즈 5 · 실습 50 · 검토 15</span><span>용어: <a href="../reference/okf-v0.3-core.html">핵심 규칙과 용어집</a></span></div>
 </header>
+
+<p class="note">2026-11-19 OKF v0.3 기준으로 갱신했다. v0.2에서 바뀐 점은 <a href="../../docs/okf-v0.3-changes.md">docs/okf-v0.3-changes.md</a>에 있다. 이 레슨에서는 "어떤 파일이 개념인가"(§3.2)와 "링크가 개념을 가리키는가"(§6.1)가 검색 대상과 링크 따라가기에 반영되었다.</p>
 
 <div class="box win">
   <h3>왜 이것이 다음인가</h3>
@@ -26,7 +28,7 @@
 
 <h2>0. 회상</h2>
 <details><summary>검증기가 끊어진 링크를 오류로 내면 검색기에 어떤 문제가 생기나?</summary>
-<p>번들 하나에 링크 하나만 끊겨도 번들 전체를 못 읽게 된다. 명세는 소비자에게 끊어진 링크를 참고 계속 읽으라고 요구한다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#11-conformance">§11</a> 오늘 검색기도 끊어진 링크는 경고만 남긴다.</p></details>
+<p>번들 하나에 링크 하나만 끊겨도 번들 전체를 못 읽게 된다. 명세는 소비자가 끊어진 링크 때문에 번들을 거부하면 안 된다고 정한다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#61-links-between-concepts">§6.1</a><a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#112-consumer-rules">§11.2</a> 오늘 검색기도 끊어진 링크는 경고만 남긴다.</p></details>
 <details><summary><code>validateBundle</code>이 파일 경로 대신 <code>Map</code>을 받는 이유 두 가지는?</summary>
 <p>테스트에서 디스크 없이 번들을 문자열로 만들 수 있다. 그리고 나중에 웹 화면에서 브라우저가 가진 파일 내용만으로 같은 함수를 돌릴 수 있다. <code>retrieve</code>도 같은 방식이다.</p></details>
 <details><summary><code>../policies/../processes/refunds.md</code>를 정규화하지 않으면 무엇이 중복되나?</summary>
@@ -47,9 +49,17 @@
   <li><strong>키워드로 고른다.</strong> 점수가 <code>minScore</code>(기본 2) 이상인 개념을 점수순으로 <code>maxDocs</code>(기본 3)개까지.</li>
   <li><strong>링크를 한 단계 따라간다.</strong> 키워드로 고른 개념의 링크만 본다. 링크로 들어온 개념의 링크는 따라가지 않는다. 한 단계를 넘기면 관련 없는 개념이 빠르게 늘어난다(학습 계획 §4 구현 순서 2).</li>
   <li><strong>상한을 지킨다.</strong> 링크로 더한 개념도 <code>maxDocs</code>에 포함된다. 6회차 비교에서 설정마다 같은 상한을 쓰기 위해서다.</li>
-  <li><strong>이유를 남긴다.</strong> 키워드로 고른 개념은 점수와 겹친 묶음을, 링크로 더한 개념은 출발 개념을 기록한다. 끊어진 링크·번들 밖 링크·상한 초과는 <code>warnings</code>로 남기고 계속한다.</li>
+  <li><strong>이유를 남긴다.</strong> 키워드로 고른 개념은 점수와 겹친 묶음을, 링크로 더한 개념은 출발 개념을 기록한다. 끊어진 링크·번들 밖 링크·개념이 아닌 대상·상한 초과는 <code>warnings</code>로 남기고 계속한다.</li>
 </ol>
-<p>인덱스(<code>index.md</code>)는 검색 대상에서 뺀다. 인덱스는 길 안내용이고 답의 근거는 개념 본문에서 가져온다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#8-index-files">§8</a></p>
+<p>인덱스(<code>index.md</code>)와 <code>log.md</code>는 예약 파일이라 검색 대상에서 뺀다. 인덱스는 길 안내용이고 답의 근거는 개념 본문에서 가져온다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#31-reserved-filenames">§3.1</a><a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#8-index-files">§8</a></p>
+<div class="box">
+  <h3>v0.3: 개념만 검색하고, 개념을 가리키는 링크만 따라간다</h3>
+  <ul>
+    <li>frontmatter나 비어 있지 않은 <code>type</code>이 없는 <code>.md</code>(<code>README.md</code> 등)는 개념이 아니다. 소비자는 건너뛴다. <code>readConcepts</code>가 이런 파일과 frontmatter를 파싱할 수 없는 파일을 빼고 나머지를 계속 읽는다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#32-concepts-assets-and-other-files">§3.2</a></li>
+    <li>링크는 <code>#fragment</code>를 뺀 대상이 개념 파일로 해석될 때만 개념을 가리킨다. 디렉터리, asset, 개념이 아닌 <code>.md</code>로 가는 링크도 유효하지만 개념을 가리키지는 않는다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#61-links-between-concepts">§6.1</a> 그래서 R4단계는 대상이 번들에 있어도 개념이 아니면 따라가지 않고 "개념이 아니어서 건너뛴다" 경고를 남긴다. 대상이 아예 없으면 "번들에 없어 건너뛴다"다.</li>
+    <li>링크 해석은 0003 <code>resolveLink</code> 그대로다. v0.2 대체 해석(번들 루트 기준으로 다시 찾기)은 경로 필드에만 있고 본문 링크에는 없으므로 링크 따라가기에는 쓰지 않는다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#121-bundles-from-earlier-versions">§12.1</a></li>
+  </ul>
+</div>
 
 <h2>3. 기억에서 꺼내기</h2>
 <p>점수: <span class="quiz-score"></span></p>
@@ -80,7 +90,8 @@
 
 [키워드] policies/returns.md  점수 5  일치: 반품, 상품, 품을, 할인, 환불
 [키워드] policies/return-exceptions.md  점수 3  일치: 반품, 상품, 품할
-[키워드] processes/refunds.md  점수 3  일치: 반품, 불은, 환불</code></pre></li>
+[키워드] processes/refunds.md  점수 3  일치: 반품, 불은, 환불</code></pre>
+  위는 이 레슨을 처음 할 때의 출력이다. 지금 번들에는 0007에서 더한 원문 개념 <code>references/returns-faq.md</code>가 있어 그 개념이 1등(점수 10)으로 들어오고 <code>refunds.md</code>는 상한에 걸린다. 0008 이후 CLI는 고른 개념마다 <code>신뢰:</code>·<code>주의:</code> 줄도, deprecated 개념에 <code>superseded_by</code>가 있으면 <code>대체 개념:</code> 줄도 붙인다.</li>
   <li>저장소 루트 <code>evaluation.md</code> 4회차 표를 채운다. 질문마다 키워드·링크로 고른 개념을 적고, 기대 근거와 비교해 빠진 근거와 불필요한 개념을 적는다.</li>
   <li>설정을 바꿔 본다. 같은 질문에서 무엇이 달라지는지 메모에 적는다. 6회차 비교의 예행연습이다.
 <pre><code>pnpm retrieve "물건을 받은 지 5일 됐어요. 반품 신청할 수 있나요?" --max 1
@@ -124,7 +135,9 @@ export function retrieve(bundle: Bundle, question: string, options: Partial&lt;O
         }
         if (picks.some((p) =&gt; p.path === target)) continue; // 중복 제거 (정규화한 경로로 비교)
         if (!byPath.has(target)) {
-          warnings.push(`${seed.path}의 링크 ${raw}(${target})가 번들에 없어 건너뛴다.`);
+          // 번들에 없거나, 파일은 있어도 개념이 아니다(type 없음, 디렉터리 등). 링크가 개념을 가리킬 때만 따라간다 (§6.1).
+          const why = bundle.has(target) || bundle.has(`${target}/index.md`) ? '개념이 아니어서' : '번들에 없어';
+          warnings.push(`${seed.path}의 링크 ${raw}(${target})가 ${why} 건너뛴다.`);
           continue;
         }
         if (picks.length &gt;= opt.maxDocs) {
@@ -143,7 +156,7 @@ export function retrieve(bundle: Bundle, question: string, options: Partial&lt;O
 <div class="box">
   <h3>완료 기준 (학습 계획 4회차)</h3>
   <ul>
-    <li><code>pnpm test</code> 전체 통과 (0003 포함 51개).</li>
+    <li><code>pnpm test</code>의 0003·0004 테스트 통과 (<code>tests/validate.test.ts</code> 40개 + <code>tests/retrieve.test.ts</code> 22개, v0.3 갱신 뒤 개수).</li>
     <li>질문마다 처음 고른 개념, 링크로 추가한 개념, 선택 이유가 출력된다.</li>
     <li><code>evaluation.md</code> 4회차 표에 질문 6개의 결과와 빠진 근거·불필요한 개념을 적었다.</li>
   </ul>

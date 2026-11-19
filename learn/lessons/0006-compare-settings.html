@@ -14,8 +14,10 @@
   <p class="kicker">Lesson 0006 · 6회차</p>
   <h1>검색 설정 비교</h1>
   <p class="lede">같은 질문을 세 가지 검색 설정으로 돌려 표로 비교한다. 문서 분류와 링크가 결과를 언제 바꾸는지 직접 확인한다.</p>
-  <div class="meta"><span>약 90분</span><span>회상 5 · 읽기 15 · 퀴즈 5 · 실습 50 · 검토 15</span><span>용어: <a href="../reference/okf-v0.2-core.html">핵심 규칙과 용어집</a></span></div>
+  <div class="meta"><span>약 90분</span><span>회상 5 · 읽기 15 · 퀴즈 5 · 실습 50 · 검토 15</span><span>용어: <a href="../reference/okf-v0.3-core.html">핵심 규칙과 용어집</a></span></div>
 </header>
+
+<div class="note"><strong>v0.3 기준.</strong> 2026-11-19 OKF v0.3 기준으로 갱신했다. 명세 인용(§)은 v0.3 번호다. v0.2에서 바뀐 점은 <a href="../../docs/okf-v0.3-changes.md">docs/okf-v0.3-changes.md</a>에 있다.</div>
 
 <div class="box win">
   <h3>왜 이것이 다음인가</h3>
@@ -30,7 +32,7 @@
 <details><summary><code>check-answer</code>가 통과했는데도 틀린 답일 수 있는 경우를 하나 든다.</summary>
 <p>인용 경로는 맞는데 내용이 다른 경우다. <code>[policies/returns.md]</code>를 붙이고 "14일 이내"라고 쓰면 형식 검사는 통과한다. 내용은 사람이 파일을 열어 확인한다.</p></details>
 <details><summary>OKF의 <code>sources</code>와 각주는 0005의 경로 인용과 무엇이 같고 무엇이 다른가?</summary>
-<p>같은 점: 주장 단위로 근거를 붙인다. 다른 점: 경로 인용은 답변이 번들 안의 개념을 가리킨다. <code>sources</code>와 각주는 개념이 자신을 만든 자료를 가리킨다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#51-provenance-sources">§5.1</a> 근거의 근거다. 0007에서 다룬다.</p></details>
+<p>같은 점: 주장 단위로 근거를 붙인다. 다른 점: 경로 인용은 답변이 번들 안의 개념을 가리킨다. <code>sources</code>와 각주는 개념이 자신을 만든 자료를 가리킨다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#51-provenance-sources">§5.1</a> 근거의 근거다. 0007에서 다룬다.</p></details>
 
 <h2>1. 세 설정과 통제 변인</h2>
 <table>
@@ -43,8 +45,8 @@
 
 <h3>명세가 말하는 것과 말하지 않는 것</h3>
 <ul>
-  <li><strong>분류 필드의 용도.</strong> <code>type</code>은 소비자가 라우팅과 필터링에 쓴다. <code>description</code>은 개념을 요약한 한 문장이고 인덱스 생성, 검색 스니펫, 미리보기에 쓰인다. <code>tags</code>는 여러 개념을 가로지르는 분류다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#41-frontmatter">§4.1</a> 본문을 다 읽기 전에 개념을 고르게 돕는 정보다. 인덱스가 같은 목적(점진적 공개)을 가진다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#8-index-files">§8</a></li>
-  <li><strong>링크가 담는 것.</strong> 개념 A에서 B로 가는 링크는 관계가 있다는 주장이다. 관계의 종류(부모·자식, 참조, 의존)는 링크가 아니라 주변 문장이 전한다. 그래프를 만드는 소비자는 보통 모든 링크를 종류 없는 방향 간선으로 다룬다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#61-links-between-concepts">§6.1</a> 우리 검색기도 그렇게 한다. 링크 주변 문장이 질문과 관계있는지는 보지 않는다.</li>
+  <li><strong>분류 필드의 용도.</strong> <code>type</code>은 소비자가 라우팅과 필터링에 쓴다. <code>description</code>은 개념을 요약한 한 문장이고 인덱스 생성, 검색 스니펫, 미리보기에 쓰인다. <code>tags</code>는 여러 개념을 가로지르는 분류다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#41-frontmatter">§4.1</a> 본문을 다 읽기 전에 개념을 고르게 돕는 정보다. 인덱스가 같은 목적(점진적 공개)을 가진다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#8-index-files">§8</a></li>
+  <li><strong>링크가 담는 것.</strong> 개념 A에서 B로 가는 링크는 관계가 있다는 주장이다. 관계의 종류(부모·자식, 참조, 의존)는 링크가 아니라 주변 문장이 전한다. 그래프를 만드는 소비자는 보통 모든 링크를 종류 없는 방향 간선으로 다룬다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#61-links-between-concepts">§6.1</a> 우리 검색기도 그렇게 한다. 링크 주변 문장이 질문과 관계있는지는 보지 않는다. v0.3은 링크 대상(<code>#fragment</code>를 뺀 것)이 개념 파일로 해석될 때만 "개념을 가리키는 링크"라고 정했다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#61-links-between-concepts">§6.1</a> 그래서 검색기의 링크 한 단계도 <code>type</code>이 있는 개념만 더하고, <code>README.md</code>처럼 개념이 아닌 파일로 가는 링크는 따라가지 않고 경고만 남긴다.</li>
   <li><strong>명세가 정하지 않는 것.</strong> 검색 방법은 명세 범위 밖이다. 두 글자 묶음 점수, 상한, 기준, 링크 한 단계는 모두 이 과정에서 정한 설계다. 오늘 결과는 "OKF의 성질"이 아니라 "이 번들과 이 검색기의 성질"로 기록한다.</li>
 </ul>
 
@@ -149,7 +151,7 @@ export function compare(bundle: Bundle, questions: Question[], settingList: Sett
 
 <div class="box">
   <h3>1차 자료</h3>
-  <p><a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#41-frontmatter">OKF v0.2 명세 §4.1 Frontmatter</a>(분류 필드의 용도), <a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#61-links-between-concepts">§6.1 Links between concepts</a>(링크가 담는 것과 담지 않는 것), <a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#8-index-files">§8 Index files</a>(점진적 공개). 세 절을 합쳐 읽으면 "본문을 열기 전에 무엇으로 고르는가"라는 오늘의 질문이 된다.</p>
+  <p><a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#41-frontmatter">OKF v0.3 명세 §4.1 Frontmatter</a>(분류 필드의 용도), <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#61-links-between-concepts">§6.1 Links between concepts</a>(링크가 담는 것과 담지 않는 것), <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#8-index-files">§8 Index files</a>(점진적 공개). 세 절을 합쳐 읽으면 "본문을 열기 전에 무엇으로 고르는가"라는 오늘의 질문이 된다.</p>
   <p>표가 예상과 다르거나 테스트가 납득되지 않으면 <code>pnpm -s compare</code> 출력을 그대로 에이전트에게 붙여 넣고 물어본다.</p>
 </div>
 

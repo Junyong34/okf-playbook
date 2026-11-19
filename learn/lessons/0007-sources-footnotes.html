@@ -13,30 +13,32 @@
   <p class="kicker">Lesson 0007 · 심화 1</p>
   <h1>원문으로 거슬러 올라가기</h1>
   <p class="lede">정책 개념에 <code>sources</code>와 각주를 달아 FAQ 원문과 잇는다. 답변 → 정책 → FAQ까지 따라가 보고, 원문 개념을 번들에 넣었을 때 검색이 어떻게 바뀌는지 확인한다.</p>
-  <div class="meta"><span>약 90분</span><span>회상 5 · 읽기 15 · 퀴즈 5 · 실습 50 · 검토 15</span><span>용어: <a href="../../GLOSSARY.md">GLOSSARY.md</a> · <a href="../reference/okf-v0.2-core.html">핵심 규칙</a></span></div>
+  <div class="meta"><span>약 90분</span><span>회상 5 · 읽기 15 · 퀴즈 5 · 실습 50 · 검토 15</span><span>용어: <a href="../../GLOSSARY.md">GLOSSARY.md</a> · <a href="../reference/okf-v0.3-core.html">핵심 규칙</a></span></div>
 </header>
+
+<div class="note"><strong>v0.3 기준.</strong> 2026-11-19 OKF v0.3 기준으로 갱신했다. 명세 인용(§)은 v0.3 번호다. v0.2에서 바뀐 점은 <a href="../../docs/okf-v0.3-changes.md">docs/okf-v0.3-changes.md</a>에 있다.</div>
 
 <div class="box win">
   <h3>왜 이것이 다음인가</h3>
   <p>5회차에 답변의 문장마다 인용을 붙였다. 인용은 답변이 개념을 가리킨다. 그런데 그 개념은 무엇을 보고 썼을까? 개념이 자료를 가리키는 것이 출처다. 오늘은 출처를 달아 "근거의 근거"를 따라갈 수 있게 만든다. 학습 계획 §6의 심화 1이고, 미뤄 둔 FAQ 실습도 여기서 한다.</p>
 </div>
 
-<div class="note"><strong>시작 전 확인.</strong> 오늘 코드는 0003의 <code>splitFrontmatter</code>·<code>resolveLink</code>와 0006의 <code>pnpm compare</code>를 쓴다. 둘 다 구현되어 있다.</div>
+<div class="note"><strong>시작 전 확인.</strong> 오늘 코드는 0003의 <code>splitFrontmatter</code>·<code>resolveLink</code>(지금은 <code>src/okf/concept.ts</code>에 있고, 경로 필드용 <code>resolvePathField</code>가 이것을 쓴다)와 0006의 <code>pnpm compare</code>를 쓴다. 모두 구현되어 있다.</div>
 
 <h2>0. 회상</h2>
 <details><summary>0006 표에서 링크 확장이 불필요한 개념을 더한 이유를 §6.1의 문장 하나로 설명한다.</summary>
-<p>링크는 관계가 있다는 사실만 담고, 관계의 종류는 주변 문장이 전한다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#61-links-between-concepts">§6.1</a> 검색기는 주변 문장을 보지 않고 모든 링크를 똑같이 따라갔다.</p></details>
+<p>링크는 관계가 있다는 사실만 담고, 관계의 종류는 주변 문장이 전한다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#61-links-between-concepts">§6.1</a> 검색기는 주변 문장을 보지 않고 모든 링크를 똑같이 따라갔다.</p></details>
 <details><summary><code>description</code>에만 있는 단어가 검색을 살린 사례를 들고, 그 단어를 본문에도 넣어야 하는지 판단한다.</summary>
-<p>q7의 "기간"이다. 답에 필요한 사실("3~5일")은 이미 본문에 있으므로 꼭 넣을 필요는 없다. <code>description</code>은 개념을 고르는 데 쓰는 요약이고<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#41-frontmatter">§4.1</a>, 근거는 본문에서 온다. 다만 본문만 보는 소비자를 생각하면 본문 제목에 넣는 것도 방법이다. 정답은 하나가 아니다.</p></details>
+<p>q7의 "기간"이다. 답에 필요한 사실("3~5일")은 이미 본문에 있으므로 꼭 넣을 필요는 없다. <code>description</code>은 개념을 고르는 데 쓰는 요약이고<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#41-frontmatter">§4.1</a>, 근거는 본문에서 온다. 다만 본문만 보는 소비자를 생각하면 본문 제목에 넣는 것도 방법이다. 정답은 하나가 아니다.</p></details>
 <details><summary>답변의 근거가 번들의 개념이라면, 그 개념이 옳다는 근거는 어디에 적어 두는가?</summary>
-<p>개념의 frontmatter <code>sources</code>와 본문 각주다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#51-provenance-sources">§5.1</a> 오늘의 주제다.</p></details>
+<p>개념의 frontmatter <code>sources</code>와 본문 각주다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#51-provenance-sources">§5.1</a> 오늘의 주제다.</p></details>
 
 <h2>1. 인용과 출처는 방향이 다르다</h2>
 <pre><code>답변 문장 ──인용──▶ 정책 개념 ──각주·sources──▶ FAQ 개념
 "7일 이내…" [policies/returns.md]   [^returns-faq] → /references/returns-faq.md</code></pre>
 <ul>
   <li><strong>인용</strong>은 답변이 개념을 가리킨다. 5회차에 만들었다.</li>
-  <li><strong>출처</strong>는 개념이 자기를 만든 자료를 가리킨다. 오늘 만든다. 자료는 번들 밖(URL)일 수도 있고 번들 안 개념일 수도 있다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#51-provenance-sources">§5.1</a></li>
+  <li><strong>출처</strong>는 개념이 자기를 만든 자료를 가리킨다. 오늘 만든다. 자료는 번들 밖(URL)일 수도 있고 번들 안 개념일 수도 있다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#51-provenance-sources">§5.1</a></li>
 </ul>
 
 <h2>2. 명세 규칙</h2>
@@ -46,9 +48,11 @@
     resource: /references/returns-faq.md  # 항목 안에서 필수
     title: 반품·환불 FAQ                    # 선택</code></pre>
 <ul>
-  <li><strong><code>resource</code>만 필수다.</strong> 따라갈 수 있는 것(절대 URL, 번들 경로, <code>references/</code> 안의 경로)이거나, 따라갈 수 없는 범위 설명(예: "BigQuery 프로젝트 X의 모든 쿼리")이다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#51-provenance-sources">§5.1</a></li>
-  <li><strong>경로는 세 형식을 쓸 수 있다.</strong> 절대 URL, <code>/</code>로 시작하는 번들 루트 기준 경로, 상대 경로.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#62-path-valued-fields">§6.2</a></li>
-  <li><strong><code>references/</code>는 관례다.</strong> 외부 자료를 번들 안의 개념으로 옮겨 두는 디렉터리 이름이다. 필수는 아니다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#63-the-references-convention">§6.3</a></li>
+  <li><strong><code>resource</code>만 필수다.</strong> 따라갈 수 있는 것(절대 URL이나 번들 안 경로)이거나, 따라갈 수 없는 범위 설명(예: "BigQuery 프로젝트 X의 모든 쿼리")이다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#51-provenance-sources">§5.1</a> <code>resource</code>가 없는 항목은 소비자가 무시하고 경고하는 편이 좋다(SHOULD).<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#112-consumer-rules">§11.2</a></li>
+  <li><strong>항목 하나는 대시 없이 써도 된다.</strong> <code>sources: { id: …, resource: … }</code>처럼 매핑 하나만 쓰면 소비자는 항목 하나짜리 목록으로 읽어야 한다(MUST). <code>null</code>·빈 문자열·빈 목록은 키가 없는 것과 같다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#112-consumer-rules">§11.2</a> 제공 함수 <code>readProvenance</code>가 이렇게 읽는다(P0단계).</li>
+  <li><strong><code>sources[].resource</code>는 경로 필드다.</strong> 경로 필드는 <code>resource</code>, <code>sources[].resource</code>, <code>superseded_by</code>, §10의 <code>computation</code>·<code>executor.resource</code>·<code>attester.resource</code>다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#62-path-fields">§6.2</a> 해석 규칙은 본문 링크와 같다. URI 스킴이 있으면 절대 URL, <code>/</code>로 시작하면 번들 루트 기준, 그 밖은 <strong>그 파일이 있는 디렉터리 기준</strong>이다. 번들 루트 밖으로 나가는 값은 외부이고 로컬 파일 시스템에서 읽지 않는다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#6-links-and-paths">§6</a></li>
+  <li><strong>v0.2 대체 해석이 있다.</strong> v0.2 명세는 경로 필드의 상대 경로가 어디 기준인지 적지 않았고, 예제는 <code>references/x.md</code>처럼 번들 루트 기준으로 썼다. v0.3에서 이 값은 파일 디렉터리 기준으로 풀려 찾지 못한다. 그래서 <code>/</code> 없는 경로 필드가 파일 기준으로 풀리지 않고, 번들이 <code>okf_version</code> 0.2 이하를 선언했거나 선언이 없으면 번들 루트 기준으로 다시 찾아도 된다(MAY).<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#62-path-fields">§6.2</a> <a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#121-bundles-from-earlier-versions">§12.1</a> 본문 링크에는 이 대체 해석이 없다. 우리 번들은 <code>okf_version: "0.3"</code>이라 대체 해석을 쓰지 않는다.</li>
+  <li><strong><code>references/</code>는 관례다.</strong> 외부 자료의 사본, 실행 안내, 코드를 두는 디렉터리 이름이다. 필수는 아니고, 다른 개념이 들어가도 된다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#63-the-references-convention">§6.3</a></li>
 </ul>
 <h3>문장 단위 출처: 각주 (§5.1)</h3>
 <pre><code>할인 상품을 포함해 수령 후 7일 이내에 반품을 신청할 수 있다.[^returns-faq]
@@ -56,12 +60,12 @@
 [^returns-faq]: 반품·환불 FAQ</code></pre>
 <ul>
   <li><strong>각주 라벨이 <code>sources[].id</code>와 같아야 한다.</strong> 라벨이 출처로 가는 열쇠다. 소비자는 각주 문장이 아니라 같은 <code>id</code>의 항목으로 출처를 찾는다.</li>
-  <li><strong>위치 번호(<code>sources[0]</code>)를 쓰지 않는다.</strong> 에이전트가 문서를 계속 고쳐 쓰므로 목록 순서가 바뀌면 번호는 조용히 엉뚱한 출처를 가리킨다. <code>id</code>는 순서가 바뀌어도 남는다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#51-provenance-sources">§5.1</a></li>
-  <li><strong>출처가 번들 안 개념이면 계보가 이어진다.</strong> 따로 필드를 두지 않아도 링크 그래프에 간선이 생기고, 소비자는 그 개념의 <code>sources</code>로 다시 따라갈 수 있다(MAY).<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#51-provenance-sources">§5.1</a> 오늘 만드는 <code>trace</code>가 이 일을 한다.</li>
+  <li><strong>위치 번호(<code>sources[0]</code>)를 쓰지 않는다.</strong> 에이전트가 문서를 계속 고쳐 쓰므로 목록 순서가 바뀌면 번호는 조용히 엉뚱한 출처를 가리킨다. <code>id</code>는 순서가 바뀌어도 남는다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#51-provenance-sources">§5.1</a></li>
+  <li><strong>출처가 번들 안 개념이면 계보가 이어진다.</strong> OKF에는 계보 전용 필드가 없다. 개념으로 풀리는 경로 필드는 그 자체로 번들 그래프의 간선이고, 소비자는 그 개념의 <code>sources</code>로 다시 따라갈 수 있다(MAY).<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#51-provenance-sources">§5.1</a> <a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#64-the-bundle-graph">§6.4</a> 오늘 만드는 <code>trace</code>가 이 일을 한다. 대상 파일에 <code>type</code>이 없으면 개념이 아니므로 따라가지 않는다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#32-concepts-assets-and-other-files">§3.2</a></li>
 </ul>
 
 <h3>팀 규칙을 어디까지 적용할까</h3>
-<p>0002에서 "번들 안 링크는 상대 경로로 쓴다"는 팀 규칙을 정했다(<code>docs/team-rules.md</code>). 이유는 GitHub와 에디터 미리보기가 본문의 <code>/</code> 링크를 저장소 루트로 해석해 깨뜨리기 때문이었다. 학습 계획은 <code>resource: /references/returns-faq.md</code>처럼 번들 루트 기준 경로를 쓴다. frontmatter 값은 미리보기에서 링크로 그려지지 않는다. 이 규칙을 <code>sources[].resource</code>에도 적용할지 실습 4단계에서 정한다.</p>
+<p>0002에서 "번들 안 링크는 상대 경로로 쓴다"는 팀 규칙을 정했다(<code>docs/team-rules.md</code>). 이유는 GitHub와 에디터 미리보기가 본문의 <code>/</code> 링크를 저장소 루트로 해석해 깨뜨리기 때문이었다. 학습 계획은 <code>resource: /references/returns-faq.md</code>처럼 번들 루트 기준 경로를 쓴다. frontmatter 값은 미리보기에서 링크로 그려지지 않는다. 이 규칙을 <code>sources[].resource</code>에도 적용할지 실습 4단계에서 정한다. 어느 쪽을 고르든 <code>/</code> 없이 <code>references/returns-faq.md</code>라고만 쓰면 안 된다. v0.3에서는 <code>policies/references/returns-faq.md</code>로 풀린다. 번들 루트 기준이면 <code>/references/returns-faq.md</code>, 파일 기준이면 <code>../references/returns-faq.md</code>다. 공식 스킬 <code>okf-generate</code>는 경로 필드를 <code>/</code>로 시작하게 쓰라고 안내한다.</p>
 
 <h2>3. 기억에서 꺼내기</h2>
 <p>점수: <span class="quiz-score"></span></p>
@@ -81,10 +85,14 @@
   <p class="q">Q4. 인용과 출처의 차이로 맞는 것은?</p>
   <ol><li>인용은 답변→개념, 출처는 개념→자료</li><li>인용은 frontmatter, 출처는 본문</li><li>인용은 필수, 출처는 금지</li><li>둘은 같은 말이다</li></ol>
 </div>
+<div class="quiz" data-answer="3" data-why="§6: <code>/</code>가 없으면 그 파일의 디렉터리 기준이다. <code>policies/</code> 아래에서 풀면 <code>policies/references/returns-faq.md</code>이고, 번들에 없다. v0.2 대체 해석(§6.2, §12.1)은 번들이 0.2 이하이거나 버전 선언이 없을 때만 쓴다. 우리 번들은 0.3을 선언했다.">
+  <p class="q">Q5. <code>okf_version: "0.3"</code> 번들의 <code>policies/returns.md</code>에 <code>resource: references/returns-faq.md</code>라고 썼다. 소비자는 어디로 푸는가?</p>
+  <ol><li><code>references/returns-faq.md</code> (번들 루트 기준)</li><li>외부 경로라서 읽지 않는다</li><li><code>policies/references/returns-faq.md</code> (파일 기준, 번들에 없음)</li><li>두 곳을 다 찾아 있는 쪽을 쓴다</li></ol>
+</div>
 
 <h2>4. 실습: 답변에서 원문까지</h2>
 <ol>
-  <li><code>src/okf/provenance.ts</code>의 TODO를 채운다. <strong>P1</strong> <code>checkAttribution</code> → <strong>P2</strong> <code>trace</code>. 출처·각주 읽기(<code>readProvenance</code>), <code>resource</code> 나누기(<code>classifyResource</code>), 출력(<code>formatTrace</code>)은 들어 있다. 실패 메시지가 <code>Error: TODO P1단계 …</code>이면 남은 실습이다.
+  <li><code>src/okf/provenance.ts</code>의 TODO를 채운다. <strong>P1</strong> <code>checkAttribution</code> → <strong>P2</strong> <code>trace</code>. 출처·각주 읽기(<code>readProvenance</code>, 대시 없는 항목·빈 값 처리 포함), 출력(<code>formatTrace</code>)은 들어 있고, P0단계 테스트가 이것을 확인한다. 경로 필드 공용 함수는 <code>src/okf/concept.ts</code>에 있다. <code>classifyResource</code>(URL·범위 설명·경로 나누기), <code>resolvePathField</code>(§6 해석과 v0.2 대체 해석, <code>{ target, legacy }</code>를 돌려준다), <code>isConceptPath</code>(대상이 개념인지)를 쓴다. 실패 메시지가 <code>Error: TODO P1단계 …</code>이면 남은 실습이다.
 <pre><code>node --test --test-name-pattern="P1단계" "tests/**/*.test.ts"
 node --test --test-name-pattern="P2단계" "tests/**/*.test.ts"</code></pre></li>
   <li><strong>검색 실험의 기준점을 남긴다.</strong> 번들을 바꾸기 전에 지금 결과를 저장해 둔다. 그리고 <code>evaluation.md</code> 7회차에 예측을 적는다. "FAQ 개념을 넣으면 질문 1~8의 고른 개념이 어떻게 바뀔까?"
@@ -97,9 +105,9 @@ pnpm trace policies/returns.md</code></pre></li>
   <li><strong>검색이 어떻게 바뀌었나.</strong> 다시 비교하고 차이를 본다.
 <pre><code>pnpm -s compare &gt; /tmp/compare-after.txt
 diff /tmp/compare-before.txt /tmp/compare-after.txt</code></pre>
-  <code>evaluation.md</code> 7회차에 예측과 비교해 적는다. 특히 q4·q8을 본다. FAQ 개념이 왜 그 자리에 들어왔는지, 무엇을 밀어냈는지, 소비자는 이것을 어떻게 다뤄야 하는지를 한두 줄 쓴다. 단서: <code>type</code>은 소비자가 라우팅과 필터링에 쓴다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#41-frontmatter">§4.1</a> 검색기는 고치지 않는다.</li>
+  <code>evaluation.md</code> 7회차에 예측과 비교해 적는다. 특히 q4·q8을 본다. FAQ 개념이 왜 그 자리에 들어왔는지, 무엇을 밀어냈는지, 소비자는 이것을 어떻게 다뤄야 하는지를 한두 줄 쓴다. 단서: <code>type</code>은 소비자가 라우팅과 필터링에 쓴다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#41-frontmatter">§4.1</a> 검색기는 고치지 않는다.</li>
 </ol>
-<p class="note">여유가 있으면 <code>refunds.md</code>와 <code>return-exceptions.md</code>에도 같은 출처를 단다. 각주 라벨을 일부러 틀리게 써서 <code>pnpm trace</code>가 <code>WARN</code>을 내는지도 본다.</p>
+<p class="note">여유가 있으면 <code>refunds.md</code>와 <code>return-exceptions.md</code>에도 같은 출처를 단다. 각주 라벨을 일부러 틀리게 써서 <code>pnpm trace</code>가 <code>WARN</code>을 내는지도 본다. v0.2 대체 해석도 사본에서 볼 수 있다. <code>cp -r knowledge /tmp/okf-v02</code>로 사본을 만들고 <code>returns.md</code>의 <code>resource</code>를 <code>references/returns-faq.md</code>(<code>/</code> 없음)로 바꿔 <code>pnpm trace policies/returns.md --dir /tmp/okf-v02</code>를 돌린다. 출처가 <code>policies/references/returns-faq.md (번들에 없음)</code>으로 나온다. 사본 <code>index.md</code>의 <code>okf_version</code>을 <code>"0.2"</code>로 바꿔 다시 돌리면 <code>(번들 안 개념, v0.2 대체 해석: 번들 루트 기준으로 찾음)</code>으로 바뀐다.</p>
 
 <details><summary>모범 답안: <code>checkAttribution</code>과 <code>trace</code> (테스트를 직접 통과시킨 뒤에 열기)</summary>
 <pre><code>export function checkAttribution(p: ConceptProvenance): AttributionIssue[] {
@@ -128,14 +136,17 @@ export function trace(bundle: Bundle, path: string, visited: Set&lt;string&gt; =
     if (!s.resource) return { ...base, kind: 'none' };
     const kind = classifyResource(s.resource);
     if (kind !== 'path') return { ...base, kind };
-    const target = resolveLink(path, s.resource);
-    if (target === null) return { ...base, kind: 'outside' };
-    if (!bundle.has(target)) return { ...base, kind: 'missing', target };
-    if (visited.has(target)) return { ...base, kind: 'bundle', target };
-    return { ...base, kind: 'bundle', target, next: trace(bundle, target, visited) ?? undefined };
+    const { target, legacy } = resolvePathField(bundle, path, s.resource); // '/'는 번들 루트, 아니면 개념 위치 기준
+    const at = legacy ? { ...base, legacy } : base;
+    if (target === null) return { ...at, kind: 'outside' };
+    if (!bundle.has(target)) return { ...at, kind: 'missing', target };
+    if (!isConceptPath(bundle, target)) return { ...at, kind: 'not-a-concept', target };
+    if (visited.has(target)) return { ...at, kind: 'bundle', target };
+    return { ...at, kind: 'bundle', target, next: trace(bundle, target, visited) ?? undefined };
   });
   return { path, claims: p.claims, sources, issues: checkAttribution(p) };
 }</code></pre>
+<p>v0.2 기준 답안과 다른 곳은 두 가지다. 하나는 <code>resolveLink</code> 대신 <code>resolvePathField</code>를 써서 v0.2 번들의 대체 해석 결과(<code>legacy</code>)까지 받는 것이다. 다른 하나는 대상 파일이 있어도 개념이 아니면 <code>not-a-concept</code>로 나누고 따라가지 않는 것이다.</p>
 </details>
 
 <details><summary>모범 답안: FAQ 개념과 정책의 출처 (직접 쓴 뒤에 열기)</summary>
@@ -187,9 +198,9 @@ sources:
 
 <h2>5. 검토</h2>
 <ul>
-  <li><strong>출처가 있다고 맞는 것은 아니다.</strong> 출처는 "무엇을 보고 썼나"만 말한다. 정책 문장이 FAQ와 정말 같은지 누가 확인했는지는 적혀 있지 않다. 그것은 <code>verified</code>가 맡는다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#52-trust-generated-and-verified">§5.2</a> 0008에서 다룬다.</li>
+  <li><strong>출처가 있다고 맞는 것은 아니다.</strong> 출처는 "무엇을 보고 썼나"만 말한다. 정책 문장이 FAQ와 정말 같은지 누가 확인했는지는 적혀 있지 않다. 그것은 <code>verified</code>가 맡는다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#52-trust-generated-and-verified">§5.2</a> 0008에서 다룬다.</li>
   <li><strong>계보는 FAQ에서 끝난다.</strong> FAQ 개념에는 <code>sources</code>가 없다. 더 거슬러 올라갈 자료(예: 내부 규정 문서 URL)가 있다면 FAQ에도 출처를 달 수 있다.</li>
-  <li><strong>원문 개념도 개념이다.</strong> <code>references/</code> 안의 파일도 <code>type</code>을 가진 개념이라서 검증기도 검색기도 똑같이 읽는다. 6단계에서 본 변화가 그 결과다. 무엇을 근거로 쓸지는 소비자가 <code>type</code>을 보고 정한다.</li>
+  <li><strong>원문 개념도 개념이다.</strong> <code>references/</code> 안의 파일도 <code>type</code>을 가진 개념이라서 검증기도 검색기도 똑같이 읽는다. 거꾸로 <code>type</code>이 없는 <code>.md</code>(예: <code>references/README.md</code>)는 v0.3에서 개념이 아니다. 검증기는 <code>not-a-concept</code> 경고만 내고, 검색기는 건너뛰고, <code>trace</code>는 <code>not-a-concept</code>로 표시하고 따라가지 않는다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#32-concepts-assets-and-other-files">§3.2</a> 6단계에서 본 변화가 그 결과다. 무엇을 근거로 쓸지는 소비자가 <code>type</code>을 보고 정한다.</li>
 </ul>
 
 <div class="box">
@@ -211,7 +222,7 @@ sources:
 
 <div class="box">
   <h3>1차 자료</h3>
-  <p><a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#51-provenance-sources">OKF v0.2 명세 §5.1 Provenance: sources</a>(항목 구조, 각주, 계보), <a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#62-path-valued-fields">§6.2 Path-valued fields</a>(경로 형식), <a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#63-the-references-convention">§6.3 The references/ convention</a>. §5.1 뒷부분의 출처 신뢰 신호(<code>author</code>, <code>usage_count</code>, <code>last_modified</code>)는 0008과 함께 읽는다.</p>
+  <p><a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#51-provenance-sources">OKF v0.3 명세 §5.1 Provenance: sources</a>(항목 구조, 각주, 계보), <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#62-path-fields">§6.2 Path fields</a>(경로 필드 목록, v0.2 대체 해석), <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#6-links-and-paths">§6 Links and paths</a>(링크와 경로 필드의 공통 해석 규칙), <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#121-bundles-from-earlier-versions">§12.1 Bundles from earlier versions</a>, <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#63-the-references-convention">§6.3 The references/ convention</a>. §5.1 뒷부분의 출처 신뢰 신호(<code>author</code>, <code>usage_count</code>, <code>last_modified</code>)는 0008과 함께 읽는다.</p>
   <p><code>pnpm trace</code> 출력이나 검색 변화가 납득되지 않으면 출력을 그대로 에이전트에게 붙여 넣고 물어본다.</p>
 </div>
 
