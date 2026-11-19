@@ -1,6 +1,6 @@
 # AGENTS.md
 
-OKF(Open Knowledge Format) v0.2를 학습하고, 반품·환불 지식 번들로 근거를 붙인 질의응답을 실습하는 저장소.
+OKF(Open Knowledge Format) v0.3을 학습하고, 반품·환불 지식 번들로 근거를 붙인 질의응답을 실습하는 저장소.
 
 ## 디렉터리 구조
 
@@ -15,6 +15,8 @@ okf-playbook/
 │   ├── agents/                # 에이전트 스킬 설정 (이슈 트래커, 라벨, 도메인 문서 규칙)
 │   ├── okf-learning-plan.md   # 전체 학습·실습 계획 (기준 문서)
 │   ├── okf-modules.md         # src/okf 모듈별 역할과 CLI별 흐름 (구조를 바꾸면 함께 갱신)
+│   ├── okf-v0.3-changes.md    # v0.2 → v0.3 변경 안내 (깨지는 변경, 절 번호 대응, 이 저장소의 결정)
+│   ├── okf-skills-comparison.md # 공식·외부 OKF 스킬 비교
 │   ├── team-rules.md          # OKF 명세 위에 정한 팀 규칙 (validate.ts가 team/* 경고로 검사)
 │   └── sessions/              # 회차별 학습 노트
 ├── learn/                     # /teach 학습 공간 (절차: learn/README.md)
@@ -24,10 +26,11 @@ okf-playbook/
 │   ├── assets/                # 공용 CSS·퀴즈·OKF 검사기·경로 연습·bigram 실습
 │   └── learning-records/      # 익힌 것 기록 (0001-*.md)
 ├── .scratch/                  # 로컬 Markdown 이슈·스펙 (필요할 때 생성)
+│   └── okf-v0.3-migration/    # v0.3 마이그레이션 스펙 (spec.md: 결정 사항과 하지 않을 일)
 ├── source/                    # OKF로 변환하기 전 데이터
 │   └── sample-faq.json       # FAQ 테스트 샘플
 ├── knowledge/                 # OKF 번들 루트
-│   ├── index.md               # okf_version: "0.2" 선언, 목차
+│   ├── index.md               # 번들 메타데이터(okf_version: "0.3", title, description), 목차
 │   ├── references/
 │   │   └── returns-faq.md     # 원문 개념 (type: Reference), returns.md의 출처
 │   ├── policies/
@@ -69,7 +72,7 @@ okf-playbook/
 
 ## 실습 코드 주의
 
-`src/okf/` 실습 함수(0003 `validate.ts`, 0004 `retrieve.ts`, 0005 `answer.ts`)는 사용자 요청으로 구현을 마쳤다(2026-11-18). 0006 `compare.ts`의 `judge`·`compare`도 사용자 요청으로 채웠다. 0007 `provenance.ts`의 `checkAttribution`·`trace`와 `knowledge/references/returns-faq.md`·`returns.md` 출처도 사용자 요청으로 채웠다. 0008 `trust.ts`의 `normalizeVerified`·`trustTier`·`assess`도 사용자 요청으로 채웠다. 0009 `graph.ts`의 `buildGraph`·`backlinks`도 사용자 요청으로 채웠다(2026-11-19). 공식 저장소(뷰어)는 이 저장소 밖(`/tmp/okf-official` 등)에 받는다. `verified`의 `human:` 기록은 사용자가 직접 대조한 뒤 사용자가 적는다. 에이전트가 대신 `human:`을 적지 않는다. 새 레슨에서 TODO 실습을 만들면 사용자가 요청하기 전에는 채우지 않는다. 사용자가 요청하지 않으면 채우지 않는다. 테스트 실패가 `Error: TODO …`라면 버그가 아니라 남은 실습이다. 모범 답안은 각 레슨 HTML 안에 접혀 있다.
+`src/okf/` 실습 함수(0003 `validate.ts`, 0004 `retrieve.ts`, 0005 `answer.ts`)는 사용자 요청으로 구현을 마쳤다(2026-11-18). 0006 `compare.ts`의 `judge`·`compare`도 사용자 요청으로 채웠다. 0007 `provenance.ts`의 `checkAttribution`·`trace`와 `knowledge/references/returns-faq.md`·`returns.md` 출처도 사용자 요청으로 채웠다. 0008 `trust.ts`의 `normalizeVerified`·`trustTier`·`assess`도 사용자 요청으로 채웠다. 0009 `graph.ts`의 `buildGraph`·`backlinks`도 사용자 요청으로 채웠다(2026-11-19). 2026-11-19 사용자 요청으로 v0.3 마이그레이션(코드·실습·learn)을 에이전트가 진행했다. 공식 저장소는 `open-knowledge-format/open-knowledge-format`(v0.3, 뷰어·공식 스킬 포함)이고 옛 `GoogleCloudPlatform/open-knowledge-format`(v0.2)은 deprecated다. 받을 때는 이 저장소 밖(`/tmp/okf-official` 등)에 받는다. `verified`의 `human:` 기록은 사용자가 직접 대조한 뒤 사용자가 적는다. 에이전트가 대신 `human:`을 적지 않는다. 새 레슨에서 TODO 실습을 만들면 사용자가 요청하기 전에는 채우지 않는다. 사용자가 요청하지 않으면 채우지 않는다. 테스트 실패가 `Error: TODO …`라면 버그가 아니라 남은 실습이다. 모범 답안은 각 레슨 HTML 안에 접혀 있다.
 
 ## Agent skills
 
