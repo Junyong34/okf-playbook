@@ -1,50 +1,12 @@
 // 4회차 실습: score·retrieve 구현 완료 (tests/retrieve.test.ts).
 // 순서: R2단계 score → R3단계 retrieve 키워드 → R4단계 retrieve 링크 (0003 resolveLink 필요)
 // 레슨: learn/lessons/0004-retrieve.html
-import { parse } from 'yaml';
 import type { Bundle } from './types.ts';
-import { extractLinks, resolveLink, splitFrontmatter } from './validate.ts';
+import { readConcepts, resolveLink, type Concept } from './concept.ts';
 
 // ── 개념 읽기 (제공) ──────────────────────────────────────────────────
-export type Concept = {
-  path: string;
-  type: string;
-  title: string;
-  description: string;
-  tags: string[];
-  body: string;
-  links: string[]; // 본문에 쓰인 링크 대상 그대로 (해석은 링크 단계에서 resolveLink로)
-};
-
-// 인덱스·로그는 답변 근거가 아니므로 뺀다. 파싱할 수 없는 개념은 건너뛰고 나머지는 계속 읽는다 (§11).
-export function readConcepts(bundle: Bundle): Concept[] {
-  const concepts: Concept[] = [];
-  for (const [path, text] of [...bundle].sort(([a], [b]) => a.localeCompare(b))) {
-    const name = path.split('/').pop();
-    if (name === 'index.md' || name === 'log.md') continue;
-    const { frontmatter, body } = splitFrontmatter(text);
-    if (frontmatter === null) continue;
-    let fm: Record<string, unknown>;
-    try {
-      const data = parse(frontmatter) ?? {};
-      if (typeof data !== 'object' || Array.isArray(data)) continue; // "tags:[x]" 한 줄은 매핑이 아니라 문자열로 읽힌다
-      fm = data;
-    } catch {
-      continue;
-    }
-    const str = (v: unknown) => (v === undefined || v === null ? '' : String(v));
-    concepts.push({
-      path,
-      type: str(fm.type).trim(),
-      title: str(fm.title),
-      description: str(fm.description),
-      tags: Array.isArray(fm.tags) ? fm.tags.map(str) : [],
-      body,
-      links: extractLinks(body),
-    });
-  }
-  return concepts;
-}
+// 개념 읽기 모듈(concept.ts)로 옮겼다. 레슨·테스트가 이 경로로 import하므로 다시 내보낸다.
+export { readConcepts, type Concept } from './concept.ts';
 
 // ── 한국어 키워드: 두 글자 묶음(bigram) (제공) ────────────────────────
 // "할인 상품을" → ["할인", "상품", "품을"]. 조사가 붙어도 "상품"이 남는다.

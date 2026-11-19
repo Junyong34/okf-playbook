@@ -37,6 +37,9 @@ okf-playbook/
 ├── src/okf/                   # 검증·검색 로직 (파일 시스템과 분리, 웹 UI에서 재사용)
 │   ├── types.ts               # Bundle = Map<경로, 내용>, Issue
 │   ├── load.ts                # 디렉터리 → Bundle
+│   ├── concept.ts             # 개념 읽기: 파일을 한 번 나누고 파싱 (frontmatter 상태, 링크, Concept). 다른 모듈은 이 결과를 읽는다
+│   ├── args.ts                # CLI 인자 → 검색 설정 검증 (retrieve·prompt·check-answer·compare 공용)
+│   ├── ask.ts                 # 질의응답: 검색 → 신뢰·주의 판정 → 프롬프트 (CLI·웹 UI 공용)
 │   ├── validate.ts            # Bundle → Issue[] (3회차 실습)
 │   ├── retrieve.ts            # Bundle + 질문 → 고른 개념과 이유 (4회차 실습)
 │   ├── answer.ts              # 프롬프트 만들기, 답변 인용 검사 (5회차 실습)
@@ -48,7 +51,7 @@ okf-playbook/
 ├── validate.ts                # 번들 검증 CLI (pnpm validate [dir])
 ├── retrieve.ts                # 질문별 개념 검색 CLI, 고른 개념마다 신뢰·주의 표시 (pnpm retrieve "질문" [--fields --no-links --max --min --now])
 ├── prompt.ts                  # 모델에 붙여 넣을 프롬프트 출력 (pnpm prompt "질문")
-├── check-answer.ts            # 저장한 답변의 인용 검사 (pnpm check-answer "질문" answers/qN.txt)
+├── check-answer.ts            # 저장한 답변의 인용 검사 (pnpm check-answer "질문" answers/qN.txt [--prompt answers/qN.prompt.txt])
 ├── compare.ts                 # 질문 목록 × 세 설정 비교표 출력 (pnpm compare [--max --min])
 ├── trace.ts                   # 개념의 출처를 원문까지 따라가기 (pnpm trace policies/returns.md)
 ├── graph.ts                   # 번들 그래프 출력 (pnpm graph [--mermaid])

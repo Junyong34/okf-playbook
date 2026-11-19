@@ -1,9 +1,8 @@
 // 9회차(심화 3) 실습: buildGraph·backlinks 구현 완료 (tests/graph.test.ts). 순서: G1단계 → G2단계.
 // 레슨: learn/lessons/0009-read-bundle-differently.html
 import type { Bundle } from './types.ts';
-import { readConcepts } from './retrieve.ts';
-import { classifyResource, readProvenance } from './provenance.ts';
-import { resolveLink } from './validate.ts';
+import { readBundle, resolveLink, toConcept } from './concept.ts';
+import { classifyResource, provenanceOf } from './provenance.ts';
 
 // ── 그래프 ────────────────────────────────────────────────────────────
 // 노드는 개념, 간선은 두 종류다.
@@ -21,7 +20,7 @@ export type GraphEdge = {
 export type Graph = { nodes: GraphNode[]; edges: GraphEdge[]; warnings: string[] };
 
 // G1단계: 번들에서 그래프를 만든다.
-//  - nodes: readConcepts(bundle) 순서 그대로 (경로순, index.md·log.md·파싱 실패 제외). type·title만 담는다.
+//  - nodes: readConcepts(bundle)와 같은 순서 (경로순, index.md·log.md·파싱 실패 제외). type·title만 담는다.
 //  - 개념마다 link 간선을 먼저, 그다음 source 간선을 만든다.
 //    link:   concept.links의 각 raw를 resolveLink(path, raw)로 푼다.
 //    source: readProvenance(bundle, path).sources 가운데 resource가 있고 classifyResource가 'path'인 것만. URL·범위 설명은 간선이 아니다.
@@ -30,8 +29,12 @@ export type Graph = { nodes: GraphNode[]; edges: GraphEdge[]; warnings: string[]
 //  - broken: to가 nodes에 없으면 true. 간선은 그래도 만든다.
 export function buildGraph(bundle: Bundle): Graph {
   // G1단계 (완료)
-  const concepts = readConcepts(bundle);
-  const nodes = concepts.map((c) => ({ path: c.path, type: c.type, title: c.title }));
+  // 번들을 한 번 읽어 개념과 출처를 같은 파싱 결과에서 꺼낸다.
+  const read = readBundle(bundle).flatMap((file) => {
+    const c = toConcept(file); // index.md·log.md·파싱 실패는 null
+    return c === null ? [] : [{ file, c }];
+  });
+  const nodes = read.map(({ c }) => ({ path: c.path, type: c.type, title: c.title }));
   const has = new Set(nodes.map((n) => n.path));
   const edges: GraphEdge[] = [];
   const warnings: string[] = [];
@@ -47,10 +50,10 @@ export function buildGraph(bundle: Bundle): Graph {
     seen.add(key);
     edges.push({ from, to, kind, raw, broken: !has.has(to) });
   };
-  for (const c of concepts) {
-    for (const raw of c.links) add(c.path, raw, 'link');
-    for (const s of readProvenance(bundle, c.path)?.sources ?? []) {
-      if (s.resource && classifyResource(s.resource) === 'path') add(c.path, s.resource, 'source');
+  for (const { file } of read) {
+    for (const raw of file.links) add(file.path, raw, 'link');
+    for (const s of provenanceOf(file).sources) {
+      if (s.resource && classifyResource(s.resource) === 'path') add(file.path, s.resource, 'source');
     }
   }
   return { nodes, edges, warnings };

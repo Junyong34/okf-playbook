@@ -1,30 +1,17 @@
 // 8회차(심화 2) 실습: normalizeVerified·trustTier·assess 구현 완료 (tests/trust.test.ts). 순서: T1단계 → T2단계 → T3단계.
 // 레슨: learn/lessons/0008-trust-lifecycle.html
-import { parse } from 'yaml';
 import type { Bundle } from './types.ts';
-import { splitFrontmatter } from './validate.ts';
+import { dateText, frontmatterData, readBundleFile } from './concept.ts';
 
 // ── frontmatter 읽기 (제공) ───────────────────────────────────────────
-// 파싱할 수 없으면 null. 오류 보고는 validate가 맡는다.
+// 개념 읽기 모듈(concept.ts)을 쓴다. 파싱할 수 없으면 null. 오류 보고는 validate가 맡는다.
 export function readFrontmatter(bundle: Bundle, path: string): Record<string, unknown> | null {
-  const text = bundle.get(path);
-  if (text === undefined) return null;
-  const { frontmatter } = splitFrontmatter(text);
-  if (frontmatter === null) return null;
-  try {
-    const data = parse(frontmatter) ?? {};
-    return typeof data === 'object' && !Array.isArray(data) ? data : null;
-  } catch {
-    return null;
-  }
+  const file = readBundleFile(bundle, path);
+  return file === null ? null : frontmatterData(file);
 }
 
-// 날짜 값을 문자열로 둔다. YAML이 Date로 읽었으면 ISO 문자열로 바꾼다. (제공)
-export function dateText(v: unknown): string | undefined {
-  if (v instanceof Date) return v.toISOString();
-  if (v === undefined || v === null) return undefined;
-  return String(v);
-}
+// 날짜 값을 문자열로 둔다 (concept.ts). 레슨·테스트가 이 경로로 import하므로 다시 내보낸다.
+export { dateText };
 
 // ── 검토 기록 ─────────────────────────────────────────────────────────
 // §5.2: verified는 { by, at } 검토 기록의 목록이다. by는 행위자(§7), at은 ISO 8601 시각.

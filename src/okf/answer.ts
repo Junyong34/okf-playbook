@@ -3,7 +3,7 @@
 // 레슨: learn/lessons/0005-grounded-answer.html
 import type { Bundle } from './types.ts';
 import type { Pick } from './retrieve.ts';
-import { splitFrontmatter } from './validate.ts';
+import { splitFrontmatter } from './concept.ts';
 
 // ── 프롬프트 만들기 ──────────────────────────────────────────────────
 // 지시문 첫 문장은 학습 계획 §4 구현 순서 3의 문구 그대로다.
@@ -24,6 +24,11 @@ export function buildPrompt(bundle: Bundle, question: string, picks: Pick[]): st
   });
   // 지시문 → 빈 줄 → 문서 묶음 → 빈 줄 → 질문
   return [INSTRUCTION, '', '<documents>', ...docs, '</documents>', '', `<question>${question}</question>`].join('\n');
+}
+
+// 저장한 프롬프트에서 모델에 준 문서 경로를 다시 읽는다. check-answer가 검색을 다시 돌리지 않고 실제로 준 문서와 비교하게 한다.
+export function providedPaths(prompt: string): string[] {
+  return [...prompt.matchAll(/^<document path="([^"]+)"/gm)].map((m) => m[1]);
 }
 
 // ── 답변 검사 (제공 함수) ─────────────────────────────────────────────

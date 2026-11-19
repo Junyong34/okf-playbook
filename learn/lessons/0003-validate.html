@@ -80,7 +80,7 @@ tests/validate.test.ts 1~7단계 테스트 30개  (제공)</code></pre>
   <li>저장소 루트에서 <code>pnpm install</code> 후 <code>pnpm test</code>. 30개 중 28개가 실패한 상태에서 시작한다. Node 22.18 이상은 TypeScript를 빌드 없이 바로 실행한다.<a class="cite" href="https://nodejs.org/api/typescript.html">Node.js</a></li>
   <li>단계별로 하나씩 통과시킨다. 한 단계만 돌리려면:
 <pre><code>node --test --test-name-pattern="1단계" "tests/**/*.test.ts"</code></pre></li>
-  <li><strong>1단계</strong> <code>splitFrontmatter</code> → <strong>2단계</strong> <code>resolveLink</code>(레슨 0002 경로 연습 그대로) → <strong>4단계</strong> <code>checkConcept</code>·<code>checkIndex</code> → <strong>5·6단계</strong> <code>checkLinks</code>. 3단계 <code>extractLinks</code>와 YAML 파싱 코드는 이미 들어 있다.</li>
+  <li><strong>1단계</strong> <code>splitFrontmatter</code> → <strong>2단계</strong> <code>resolveLink</code>(레슨 0002 경로 연습 그대로) → <strong>4단계</strong> <code>checkConcept</code>·<code>checkIndex</code> → <strong>5·6단계</strong> <code>checkLinks</code>. 3단계 <code>extractLinks</code>와 YAML 파싱 코드는 이미 들어 있다. 지금 저장소에서는 이 함수들과 YAML 파싱이 개념 읽기 모듈 <code>src/okf/concept.ts</code>로 옮겨졌고, <code>validate.ts</code>는 1·2단계 함수를 다시 내보내며 <code>checkConcept</code>·<code>checkIndex</code>·<code>checkLinks</code>가 이미 읽은 파일(<code>BundleFile</code>)을 받는다. 아래 모범 답안은 실습 당시 모양이다.</li>
   <li>7단계까지 초록이면 <code>pnpm validate</code>. 기대 출력:
 <pre><code>knowledge: 파일 4개, 오류 0개, 경고 0개</code></pre></li>
   <li><strong>일부러 망가뜨리기</strong>(학습 계획 3회차). 실제 번들에서 아래를 하나씩 바꾸고 <code>pnpm validate</code>를 돌린 뒤 되돌린다.

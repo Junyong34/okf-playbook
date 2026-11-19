@@ -21,7 +21,7 @@
   <p>4회차 검색기가 고른 개념은 생성 단계의 입력이 된다.<a class="cite" href="https://arxiv.org/abs/2005.11401">Lewis et al.</a> 오늘은 그 입력을 만들고 출력을 검사한다. 질문 6처럼 검색이 엉뚱한 개념을 넘겨도 모델이 "확인할 수 없다"고 답하는지가 오늘의 핵심 확인 사항이다.</p>
 </div>
 
-<div class="note"><strong>시작 전 확인.</strong> <code>pnpm prompt</code>는 0004의 <code>retrieve</code>를 쓴다. 0004 R3단계까지 통과해야 프롬프트가 만들어지고, R4단계까지 해야 링크로 추가한 개념도 들어간다. A1·A2단계 테스트 자체는 <code>retrieve</code> 없이 돈다.</div>
+<div class="note"><strong>시작 전 확인.</strong> <code>pnpm prompt</code>는 0004의 <code>retrieve</code>를 쓴다. 0004 R3단계까지 통과해야 프롬프트가 만들어지고, R4단계까지 해야 링크로 추가한 개념도 들어간다. A1·A2단계 테스트 자체는 <code>retrieve</code> 없이 돈다. 지금 저장소의 <code>pnpm prompt</code>·<code>pnpm check-answer</code>는 질의응답 모듈 <code>src/okf/ask.ts</code>를 거치므로 0008의 <code>trust.ts</code>도 쓴다. <code>trust.ts</code>가 TODO이면 <code>Error: TODO</code>로 멈춘다.</div>
 
 <h2>0. 회상</h2>
 <details><summary>질문 6처럼 검색이 엉뚱한 개념을 고르면 생성 단계에서 무엇으로 막아야 하나?</summary>

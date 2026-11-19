@@ -1,8 +1,7 @@
 // 7회차(심화 1) 실습: checkAttribution·trace 구현 완료 (tests/provenance.test.ts). 순서: P1단계 → P2단계.
 // 레슨: learn/lessons/0007-sources-footnotes.html
-import { parse } from 'yaml';
 import type { Bundle } from './types.ts';
-import { resolveLink, splitFrontmatter } from './validate.ts';
+import { frontmatterData, readBundleFile, resolveLink, type BundleFile } from './concept.ts';
 
 // ── 출처와 각주 읽기 (제공) ───────────────────────────────────────────
 // §5.1: sources 항목마다 resource는 필수, id는 본문이 인용할 때 있어야 한다(SHOULD).
@@ -19,16 +18,13 @@ export type ConceptProvenance = {
 };
 
 export function readProvenance(bundle: Bundle, path: string): ConceptProvenance | null {
-  const text = bundle.get(path);
-  if (text === undefined) return null;
-  const { frontmatter, body } = splitFrontmatter(text);
-  let fm: Record<string, unknown> = {};
-  try {
-    const data = frontmatter === null ? {} : parse(frontmatter);
-    if (data && typeof data === 'object' && !Array.isArray(data)) fm = data;
-  } catch {
-    // 파싱할 수 없는 개념은 출처가 없는 개념으로 다룬다. 오류 보고는 validate가 맡는다.
-  }
+  const file = readBundleFile(bundle, path);
+  return file === null ? null : provenanceOf(file);
+}
+
+// 이미 읽은 파일에서 출처와 각주를 꺼낸다. 파싱할 수 없는 개념은 출처가 없는 개념으로 다룬다(오류 보고는 validate가 맡는다).
+export function provenanceOf(file: BundleFile): ConceptProvenance {
+  const fm = frontmatterData(file) ?? {};
   const str = (v: unknown) => (v === undefined || v === null ? undefined : String(v));
   const sources: Source[] = Array.isArray(fm.sources)
     ? fm.sources.map((s) => {
@@ -38,7 +34,7 @@ export function readProvenance(bundle: Bundle, path: string): ConceptProvenance 
     : [];
   const claims: Claim[] = [];
   const definitions: string[] = [];
-  body.split('\n').forEach((raw, i) => {
+  file.body.split('\n').forEach((raw, i) => {
     const def = raw.match(/^\[\^([^\]]+)\]:/);
     if (def) {
       definitions.push(def[1]);
@@ -47,7 +43,7 @@ export function readProvenance(bundle: Bundle, path: string): ConceptProvenance 
     const labels = [...raw.matchAll(/\[\^([^\]]+)\]/g)].map((m) => m[1]);
     if (labels.length > 0) claims.push({ line: i + 1, text: raw.trim(), labels });
   });
-  return { path, sources, claims, definitions };
+  return { path: file.path, sources, claims, definitions };
 }
 
 // resource가 무엇을 가리키는지 나눈다 (§5.1, §6.2).
