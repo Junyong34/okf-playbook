@@ -1,7 +1,7 @@
 // 개념 읽기 모듈. 번들의 파일 하나를 한 번만 나누고 파싱한다.
 // validate·retrieve·provenance·trust·graph는 모두 이 결과를 읽는다. 파싱 실패를 어떻게 다룰지는 각 소비자가 정한다.
 //  - validate: 실패를 오류로 보고한다.
-//  - retrieve·graph: 파싱되지 않은 개념은 건너뛴다 (§11, 나머지는 계속 읽는다).
+//  - retrieve·graph: 개념이 아닌 파일(frontmatter·type 없음, 파싱 실패)은 건너뛴다 (§3.2, §11, 나머지는 계속 읽는다).
 //  - provenance·trust: 정보가 없는 개념으로 다룬다.
 import { parse } from 'yaml';
 import type { Bundle } from './types.ts';
@@ -23,9 +23,10 @@ export function splitFrontmatter(text: string): Split {
   };
 }
 
-// ── 링크 경로 해석 (§6.1) — 레슨 0003 2단계 ─────────────────────────────
+// ── 링크 경로 해석 (§6) — 레슨 0003 2단계 ─────────────────────────────
+// 링크(§6.1)와 경로 필드(§6.2)가 같은 규칙을 쓴다. '/'로 시작하면 번들 루트, 그 밖은 파일이 있는 디렉터리 기준.
 // from: 링크가 들어 있는 파일 ("policies/returns.md")
-// 반환: 번들 루트 기준 경로, 루트 밖이면 null
+// 반환: 번들 루트 기준 경로, 루트 밖(외부)이면 null
 export function resolveLink(from: string, target: string): string | null {
   // 출발점: '/'로 시작하면 번들 루트([]), 아니면 from이 들어 있는 디렉터리.
   const out = target.startsWith('/') ? [] : from.split('/').slice(0, -1);
@@ -53,16 +54,57 @@ export function extractLinks(body: string): string[] {
   return links;
 }
 
-// 날짜 값을 문자열로 둔다. YAML이 Date로 읽었으면 ISO 문자열로 바꾼다.
+// 날짜 값을 문자열로 둔다. YAML이 Date로 읽었으면 ISO 문자열로 바꾼다. 빈 값(§11.2)은 없는 것.
 export function dateText(v: unknown): string | undefined {
-  if (v instanceof Date) return v.toISOString();
-  if (v === undefined || v === null) return undefined;
+  if (v instanceof Date) return Number.isNaN(v.getTime()) ? String(v) : v.toISOString();
+  if (isBlank(v)) return undefined;
   return String(v);
 }
 
+// ── 빈 값·단일 값 (§11.2) ──────────────────────────────────────────────
+// null, 빈 문자열, 빈 목록은 키가 없는 것과 같다.
+export function isBlank(v: unknown): boolean {
+  return v === undefined || v === null || v === '' || (Array.isArray(v) && v.length === 0);
+}
+
+// 목록 필드(tags, sources, verified)는 항목 하나를 원소 하나짜리 목록으로 읽는다. 스칼라 tags를 쉼표로 나누지 않는다.
+export function asList(v: unknown): unknown[] {
+  if (isBlank(v)) return [];
+  return Array.isArray(v) ? v : [v];
+}
+
+// ── 시각 (§5 Timestamps) ───────────────────────────────────────────────
+// 허용 형식은 RFC 3339 두 가지뿐이다.
+//  - 오프셋이 있는 date-time: "2026-06-30T14:00:00Z", "2026-11-18T15:00:00+09:00"
+//  - 날짜만: "2026-06-30" → 그날 UTC 0시
+// YAML 고유 Date 값도 받는다(그날 UTC 0시). 오프셋 없는 date-time과 그 밖 형식은 무효라 null이다.
+const DATE_RE = /^(\d{4})-(\d{2})-(\d{2})$/;
+const DATETIME_RE = /^(\d{4})-(\d{2})-(\d{2})[Tt](\d{2}):(\d{2}):(\d{2})(\.\d+)?([Zz]|[+-]\d{2}:\d{2})$/;
+
+function validDay(y: string, m: string, d: string): boolean {
+  const t = new Date(Date.UTC(Number(y), Number(m) - 1, Number(d)));
+  return t.getUTCFullYear() === Number(y) && t.getUTCMonth() === Number(m) - 1 && t.getUTCDate() === Number(d);
+}
+
+// 반환: 밀리초 시각, 읽을 수 없으면 null.
+export function parseTimestamp(v: unknown): number | null {
+  if (v instanceof Date) return Number.isNaN(v.getTime()) ? null : v.getTime();
+  if (typeof v !== 'string') return null;
+  const d = v.match(DATE_RE);
+  if (d) return validDay(d[1], d[2], d[3]) ? Date.UTC(Number(d[1]), Number(d[2]) - 1, Number(d[3])) : null;
+  const dt = v.match(DATETIME_RE);
+  if (!dt || !validDay(dt[1], dt[2], dt[3])) return null;
+  if (Number(dt[4]) > 23 || Number(dt[5]) > 59 || Number(dt[6]) > 59) return null;
+  const t = Date.parse(v.toUpperCase());
+  return Number.isNaN(t) ? null : t;
+}
+
 // ── 파일 하나 읽기 ───────────────────────────────────────────────────
-// index.md·log.md는 예약 파일이다 (§3.1). 개념이 아니다.
-export type FileKind = 'concept' | 'index' | 'log';
+// index.md·log.md는 예약 파일이다 (§3.1). frontmatter와 상관없이 개념이 아니다.
+// 그 밖의 .md는 frontmatter에 비어 있지 않은 type이 있어야 개념이다 (§3.2-1·2).
+//  concept: 예약 파일이 아니고, frontmatter가 파싱되고, type이 비어 있지 않다
+//  other:   예약 파일이 아닌데 개념도 아니다 (frontmatter 없음, type 없음, 파싱 실패). README.md 같은 파일
+export type FileKind = 'concept' | 'index' | 'log' | 'other';
 
 export type Frontmatter =
   | { state: 'absent' }                                   // 맨 위 '---' 블록이 없거나 닫히지 않음
@@ -77,9 +119,17 @@ export type BundleFile = {
   links: string[]; // 본문에 쓰인 링크 대상 그대로 (해석은 resolveLink로)
 };
 
-function fileKind(path: string): FileKind {
+// type이 비어 있지 않은 문자열이면 그 값(앞뒤 공백 제거), 아니면 null (§3.2, §4.1).
+export function conceptType(fm: Record<string, unknown> | null): string | null {
+  const t = fm?.type;
+  return typeof t === 'string' && t.trim() !== '' ? t.trim() : null;
+}
+
+function fileKind(path: string, fm: Frontmatter): FileKind {
   const name = path.split('/').pop();
-  return name === 'index.md' ? 'index' : name === 'log.md' ? 'log' : 'concept';
+  if (name === 'index.md') return 'index';
+  if (name === 'log.md') return 'log';
+  return fm.state === 'ok' && conceptType(fm.data) !== null ? 'concept' : 'other';
 }
 
 // yaml 패키지는 콜론 뒤 공백 누락, 탭 들여쓰기, 중복 키를 모두 오류로 던진다.
@@ -96,13 +146,13 @@ function parseFrontmatter(src: string): Frontmatter {
 
 export function readFile(path: string, text: string): BundleFile {
   const { frontmatter, body } = splitFrontmatter(text);
-  return {
-    path,
-    kind: fileKind(path),
-    frontmatter: frontmatter === null ? { state: 'absent' } : parseFrontmatter(frontmatter),
-    body,
-    links: extractLinks(body),
-  };
+  // 첫 줄이 '---'인데 닫는 '---'가 없으면 frontmatter를 쓰려다 망가진 것이다. 없는 것이 아니라 읽을 수 없는 것으로 본다 (§4).
+  const opened = /^\uFEFF?---\r?$/.test(text.split('\n')[0]);
+  const fm: Frontmatter =
+    frontmatter !== null ? parseFrontmatter(frontmatter)
+    : opened ? { state: 'invalid', reason: '닫는 `---` 줄이 없습니다.' }
+    : { state: 'absent' };
+  return { path, kind: fileKind(path, fm), frontmatter: fm, body, links: extractLinks(body) };
 }
 
 // 번들의 모든 파일을 경로순으로 읽는다.
@@ -122,7 +172,7 @@ export function frontmatterData(file: BundleFile): Record<string, unknown> | nul
 }
 
 // ── 개념 ────────────────────────────────────────────────────────────
-// 소비자가 쓸 수 있는 개념: 예약 파일이 아니고 frontmatter가 파싱된 파일.
+// 소비자가 쓸 수 있는 개념: 예약 파일이 아니고, frontmatter가 파싱되고, type이 비어 있지 않은 파일 (§3.2).
 export type Concept = {
   path: string;
   type: string;
@@ -134,24 +184,93 @@ export type Concept = {
   frontmatter: Record<string, unknown>; // 메타 필드 밖의 키(status, verified, sources …)도 여기서 읽는다
 };
 
-const str = (v: unknown) => (v === undefined || v === null ? '' : String(v));
+const str = (v: unknown) => (isBlank(v) ? '' : String(v));
 
 export function toConcept(file: BundleFile): Concept | null {
   const fm = frontmatterData(file);
   if (file.kind !== 'concept' || fm === null) return null;
   return {
     path: file.path,
-    type: str(fm.type).trim(),
+    type: conceptType(fm)!,
     title: str(fm.title),
     description: str(fm.description),
-    tags: Array.isArray(fm.tags) ? fm.tags.map(str) : [],
+    tags: asList(fm.tags).filter((t) => !isBlank(t)).map(str), // 스칼라 tags는 태그 하나 (§11.2-2)
     body: file.body,
     links: file.links,
     frontmatter: fm,
   };
 }
 
-// 인덱스·로그는 답변 근거가 아니므로 뺀다. 파싱할 수 없는 개념은 건너뛰고 나머지는 계속 읽는다 (§11).
+// 인덱스·로그는 답변 근거가 아니므로 뺀다. 개념이 아닌 파일(type 없음, 파싱 실패)은 건너뛰고 나머지는 계속 읽는다 (§3.2, §11).
 export function readConcepts(bundle: Bundle): Concept[] {
   return readBundle(bundle).flatMap((f) => toConcept(f) ?? []);
+}
+
+// 경로가 번들의 개념인지 (§3.2). 링크·경로 필드가 개념을 가리키는지 판단할 때 쓴다 (§6.1, §6.4).
+export function isConceptPath(bundle: Bundle, path: string): boolean {
+  const f = readBundleFile(bundle, path);
+  return f !== null && f.kind === 'concept';
+}
+
+// ── 번들 버전 (§8.1, §12) ──────────────────────────────────────────────
+// 루트 index.md frontmatter의 okf_version. 선언이 없거나 읽을 수 없으면 null. 따옴표 없는 숫자(0.2)도 문자열로 바꿔 준다.
+export function bundleVersion(bundle: Bundle): string | null {
+  const index = readBundleFile(bundle, 'index.md');
+  const v = index === null ? undefined : frontmatterData(index)?.okf_version;
+  return isBlank(v) || typeof v === 'object' ? null : String(v);
+}
+
+// v0.2 대체 해석(§6.2, §12.1)을 쓸 수 있는 번들인지: okf_version이 0.2 이하이거나 선언이 없다.
+// 숫자로 읽을 수 없는 버전은 모르는 버전이라 대체 해석을 하지 않는다.
+export function allowsLegacyPaths(bundle: Bundle): boolean {
+  const v = bundleVersion(bundle);
+  if (v === null) return true;
+  const m = v.match(/^(\d+)\.(\d+)/);
+  if (!m) return false;
+  return Number(m[1]) === 0 && Number(m[2]) <= 2;
+}
+
+// ── 경로 필드 (§6.2) ───────────────────────────────────────────────────
+// resource가 무엇을 가리키는지 나눈다 (§5.1, §6.2).
+// url: https:// 같은 절대 URL / scope: 따라갈 수 없는 범위 설명("all queries in …") / path: 번들 경로
+export function classifyResource(resource: string): 'url' | 'scope' | 'path' {
+  if (/^[a-z][a-z0-9+.-]*:/i.test(resource)) return 'url';
+  if (/\s/.test(resource)) return 'scope';
+  return 'path';
+}
+
+// 경로나 URI를 담는 frontmatter 필드 (§6.2). 이 번들에는 computation·executor·attester가 없지만(§10) 함께 모은다.
+export type PathFieldName = 'resource' | 'sources[].resource' | 'superseded_by' | 'computation' | 'executor.resource' | 'attester.resource';
+export type PathField = { field: PathFieldName; value: string };
+
+// frontmatter에서 번들 경로로 읽히는 경로 필드 값을 위 순서대로 모은다. URL·범위 설명·빈 값은 뺀다.
+export function pathFields(fm: Record<string, unknown>): PathField[] {
+  const out: PathField[] = [];
+  const add = (field: PathFieldName, v: unknown) => {
+    if (typeof v === 'string' && v.trim() !== '' && classifyResource(v) === 'path') out.push({ field, value: v });
+  };
+  const sub = (v: unknown, key: string) => (v && typeof v === 'object' && !Array.isArray(v) ? (v as Record<string, unknown>)[key] : undefined);
+  add('resource', fm.resource);
+  for (const s of asList(fm.sources)) add('sources[].resource', sub(s, 'resource'));
+  add('superseded_by', fm.superseded_by);
+  add('computation', fm.computation);
+  add('executor.resource', sub(fm.executor, 'resource'));
+  add('attester.resource', sub(fm.attester, 'resource'));
+  return out;
+}
+
+// 경로 필드 값 하나를 번들 루트 기준 경로로 푼다 (§6).
+//  target: 번들 루트 기준 경로, 번들 밖이면 null
+//  legacy: v0.2 대체 해석으로 찾았다. '/' 없는 값이 파일 기준으로 번들에 없고, 번들이 0.2 이하이거나 버전 선언이 없을 때
+//          번들 루트 기준으로 다시 찾아 있으면 그 경로를 쓴다 (§6.2, §12.1). 본문 링크에는 쓰지 않는다.
+export type ResolvedPath = { target: string | null; legacy: boolean };
+
+export function resolvePathField(bundle: Bundle, from: string, value: string): ResolvedPath {
+  let v = value.split('#')[0];
+  try { v = decodeURI(v); } catch { /* 그대로 쓴다 */ }
+  const target = resolveLink(from, v);
+  if (v.startsWith('/') || (target !== null && bundle.has(target)) || !allowsLegacyPaths(bundle)) return { target, legacy: false };
+  const fromRoot = resolveLink('index.md', v);
+  if (fromRoot !== null && bundle.has(fromRoot)) return { target: fromRoot, legacy: true };
+  return { target, legacy: false };
 }

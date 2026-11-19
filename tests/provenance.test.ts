@@ -40,6 +40,16 @@ describe('P0단계 제공 함수 확인 (이미 통과)', () => {
   });
 });
 
+describe('P0단계 v0.3 읽기 규칙 (§11.2)', () => {
+  test('대시 없이 쓴 sources 항목 하나는 목록 하나, 빈 값은 없는 것', () => {
+    assert.deepEqual(prov('---\ntype: Policy\nsources: { id: faq, resource: /references/faq.md }\n---\n').sources, [
+      { id: 'faq', resource: '/references/faq.md', title: undefined },
+    ]);
+    assert.deepEqual(prov('---\ntype: Policy\nsources: []\n---\n').sources, []);
+    assert.deepEqual(prov('---\ntype: Policy\nsources:\n  - { id: "", resource: "" }\n---\n').sources, [{ id: undefined, resource: undefined, title: undefined }]);
+  });
+});
+
 describe('P1단계 checkAttribution', () => {
   test('라벨과 id가 맞고 resource가 있으면 문제없다', () => {
     assert.deepEqual(checkAttribution(prov(POLICY)), []);
@@ -99,6 +109,24 @@ describe('P2단계 trace', () => {
     assert.deepEqual(n.sources.map((s) => s.kind), ['missing', 'outside', 'url', 'scope', 'none']);
     assert.equal(n.sources[0].target, 'references/none.md');
     assert.deepEqual(n.issues.map((i) => i.kind), ['missing-resource']);
+  });
+  test('번들 파일이지만 개념이 아니면 not-a-concept, 따라가지 않는다 (§3.2)', () => {
+    const text = POLICY.replace('/references/faq.md', '/references/README.md');
+    const n = trace(bundle({ 'policies/returns.md': text, 'references/README.md': '# 안내' }), 'policies/returns.md')!;
+    assert.equal(n.sources[0].kind, 'not-a-concept');
+    assert.equal(n.sources[0].next, undefined);
+  });
+  test("v0.2 번들은 '/' 없는 경로가 파일 기준으로 없으면 번들 루트 기준으로 다시 찾는다 (§6.2, §12.1)", () => {
+    const text = POLICY.replace('/references/faq.md', 'references/faq.md');
+    const files = { 'policies/returns.md': text, 'references/faq.md': FAQ };
+    const v02 = trace(bundle({ ...files, 'index.md': '---\nokf_version: "0.2"\n---\n' }), 'policies/returns.md')!;
+    assert.equal(v02.sources[0].kind, 'bundle');
+    assert.equal(v02.sources[0].target, 'references/faq.md');
+    assert.equal(v02.sources[0].legacy, true);
+    const v03 = trace(bundle({ ...files, 'index.md': '---\nokf_version: "0.3"\n---\n' }), 'policies/returns.md')!;
+    assert.equal(v03.sources[0].kind, 'missing');
+    assert.equal(v03.sources[0].target, 'policies/references/faq.md');
+    assert.equal(v03.sources[0].legacy, undefined);
   });
   test('순환하는 출처는 한 번만 따라간다', () => {
     const a = '---\ntype: X\nsources:\n  - { id: b, resource: b.md }\n---\n';

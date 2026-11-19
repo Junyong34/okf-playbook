@@ -17,8 +17,8 @@ describe('R1단계 제공 함수 확인 (이미 통과)', () => {
   test('bigrams: 조사가 붙어도 두 글자 묶음이 남는다', () => {
     assert.deepEqual([...bigrams('할인 상품을')], ['할인', '상품', '품을']);
   });
-  test('readConcepts: index.md는 빼고, frontmatter를 읽을 수 없는 개념은 건너뛴다', () => {
-    const cs = readConcepts(bundle({ 'index.md': '# 목차', 'a.md': doc('Policy', '본문'), 'b.md': '---\ntags:[x]\n---\n' }));
+  test('readConcepts: index.md는 빼고, frontmatter를 읽을 수 없거나 type이 없는 파일은 건너뛴다', () => {
+    const cs = readConcepts(bundle({ 'index.md': '# 목차', 'a.md': doc('Policy', '본문'), 'b.md': '---\ntags:[x]\n---\n', 'c.md': '# 제목만' }));
     assert.deepEqual(cs.map((c) => c.path), ['a.md']);
   });
 });
@@ -86,6 +86,12 @@ describe('R4단계 retrieve: 링크 한 단계 (0003 resolveLink 필요)', () =>
     const r = retrieve(b, '반품 기한', { maxDocs: 2 });
     assert.deepEqual(r.picks.map((p) => p.path), ['policies/a.md', 'policies/b.md']);
     assert.ok(r.warnings.some((w) => w.includes('processes/r.md')));
+  });
+  test('링크가 개념이 아닌 파일(type 없음)을 가리키면 따라가지 않고 경고한다 (§3.2, §6.1)', () => {
+    const b2 = bundle({ 'a.md': doc('Policy', '반품 기한. [안내](README.md)'), 'README.md': '# 반품 기한 안내' });
+    const r = retrieve(b2, '반품 기한');
+    assert.deepEqual(r.picks.map((p) => p.path), ['a.md']);
+    assert.ok(r.warnings.some((w) => w.includes('README.md') && w.includes('개념이 아니어서')));
   });
   test('followLinks: false면 링크를 따라가지 않는다', () => {
     assert.deepEqual(picks(b, '반품 기한', { followLinks: false }), ['k:policies/a.md']);

@@ -78,7 +78,9 @@ export function retrieve(bundle: Bundle, question: string, options: Partial<Opti
         }
         if (picks.some((p) => p.path === target)) continue; // 중복 제거 (정규화한 경로로 비교)
         if (!byPath.has(target)) {
-          warnings.push(`${seed.path}의 링크 ${raw}(${target})가 번들에 없어 건너뛴다.`);
+          // 번들에 없거나, 파일은 있어도 개념이 아니다(type 없음, 디렉터리 등). 링크가 개념을 가리킬 때만 따라간다 (§6.1).
+          const why = bundle.has(target) || bundle.has(`${target}/index.md`) ? '개념이 아니어서' : '번들에 없어';
+          warnings.push(`${seed.path}의 링크 ${raw}(${target})가 ${why} 건너뛴다.`);
           continue;
         }
         if (picks.length >= opt.maxDocs) {

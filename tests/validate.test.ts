@@ -4,6 +4,7 @@ import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { loadBundle } from '../src/okf/load.ts';
 import { extractLinks, resolveLink, splitFrontmatter, validateBundle } from '../src/okf/validate.ts';
+import { readFile } from '../src/okf/concept.ts';
 import type { Bundle } from '../src/okf/types.ts';
 
 const bundle = (files: Record<string, string>): Bundle => new Map(Object.entries(files));
@@ -11,7 +12,7 @@ const bundle = (files: Record<string, string>): Bundle => new Map(Object.entries
 const summary = (b: Bundle) => validateBundle(b).map((i) => `${i.level} ${i.rule} ${i.file}`);
 
 const POLICY = '---\ntype: Policy\n---\n\n# 본문\n';
-const ROOT_INDEX = '---\nokf_version: "0.2"\n---\n\n# 목차\n\n- [반품 정책](policies/returns.md) - 설명\n';
+const ROOT_INDEX = '---\nokf_version: "0.3"\n---\n\n# 목차\n\n- [반품 정책](policies/returns.md) - 설명\n';
 
 describe('1단계 splitFrontmatter (§4)', () => {
   test('맨 위 --- 사이를 frontmatter로, 나머지를 본문으로 나눈다', () => {
@@ -54,35 +55,80 @@ describe('3단계 extractLinks', () => {
   });
 });
 
-describe('4단계 명세 오류 (§11) — level: error', () => {
-  test('frontmatter가 없는 개념 → yaml-parse', () => {
-    assert.deepEqual(summary(bundle({ 'policies/a.md': '# 제목만 있음' })), ['error yaml-parse policies/a.md']);
-  });
+describe('4단계 명세 오류 (§4, §11.1) — level: error', () => {
   test('콜론 뒤 공백이 없는 YAML → yaml-parse', () => {
     assert.deepEqual(summary(bundle({ 'policies/a.md': '---\ntype: Policy\ntags:[반품]\n---\n' })), ['error yaml-parse policies/a.md']);
   });
   test('탭 들여쓰기 → yaml-parse', () => {
     assert.deepEqual(summary(bundle({ 'policies/a.md': '---\ntype: Policy\ntags:\n\t- 반품\n---\n' })), ['error yaml-parse policies/a.md']);
   });
-  test('type 키 없음 → missing-type', () => {
-    assert.deepEqual(summary(bundle({ 'policies/a.md': '---\ntitle: 반품\n---\n' })), ['error missing-type policies/a.md']);
-  });
-  test('type 값이 비었거나 공백뿐 → missing-type', () => {
-    assert.deepEqual(summary(bundle({ 'a.md': '---\ntype:\n---\n', 'b.md': '---\ntype: "  "\n---\n' })), ['error missing-type a.md', 'error missing-type b.md']);
+  test('여는 ---만 있고 닫는 ---가 없음 → yaml-parse', () => {
+    assert.deepEqual(summary(bundle({ 'policies/a.md': '---\ntype: Policy\n# 제목\n' })), ['error yaml-parse policies/a.md']);
   });
   test('하위 index.md에 frontmatter → index-frontmatter', () => {
-    assert.deepEqual(summary(bundle({ 'policies/index.md': '---\nokf_version: "0.2"\n---\n# 정책\n' })), ['error index-frontmatter policies/index.md']);
+    assert.deepEqual(summary(bundle({ 'policies/index.md': '---\nokf_version: "0.3"\n---\n# 정책\n' })), ['error index-frontmatter policies/index.md']);
   });
-  test('루트 index.md에 okf_version 말고 다른 키 → index-frontmatter', () => {
-    assert.deepEqual(summary(bundle({ 'index.md': '---\nokf_version: "0.2"\ntitle: 목차\n---\n# 목차\n' })), ['error index-frontmatter index.md']);
+  test('log.md에 frontmatter → log-frontmatter (§9)', () => {
+    assert.deepEqual(summary(bundle({ 'log.md': '---\ntitle: 기록\n---\n# 기록\n', 'policies/log.md': '---\ntype: Log\n---\n' })), [
+      'error log-frontmatter log.md',
+      'error log-frontmatter policies/log.md',
+    ]);
   });
 });
 
-describe('5단계 거부하면 안 되는 것 (§11) — 오류 없음 또는 warning', () => {
+describe('4단계 개념이 아닌 파일 (§3.2) — level: warning, 적합성에는 영향 없음', () => {
+  test('frontmatter가 없는 .md → not-a-concept', () => {
+    assert.deepEqual(summary(bundle({ 'policies/a.md': '# 제목만 있음', 'README.md': '# 안내' })), ['warning not-a-concept policies/a.md', 'warning not-a-concept README.md']);
+  });
+  test('type 키 없음 → not-a-concept', () => {
+    assert.deepEqual(summary(bundle({ 'policies/a.md': '---\ntitle: 반품\n---\n' })), ['warning not-a-concept policies/a.md']);
+  });
+  test('type 값이 비었거나 공백뿐 → not-a-concept', () => {
+    assert.deepEqual(summary(bundle({ 'a.md': '---\ntype:\n---\n', 'b.md': '---\ntype: "  "\n---\n' })), ['warning not-a-concept a.md', 'warning not-a-concept b.md']);
+  });
+  test('frontmatter 없는 log.md는 경고도 없다', () => {
+    assert.deepEqual(summary(bundle({ 'log.md': '# 기록\n\n## 2026-11-19\n* **Update**: v0.3\n' })), []);
+  });
+});
+
+describe('4단계 루트 index.md (§8.1)', () => {
+  const idx = (fm: string) => bundle({ 'index.md': `---\n${fm}\n---\n# 목차\n` });
+  test('okf_version·title·description·license와 확장 키를 둘 수 있다', () => {
+    assert.deepEqual(summary(idx('okf_version: "0.3"\ntitle: 반품\ndescription: 반품 번들\nlicense: CC-BY-4.0\nx-acme-owner: cs')), []);
+  });
+  test('okf_version이 없으면 warning missing-okf-version', () => {
+    assert.deepEqual(summary(idx('title: 반품')), ['warning missing-okf-version index.md']);
+    assert.deepEqual(summary(bundle({ 'index.md': '# 목차\n' })), ['warning missing-okf-version index.md']);
+  });
+  test('따옴표 없는 숫자 okf_version → warning unquoted-version', () => {
+    assert.deepEqual(summary(idx('okf_version: 0.3')), ['warning unquoted-version index.md']);
+  });
+  test('루트 index.md YAML 오류 → yaml-parse', () => {
+    assert.deepEqual(summary(idx('okf_version: "0.3"\ntitle:[x]')), ['error yaml-parse index.md']);
+  });
+});
+
+describe('4단계 시각·검토 기록 (§5, §11.2) — level: warning', () => {
+  const c = (fm: string) => summary(bundle({ 'a.md': `---\ntype: Policy\n${fm}\n---\n` }));
+  test('허용 형식의 시각은 통과 (오프셋 있는 date-time, 날짜만)', () => {
+    assert.deepEqual(c('stale_after: 2026-12-31\ngenerated: { by: x/1, at: "2026-11-01T00:00:00+09:00" }\nverified: { by: "human:kim", at: 2026-11-02T00:00:00Z }'), []);
+  });
+  test('오프셋 없는 date-time·읽을 수 없는 값 → bad-timestamp', () => {
+    assert.deepEqual(c('stale_after: 2026-12-31T00:00:00\ngenerated: { by: x/1, at: 어제 }'), ['warning bad-timestamp a.md', 'warning bad-timestamp a.md']);
+  });
+  test('by나 at이 없는 verified 항목 → incomplete-verified', () => {
+    assert.deepEqual(c('verified:\n  - { by: "human:kim" }\n  - { at: 2026-11-02 }\n  - { by: "human:lee", at: 2026-11-02 }'), [
+      'warning incomplete-verified a.md',
+      'warning incomplete-verified a.md',
+    ]);
+  });
+});
+
+describe('5단계 거부하면 안 되는 것 (§11.2) — 오류 없음 또는 warning', () => {
   test('type만 있는 개념, 모르는 type, 추가 키는 통과', () => {
     assert.deepEqual(summary(bundle({ 'a.md': POLICY, 'b.md': '---\ntype: 아무거나\nowner: cs-team\n---\n' })), []);
   });
-  test('frontmatter 없는 index.md는 개념으로 검사하지 않는다', () => {
+  test('frontmatter 없는 하위 index.md는 개념으로 검사하지 않는다', () => {
     assert.deepEqual(summary(bundle({ 'policies/index.md': '# 정책\n\n- [a](a.md) - 설명\n', 'policies/a.md': POLICY })), []);
   });
   test('끊어진 링크 → warning broken-link', () => {
@@ -111,6 +157,15 @@ describe('6단계 팀 규칙 — 번들 안 링크는 상대 경로만', () => {
 describe('7단계 실제 번들', () => {
   test('knowledge/는 오류도 경고도 없다', async () => {
     assert.deepEqual(summary(await loadBundle('knowledge')), []);
+  });
+  test('루트 index.md가 v0.3을 선언하고 title·description을 둔다 (§8.1)', async () => {
+    const b = await loadBundle('knowledge');
+    const fm = readFile('index.md', b.get('index.md')!).frontmatter;
+    assert.equal(fm.state, 'ok');
+    if (fm.state === 'ok') {
+      assert.equal(fm.data.okf_version, '0.3');
+      assert.ok(fm.data.title && fm.data.description);
+    }
   });
   test('루트 index.md와 개념 3개, 0007의 원문 개념이 모두 있다', async () => {
     const b = await loadBundle('knowledge');
