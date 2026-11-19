@@ -67,6 +67,7 @@ flowchart TB
 | `provenance.ts` | frontmatter `sources`와 본문 각주를 읽고 서로 맞는지 검사한다. 출처를 `resolvePathField`로 풀어 원문 개념까지 거슬러 올라간다 | `readProvenance`, `provenanceOf`, `classifyResource`, `checkAttribution`, `trace`, `formatTrace` | `graph`, `trace` CLI | 7 |
 | `trust.ts` | 검토 기록(`verified`) 가운데 `generated.at` 이후의 현재 기록만으로 신뢰 등급을 정하고(§5.3), `status`·`superseded_by`·`stale_after`로 주의를 붙인다. 개념을 빼지 않는다 | `assess`, `normalizeVerified`, `readVerified`, `generatedAt`, `isCurrent`, `trustTier`, `readFrontmatter`, `formatAssessment` | `ask` | 8 |
 | `graph.ts` | 개념을 노드로, 개념을 가리키는 링크와 경로 필드(sources·superseded_by·resource …)를 간선으로 그래프를 만들고(§6.4) 역링크를 구한다. 개념을 가리키지 않는 참조는 `dangling`에 둔다 | `buildGraph`, `backlinks`, `formatGraph`, `toMermaid` | `graph` CLI | 9 |
+| `request.ts` | **웹 화면의 모델 요청 조립.** 고른 개념의 본문, 말투 설정, 오늘 날짜, 질문으로 모델 요청(system = 지시문 + 말투 설정, user = 날짜 + 문서 + 질문)을 만들고 요청 조립 기록을 남긴다. 고른 개념이 없으면 모델 요청을 만들지 않는다. SDK를 모른다 | `buildModelRequest`, `formatToday`, `MODEL_INSTRUCTION`, `ModelRequest`, `AssemblyRecord`, `AssemblyStep`, `VoiceGuide` | 웹 `features/qa/prepareRun.ts` | 웹 화면 |
 | `ask.ts` | **질의응답.** 질문 하나에 대해 검색 → 고른 개념마다 신뢰 판정(deprecated면 대체 경로 해석) → 프롬프트까지 한 번에 돌려준다 | `ask`, `Asked`, `AssessedPick`, `Replacement` | `retrieve`·`prompt`·`check-answer` CLI | 리팩터링 |
 | `args.ts` | CLI 인자를 검색 설정으로 바꾸고 검증한다. 잘못된 상한·기준·fields·시각은 오류로 끝낸다 | `parseSearchArgs`, `searchArgsOrExit` | `retrieve`·`prompt`·`check-answer`·`compare` CLI | 리팩터링 |
 
@@ -230,6 +231,8 @@ flowchart LR
 | `tests/graph.test.ts` | 0009 buildGraph·backlinks·toMermaid, 경로 필드 간선·dangling·대체 해석 |
 | `tests/ask.test.ts` | 질의응답: 고른 개념별 신뢰 판정, 대체 경로, 프롬프트, providedPaths |
 | `tests/args.test.ts` | 검색 설정 인자 검증 |
+| `tests/request.test.ts` | 웹 화면의 모델 요청 조립: system/user 분리, 말투 설정 켜기·끄기, 날짜, 순서, 모델 요청 생략 |
+| `tests/web-citations.test.ts` | 웹 화면의 인용 칩 준비 (`web/src/features/qa/citations.ts`) |
 
 ## 8. 바꿀 때 손댈 곳
 
@@ -238,4 +241,6 @@ flowchart LR
 - **새 검색 설정 옵션:** `retrieve.ts`의 `Options`와 `args.ts`의 `parseSearchArgs`를 함께 고친다.
 - **새 frontmatter 필드 읽기:** `Concept.frontmatter`에서 바로 읽는다. 빈 값은 `isBlank`, 목록 필드는 `asList`, 시각은 `parseTimestamp`로 읽는다. 공통 해석이 필요하면 `concept.ts`에 둔다.
 - **새 경로 필드:** `concept.ts`의 `PathFieldName`·`pathFields`와 `graph.ts`의 `FIELD_KIND`를 함께 고친다.
-- **웹 화면:** `Bundle`을 브라우저에서 만든 뒤 `ask`, `validateBundle`, `buildGraph`, `trace`를 그대로 부른다. `load.ts`와 `args.ts`만 화면 쪽 adapter로 바꾸면 된다.
+- **웹 화면 (`web/`):** 브라우저는 `load.ts`·`args.ts`를 가져오지 않는다. 번들은 `web/src/lib/bundles/loadBundles.ts`가 `import.meta.glob`으로 `Bundle`을 만들고, 질문 하나는 `features/qa/prepareRun.ts`가 `ask` → `buildModelRequest` 순서로 조립한 뒤 `lib/claude/generate.ts`가 스트리밍으로 생성하고 `checkAnswer`로 인용을 검사한다. 배포할 때는 `loadBundles()`와 `generate()` 두 함수의 내부만 서버 호출로 바꾼다.
+- **번들 추가 (웹):** `web/src/config/bundles.ts`에 `import.meta.glob` 두 줄과 `BUNDLE_SOURCES` 항목을 더한다. CLI는 `--dir`로 고른다.
+- **웹 지시문·말투 규칙 바꾸기:** `request.ts`의 `MODEL_INSTRUCTION`. 0005의 `INSTRUCTION`(CLI용)은 그대로 둔다.

@@ -30,9 +30,14 @@ okf-playbook/
 ├── scripts/
 │   └── sync-okf-skills.sh     # 공식 스킬을 고정 커밋에서 받아 위 두 위치에 복사 (pnpm okf:sync-skills [커밋])
 ├── .scratch/                  # 로컬 Markdown 이슈·스펙 (필요할 때 생성)
-│   └── okf-v0.3-migration/    # v0.3 마이그레이션 스펙 (spec.md: 결정 사항과 하지 않을 일)
+│   ├── okf-v0.3-migration/    # v0.3 마이그레이션 스펙 (spec.md: 결정 사항과 하지 않을 일)
+│   └── okf-web-ui/            # 웹 화면(상담·디버깅·그래프) 스펙
 ├── source/                    # OKF로 변환하기 전 데이터
 │   └── sample-faq.json       # FAQ 테스트 샘플
+├── sample_mart_faq/           # 테스트용 FAQ의 OKF v0.3 번들
+│   ├── index.md · log.md      # 번들 목차와 변경 기록
+│   ├── faqs/                  # 카테고리별 목차와 질문별 Markdown
+│   └── references/            # 원본 JSON 사본과 자료 목차
 ├── knowledge/                 # OKF 번들 루트
 │   ├── index.md               # 번들 메타데이터(okf_version: "0.3", title, description), 목차
 │   ├── references/
@@ -51,6 +56,7 @@ okf-playbook/
 │   ├── validate.ts            # Bundle → Issue[] (3회차 실습, 공식 검증기 규칙 이식. 검증 기준)
 │   ├── retrieve.ts            # Bundle + 질문 → 고른 개념과 이유 (4회차 실습)
 │   ├── answer.ts              # 프롬프트 만들기, 답변 인용 검사 (5회차 실습)
+│   ├── request.ts             # 웹 화면의 모델 요청 조립: system(지시문+말투 설정)·user(날짜+문서+질문)와 요청 조립 기록
 │   ├── compare.ts             # 검색 설정 비교, 판정과 표 (6회차 실습)
 │   ├── provenance.ts          # sources·각주 검사, 출처 따라가기 (7회차 실습)
 │   ├── trust.ts               # verified 신뢰 등급, status·stale_after 주의 (8회차 실습)
@@ -66,10 +72,20 @@ okf-playbook/
 ├── answers/                   # 질문별 모델 답변 (q1.txt ~ q6.txt)
 ├── evaluation.md              # 질문별 검색·답변 평가표 (4~9회차에 채움)
 ├── package.json · tsconfig.json  # Node 22.18+ TS 직접 실행, yaml 패키지
+├── .env.example               # 웹 화면용 VITE_ANTHROPIC_API_KEY 예시 (.env로 복사, 로컬 시연 전용)
+├── web/                       # 웹 화면 (Vite 7 + React 19 + Astryx + StyleX, pnpm dev / pnpm build:web)
+│   ├── vite.config.ts · tsconfig.json · index.html
+│   └── src/
+│       ├── app/               # 앱 틀: 테마·라우터·좌측 메뉴(AppShell + SideNav)
+│       ├── config/            # 번들 목록(bundles.ts)·모델·라우트 설정
+│       ├── lib/               # 서버로 옮길 경계: bundles/loadBundles.ts, claude/generate.ts
+│       ├── features/          # 화면별 기능: bundles·qa(공용 처리)·chat(상담)·debug(디버깅)·graph(준비 중)
+│       ├── shared/            # 화면 공용 UI·유틸
+│       └── styles/            # 전역 CSS (Astryx 레이어 순서)
 │
 │  # 아래는 실습하면서 만들 예정 (docs/okf-learning-plan.md §4)
 ├── source/returns-faq.md      # 실습용 원본 FAQ (선택)
-└── (5회차 이후) 답변 생성, 웹 UI
+└── (다음) 그래프 화면(sigma.js), 배포용 서버
 ```
 
 디렉터리를 추가하거나 옮기면 이 구조도를 함께 갱신한다.
