@@ -55,7 +55,9 @@ export type AnswerCheck = {
   noEvidence: boolean;        // "확인할 수 없" 선언이 있는가
 };
 
-export const NO_EVIDENCE = /확인할 수 없/;
+// 근거 없음 선언. 말투 설정(docs/voc-answer-guide.md)의 "확인하기 어렵습니다"도 같은 선언으로 본다
+// (사용자 요청 2026-11-19, .scratch/okf-web-ui/spec.md "인용 검사 표시").
+export const NO_EVIDENCE = /확인할 수 없|확인하기 어렵/;
 
 export function checkAnswer(answer: string, providedPaths: string[]): AnswerCheck {
   // A2단계 (완료)
