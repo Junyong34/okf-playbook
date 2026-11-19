@@ -6,7 +6,6 @@ import { HStack, StackItem, VStack } from '@astryxdesign/core/Layout';
 import { Text } from '@astryxdesign/core/Text';
 import { ArrowUturnLeftIcon, PlayIcon, StopIcon, WrenchIcon } from '@heroicons/react/24/outline';
 import type { LoadedBundle } from '@/lib/bundles/loadBundles.ts';
-import { API_KEY_ENV } from '@/lib/claude/apiKey.ts';
 import type { DebugFormApi } from '../useDebugForm.ts';
 import { GenerationSettingsFields } from './GenerationSettingsFields.tsx';
 import { QuestionField } from './QuestionField.tsx';
@@ -17,13 +16,14 @@ type DebugControlsProps = {
   bundle: LoadedBundle;
   formApi: DebugFormApi;
   keyReady: boolean;
+  unavailableMessage: string;
   isRunning: boolean;
   onRun: () => void;
   onAssemble: () => void;
   onStop: () => void;
 };
 
-export function DebugControls({ bundle, formApi, keyReady, isRunning, onRun, onAssemble, onStop }: DebugControlsProps) {
+export function DebugControls({ bundle, formApi, keyReady, unavailableMessage, isRunning, onRun, onAssemble, onStop }: DebugControlsProps) {
   const { form, setQuestion, setRetrieval, setVoiceEnabled, setGeneration, resetSettings, isDefaultSettings } = formApi;
   const hasQuestion = form.question.trim() !== '';
 
@@ -63,7 +63,7 @@ export function DebugControls({ bundle, formApi, keyReady, isRunning, onRun, onA
       </HStack>
       {!keyReady && (
         <Text type="supporting">
-          모델 호출은 저장소 루트 .env에 {API_KEY_ENV}를 넣고 개발 서버를 다시 시작하면 켜집니다. 지금은 조립만 볼 수 있습니다.
+          {unavailableMessage} 지금은 조립만 볼 수 있습니다.
         </Text>
       )}
 

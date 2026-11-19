@@ -1,5 +1,7 @@
 # OKF 질의응답 웹 화면 스펙
 
+> 현재 로컬 실행 방법은 [README](../../README.md#웹-화면-로컬-실행)를 따른다. 아래 브라우저 SDK 구성은 최초 시연 설계 기록이다.
+
 Status: ready-for-human
 
 변경(2026-11-20, 사용자 요청): 번들을 모두 `bundles/` 아래로 옮기고, 웹 화면의 번들 목록을 자동 탐색으로 바꿨다. 아래 "번들 목록은 직접 적는다"·"번들 자동 탐색" 하지 않을 일은 이 변경으로 대체된다. 번들 = `bundles/` 바로 아래 디렉터리 중 `index.md`에 `okf_version`이 있는 것. 이름·설명은 `index.md`의 `title`·`description`, 예시 질문·말투 설정만 `BUNDLE_SETTINGS`에 적는다.

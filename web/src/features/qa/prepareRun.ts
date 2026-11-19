@@ -1,7 +1,7 @@
 // 질문 → 검색 단계 → 모델 요청 조립. 모델을 부르기 전까지의 순수한 처리다.
 import { ask } from '@okf/ask.ts';
 import { buildModelRequest } from '@okf/request.ts';
-import { toApiRequest } from '@/lib/claude/apiRequest.ts';
+import { toApiRequest } from '@claude/apiRequest.ts';
 import type { LoadedBundle } from '@/lib/bundles/loadBundles.ts';
 import type { PreparedRun, QaInput } from './types.ts';
 

@@ -74,13 +74,14 @@ okf-playbook/
 ├── answers/                   # 질문별 모델 답변 (q1.txt ~ q6.txt)
 ├── evaluation.md              # 질문별 검색·답변 평가표 (4~9회차에 채움)
 ├── package.json · tsconfig.json  # Node 22.18+ TS 직접 실행, yaml 패키지
-├── .env.example               # 웹 화면용 VITE_ANTHROPIC_API_KEY 예시 (.env로 복사, 로컬 시연 전용)
-├── web/                       # 웹 화면 (Vite 7 + React 19 + Astryx + StyleX, pnpm dev / pnpm build:web)
+├── .env.example               # 로컬 Express용 ANTHROPIC_API_KEY 예시 (.env로 복사)
+├── server/                    # 로컬 Express API (pnpm dev:api), 서버 의존성은 server/package.json
+├── web/                       # 웹 화면 (pnpm dev / pnpm build:web), 웹 의존성은 web/package.json
 │   ├── vite.config.ts · tsconfig.json · index.html
 │   └── src/
 │       ├── app/               # 앱 틀: 테마·라우터·좌측 메뉴(AppShell + SideNav)
-│       ├── config/            # 번들 자동 탐색·번들별 설정(bundles.ts)·모델·라우트 설정
-│       ├── lib/               # 서버로 옮길 경계: bundles/loadBundles.ts, claude/generate.ts
+│       ├── config/            # 번들 자동 탐색·번들별 설정(bundles.ts)·라우트 설정
+│       ├── lib/               # 브라우저 번들 로딩과 Claude API 호출
 │       ├── features/          # 화면별 기능: bundles·qa(공용 처리)·chat(상담)·debug(디버깅)·graph(준비 중)
 │       ├── shared/            # 화면 공용 UI·유틸
 │       └── styles/            # 전역 CSS (Astryx 레이어 순서)

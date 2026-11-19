@@ -1,7 +1,6 @@
 // 실행 목록 상태. 상담 화면은 목록 전체를, 디버깅 화면은 마지막 실행을 보여 준다.
 import type { AnswerCheck } from '@okf/answer.ts';
-import type { GenerationError } from '@/lib/claude/errors.ts';
-import type { GenerationResult } from '@/lib/claude/types.ts';
+import type { GenerationError, GenerationResult } from '@claude/types.ts';
 import type { QaRun } from './types.ts';
 
 export type RunAction =

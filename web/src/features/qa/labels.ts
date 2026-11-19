@@ -1,7 +1,7 @@
 // 화면에 보여 줄 한국어 이름. OKF 값(신뢰 등급·주의·검색 방식)과 실행 상태를 사람 말로 바꾼다.
 import type { Caution, Tier } from '@okf/trust.ts';
 import type { Pick } from '@okf/retrieve.ts';
-import type { StopReason } from '@/lib/claude/types.ts';
+import type { StopReason } from '@claude/types.ts';
 import type { RunPhase } from './types.ts';
 
 type BadgeVariant = 'neutral' | 'info' | 'success' | 'warning' | 'error';

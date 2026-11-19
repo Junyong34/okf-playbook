@@ -4,6 +4,7 @@ import { createBrowserRouter, Navigate, useLocation } from 'react-router';
 import { ROUTES } from '@/config/routes.ts';
 import { ChatPage } from '@/features/chat/ChatPage.tsx';
 import { FullPageSpinner } from '@/shared/ui/FullPageSpinner.tsx';
+import { CLAUDE_STATUS_ROUTE, loadClaudeStatus } from '@/lib/claude/status.ts';
 import { AppLayout } from './AppLayout.tsx';
 
 function RedirectToChat() {
@@ -14,6 +15,8 @@ function RedirectToChat() {
 export const router = createBrowserRouter([
   {
     path: '/',
+    id: CLAUDE_STATUS_ROUTE,
+    loader: loadClaudeStatus,
     element: <AppLayout />,
     hydrateFallbackElement: <FullPageSpinner label="화면을 불러오는 중" />,
     children: [

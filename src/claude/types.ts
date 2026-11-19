@@ -1,6 +1,6 @@
 // 생성 단계의 입력·결과 타입. 화면은 SDK 타입 대신 이 타입만 본다 (서버로 옮겨도 화면 코드는 그대로).
-import type { ModelRequest } from '@okf/request.ts';
-import type { Effort, GenerationSettings } from '@/config/models.ts';
+import type { ModelRequest } from '../okf/request.ts';
+import type { Effort, GenerationSettings } from './models.ts';
 
 export type GenerateParams = {
   request: ModelRequest;
@@ -38,4 +38,30 @@ export type ApiRequestPreview = {
   fallbacks?: 'default';
   system: string;
   messages: ModelRequest['messages'];
+};
+
+export type GenerateInput = Pick<GenerateParams, 'request' | 'settings'>;
+
+export type GenerationEvent =
+  | { type: 'text'; delta: string }
+  | { type: 'result'; result: GenerationResult }
+  | { type: 'error'; error: GenerationError };
+
+export type GenerationErrorKind =
+  | 'missing-key'
+  | 'auth'
+  | 'permission'
+  | 'rate-limit'
+  | 'overloaded'
+  | 'bad-request'
+  | 'network'
+  | 'api'
+  | 'unknown';
+
+export type GenerationError = {
+  kind: GenerationErrorKind;
+  title: string;
+  message: string;
+  status?: number;
+  retryable: boolean;
 };

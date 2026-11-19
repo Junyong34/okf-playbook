@@ -3,9 +3,8 @@ import type { Asked } from '@okf/ask.ts';
 import type { Options as RetrievalOptions } from '@okf/retrieve.ts';
 import type { Assembled } from '@okf/request.ts';
 import type { AnswerCheck } from '@okf/answer.ts';
-import type { GenerationSettings } from '@/config/models.ts';
-import type { GenerationError } from '@/lib/claude/errors.ts';
-import type { ApiRequestPreview, GenerationResult } from '@/lib/claude/types.ts';
+import type { GenerationSettings } from '@claude/models.ts';
+import type { ApiRequestPreview, GenerationError, GenerationResult } from '@claude/types.ts';
 
 export type { RetrievalOptions };
 

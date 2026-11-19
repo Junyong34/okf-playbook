@@ -242,6 +242,6 @@ flowchart LR
 - **새 검색 설정 옵션:** `retrieve.ts`의 `Options`와 `args.ts`의 `parseSearchArgs`를 함께 고친다.
 - **새 frontmatter 필드 읽기:** `Concept.frontmatter`에서 바로 읽는다. 빈 값은 `isBlank`, 목록 필드는 `asList`, 시각은 `parseTimestamp`로 읽는다. 공통 해석이 필요하면 `concept.ts`에 둔다.
 - **새 경로 필드:** `concept.ts`의 `PathFieldName`·`pathFields`와 `graph.ts`의 `FIELD_KIND`를 함께 고친다.
-- **웹 화면 (`web/`):** 브라우저는 `load.ts`·`args.ts`를 가져오지 않는다. 번들은 `web/src/lib/bundles/loadBundles.ts`가 `import.meta.glob`으로 `Bundle`을 만들고, 질문 하나는 `features/qa/prepareRun.ts`가 `ask` → `buildModelRequest` 순서로 조립한 뒤 `lib/claude/generate.ts`가 스트리밍으로 생성하고 `checkAnswer`로 인용을 검사한다. 배포할 때는 `loadBundles()`와 `generate()` 두 함수의 내부만 서버 호출로 바꾼다.
+- **웹 화면 (`web/`):** 브라우저는 `load.ts`·`args.ts`를 가져오지 않는다. 번들은 `web/src/lib/bundles/loadBundles.ts`가 `import.meta.glob`으로 `Bundle`을 만들고, 질문 하나는 `features/qa/prepareRun.ts`가 `ask` → `buildModelRequest` 순서로 조립한 뒤 `lib/claude/generate.ts`가 Vite 프록시를 통해 Express의 `POST /api/generate`를 호출한다. Express는 Claude SDK를 실행하고 NDJSON으로 텍스트와 최종 결과를 보낸다. 연결이 끊기면 SDK 요청도 취소한다. 브라우저가 `checkAnswer`로 인용을 검사한다.
 - **번들 추가:** `bundles/<이름>/`를 만들고 `index.md`에 `okf_version`을 넣는다. 웹 화면은 `bundles/*/`를 glob 하나로 읽어 디렉터리별로 나누고(`web/src/lib/bundles/groupByBundle.ts`), `okf_version`이 없는 디렉터리는 건너뛴다. 화면 이름·설명은 `index.md`의 `title`·`description`이다. 예시 질문·말투 설정만 `web/src/config/bundles.ts`의 `BUNDLE_SETTINGS`에 적는다. CLI는 `--dir bundles/<이름>`으로 고른다.
 - **웹 지시문·말투 규칙 바꾸기:** `request.ts`의 `MODEL_INSTRUCTION`. 0005의 `INSTRUCTION`(CLI용)은 그대로 둔다.

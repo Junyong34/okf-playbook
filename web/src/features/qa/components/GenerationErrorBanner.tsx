@@ -1,6 +1,6 @@
 import { Banner } from '@astryxdesign/core/Banner';
 import { Button } from '@astryxdesign/core/Button';
-import type { GenerationError } from '@/lib/claude/errors.ts';
+import type { GenerationError } from '@claude/types.ts';
 
 type GenerationErrorBannerProps = {
   error: GenerationError;

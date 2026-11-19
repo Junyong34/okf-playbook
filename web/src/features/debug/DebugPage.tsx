@@ -6,7 +6,7 @@ import { Layout, LayoutContent, LayoutPanel } from '@astryxdesign/core/Layout';
 import { useBundles } from '@/features/bundles/BundleContext.ts';
 import type { QaInput } from '@/features/qa/types.ts';
 import { useQaRuns } from '@/features/qa/useQaRuns.ts';
-import { hasApiKey } from '@/lib/claude/apiKey.ts';
+import { useClaudeStatus } from '@/lib/claude/status.ts';
 import { PageHeader } from '@/shared/ui/PageHeader.tsx';
 import { DebugControls } from './components/DebugControls.tsx';
 import { DebugResults, type ResultTab } from './components/DebugResults.tsx';
@@ -19,7 +19,7 @@ export function DebugPage() {
   const formApi = useDebugForm();
   const { latest, isRunning, start, stop, reset } = useQaRuns();
   const [tab, setTab] = useState<ResultTab>('record');
-  const keyReady = hasApiKey();
+  const { keyReady, message } = useClaudeStatus();
 
   // 번들이 바뀌면 이전 결과는 다른 번들 기준이므로 지운다.
   useEffect(() => reset(), [current.id, reset]);
@@ -58,6 +58,7 @@ export function DebugPage() {
             bundle={current}
             formApi={formApi}
             keyReady={keyReady}
+            unavailableMessage={message}
             isRunning={isRunning}
             onRun={() => run(false)}
             onAssemble={() => run(true)}

@@ -8,7 +8,7 @@
   "scripts": {
     "validate": "node validate.ts",
     "test": "node --test \"tests/**/*.test.ts\"",
-    "typecheck": "tsc --noEmit && tsc --noEmit -p web/tsconfig.json",
+    "typecheck": "tsc --noEmit && pnpm --filter @okf-playbook/web typecheck",
     "retrieve": "node retrieve.ts",
     "prompt": "node prompt.ts",
     "check-answer": "node check-answer.ts",
@@ -18,36 +18,16 @@
     "okf:validate": "uv run -q --no-project --with pyyaml python -I .agents/skills/okf-generate/scripts/validate.py",
     "okf:scan": "uv run -q --no-project --with pyyaml python -I .agents/skills/okf-consume/scripts/scan.py",
     "okf:sync-skills": "scripts/sync-okf-skills.sh",
-    "dev": "vite --config web/vite.config.ts",
-    "build:web": "vite build --config web/vite.config.ts",
-    "preview:web": "vite preview --config web/vite.config.ts"
+    "dev": "pnpm --filter @okf-playbook/web dev",
+    "dev:api": "pnpm --filter @okf-playbook/server dev",
+    "build:web": "pnpm --filter @okf-playbook/web build",
+    "preview:web": "pnpm --filter @okf-playbook/web preview"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^1.10.0",
-    "@astryxdesign/core": "^0.7.16",
-    "@astryxdesign/theme-neutral": "^0.7.16",
-    "@heroicons/react": "^2.2.0",
-    "@stylexjs/stylex": "^0.19.2",
-    "react": "^19.3.1",
-    "react-dom": "^19.3.1",
-    "react-router": "^7.18.6",
     "yaml": "^2.9.1"
   },
   "devDependencies": {
-    "@astryxdesign/cli": "^0.7.16",
-    "@stylexjs/unplugin": "^0.19.2",
     "@types/node": "^26.6.6",
-    "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.3.0",
-    "@vitejs/plugin-react": "^5.2.0",
-    "typescript": "^7.0.2",
-    "unplugin": "^2.3.11",
-    "vite": "^7.3.8"
-  },
-  "browserslist": [
-    "last 2 Chrome versions",
-    "last 2 Edge versions",
-    "last 2 Firefox versions",
-    "last 2 Safari versions"
-  ]
+    "typescript": "^7.0.2"
+  }
 }

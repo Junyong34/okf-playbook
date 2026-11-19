@@ -1,7 +1,7 @@
 // 생성 설정: 모델과 effort
 import { SegmentedControl, SegmentedControlItem } from '@astryxdesign/core/SegmentedControl';
 import { Selector } from '@astryxdesign/core/Selector';
-import { EFFORT_OPTIONS, MODEL_OPTIONS, type Effort, type GenerationSettings, type ModelId } from '@/config/models.ts';
+import { EFFORT_OPTIONS, MODEL_OPTIONS, type Effort, type GenerationSettings, type ModelId } from '@claude/models.ts';
 import { SettingsGroup } from './SettingsGroup.tsx';
 
 type GenerationSettingsFieldsProps = {

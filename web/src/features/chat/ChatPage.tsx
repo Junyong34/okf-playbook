@@ -8,12 +8,12 @@ import { Icon } from '@astryxdesign/core/Icon';
 import { Layout, LayoutContent } from '@astryxdesign/core/Layout';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import * as stylex from '@stylexjs/stylex';
-import { CHAT_GENERATION } from '@/config/models.ts';
+import { CHAT_GENERATION } from '@claude/models.ts';
 import { DEFAULT_OPTIONS } from '@okf/retrieve.ts';
 import { useBundles } from '@/features/bundles/BundleContext.ts';
 import { useQaRuns } from '@/features/qa/useQaRuns.ts';
 import type { QaInput } from '@/features/qa/types.ts';
-import { API_KEY_ENV, hasApiKey } from '@/lib/claude/apiKey.ts';
+import { useClaudeStatus } from '@/lib/claude/status.ts';
 import { PageHeader } from '@/shared/ui/PageHeader.tsx';
 import { AssistantTurn } from './components/AssistantTurn.tsx';
 import { ChatWelcome } from './components/ChatWelcome.tsx';
@@ -28,7 +28,7 @@ export function ChatPage() {
   const { current } = useBundles();
   const { runs, isRunning, start, stop, reset } = useQaRuns();
   const [draft, setDraft] = useState('');
-  const keyReady = hasApiKey();
+  const { keyReady, message } = useClaudeStatus();
 
   // 번들이 바뀌면 이전 대화의 근거가 달라지므로 대화를 새로 시작한다.
   useEffect(() => reset(), [current.id, reset]);
@@ -84,7 +84,7 @@ export function ChatPage() {
                     isStopShown={isRunning}
                     isDisabled={!keyReady}
                     placeholder={keyReady ? '궁금한 점을 입력하세요' : 'API 키를 설정하면 질문할 수 있습니다'}
-                    status={keyReady ? undefined : { type: 'warning', message: `.env에 ${API_KEY_ENV}를 넣고 개발 서버를 다시 시작하세요.` }}
+                    status={keyReady ? undefined : { type: 'warning', message }}
                     statusPosition="top"
                   />
                 }>

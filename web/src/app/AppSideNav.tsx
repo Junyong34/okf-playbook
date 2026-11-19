@@ -9,13 +9,13 @@ import { KeyIcon, SparklesIcon } from '@heroicons/react/24/outline';
 import { NAV_ITEMS, ROUTES } from '@/config/routes.ts';
 import { BundleSwitcher } from '@/features/bundles/BundleSwitcher.tsx';
 import { BUNDLE_PARAM, useBundles } from '@/features/bundles/BundleContext.ts';
-import { hasApiKey } from '@/lib/claude/apiKey.ts';
+import { useClaudeStatus } from '@/lib/claude/status.ts';
 
 export function AppSideNav() {
   const { pathname } = useLocation();
   const { current } = useBundles();
   const query = `?${BUNDLE_PARAM}=${encodeURIComponent(current.id)}`;
-  const keyReady = hasApiKey();
+  const { keyReady, label } = useClaudeStatus();
 
   return (
     <SideNav
@@ -33,9 +33,9 @@ export function AppSideNav() {
       footer={
         <SideNavSection title="상태" isHeaderHidden>
           <SideNavItem
-            label={keyReady ? 'API 키 설정됨' : 'API 키 없음'}
+            label={label}
             icon={KeyIcon}
-            endContent={<StatusDot variant={keyReady ? 'success' : 'warning'} label={keyReady ? '연결 가능' : '키 필요'} />}
+            endContent={<StatusDot variant={keyReady ? 'success' : 'warning'} label={keyReady ? '생성 가능' : '생성 준비 필요'} />}
           />
         </SideNavSection>
       }>

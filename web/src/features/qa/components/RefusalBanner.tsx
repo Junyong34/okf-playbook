@@ -1,5 +1,5 @@
 import { Banner } from '@astryxdesign/core/Banner';
-import type { Refusal } from '@/lib/claude/types.ts';
+import type { Refusal } from '@claude/types.ts';
 
 type RefusalBannerProps = {
   refusal: Refusal;

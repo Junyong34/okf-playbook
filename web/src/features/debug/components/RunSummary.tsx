@@ -5,7 +5,7 @@ import { HStack } from '@astryxdesign/core/Layout';
 import { StatusDot } from '@astryxdesign/core/StatusDot';
 import { Text } from '@astryxdesign/core/Text';
 import { Tooltip } from '@astryxdesign/core/Tooltip';
-import { modelLabel } from '@/config/models.ts';
+import { modelLabel } from '@claude/models.ts';
 import { PHASE_LABEL } from '@/features/qa/labels.ts';
 import type { QaRun } from '@/features/qa/types.ts';
 import { formatDuration, formatNumber } from '@/shared/utils/format.ts';
