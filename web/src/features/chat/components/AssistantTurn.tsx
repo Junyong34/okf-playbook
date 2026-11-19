@@ -9,7 +9,7 @@ import { AnswerMarkdown } from '@/features/qa/components/AnswerMarkdown.tsx';
 import { GenerationErrorBanner } from '@/features/qa/components/GenerationErrorBanner.tsx';
 import { RefusalBanner } from '@/features/qa/components/RefusalBanner.tsx';
 import { NO_PICKS_ANSWER } from '@/features/qa/labels.ts';
-import type { QaRun } from '@/features/qa/types.ts';
+import type { QaRun } from '@/features/qa/runs.ts';
 
 export const ASSISTANT_NAME = '상담원';
 

@@ -7,7 +7,7 @@ import { Text } from '@astryxdesign/core/Text';
 import { Tooltip } from '@astryxdesign/core/Tooltip';
 import { modelLabel } from '@/config/models.ts';
 import { PHASE_LABEL } from '@/features/qa/labels.ts';
-import type { QaRun } from '@/features/qa/types.ts';
+import type { QaRun } from '@/features/qa/runs.ts';
 import { formatDuration, formatNumber } from '@/shared/utils/format.ts';
 
 // 생성 중에는 경과 시간을 0.1초마다 갱신한다.

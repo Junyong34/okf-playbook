@@ -83,7 +83,7 @@ okf-playbook/
 │       ├── app/               # 앱 틀: 테마·라우터·좌측 메뉴(AppShell + SideNav)
 │       ├── config/            # 번들 자동 탐색·번들별 설정(bundles.ts)·라우트·모델 표시 및 기본값(models.ts)
 │       ├── lib/               # 브라우저 번들 로딩과 Claude API 호출
-│       ├── features/          # 화면별 기능: bundles·qa(공용 처리)·chat(상담)·debug(디버깅)·graph(준비 중)
+│       ├── features/          # 화면별 기능: bundles·qa(공용 처리, 실행 store는 qa/runs.ts)·chat(상담)·debug(디버깅)·graph(준비 중)
 │       ├── shared/            # 화면 공용 UI·유틸
 │       └── styles/            # 전역 CSS (Astryx 레이어 순서)
 │

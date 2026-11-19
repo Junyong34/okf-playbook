@@ -6,7 +6,7 @@ import { HStack, StackItem, VStack } from '@astryxdesign/core/Layout';
 import { MetadataList, MetadataListItem } from '@astryxdesign/core/MetadataList';
 import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import { modelLabel } from '@/config/models.ts';
-import type { QaRun } from '@/features/qa/types.ts';
+import type { QaRun } from '@/features/qa/runs.ts';
 import { downloadJson, timestampForFile } from '@/shared/utils/download.ts';
 import { formatNumber } from '@/shared/utils/format.ts';
 import { TextBlock } from '@/shared/ui/TextBlock.tsx';

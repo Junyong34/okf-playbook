@@ -6,7 +6,7 @@ import { MetadataList, MetadataListItem } from '@astryxdesign/core/MetadataList'
 import { Text } from '@astryxdesign/core/Text';
 import type { AssemblyStep } from '@okf/request.ts';
 import { VIA_LABEL } from '@/features/qa/labels.ts';
-import type { QaRun } from '@/features/qa/types.ts';
+import type { QaRun } from '@/features/qa/runs.ts';
 import { formatChars } from '@/shared/utils/format.ts';
 import { AssemblyStepItem } from './AssemblyStepItem.tsx';
 import { PickCard } from './PickCard.tsx';

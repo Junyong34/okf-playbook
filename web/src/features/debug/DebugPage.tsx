@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Badge } from '@astryxdesign/core/Badge';
 import { Layout, LayoutContent, LayoutPanel } from '@astryxdesign/core/Layout';
 import { useBundles } from '@/features/bundles/BundleContext.ts';
-import type { QaInput } from '@/features/qa/types.ts';
+import type { QaInput } from '@/features/qa/runs.ts';
 import { useQaRuns } from '@/features/qa/useQaRuns.ts';
 import { useClaudeStatus } from '@/lib/claude/status.ts';
 import { PageHeader } from '@/shared/ui/PageHeader.tsx';

@@ -5,7 +5,7 @@ import { Icon } from '@astryxdesign/core/Icon';
 import { VStack } from '@astryxdesign/core/Layout';
 import { Tab, TabList } from '@astryxdesign/core/TabList';
 import { BeakerIcon } from '@heroicons/react/24/outline';
-import type { QaRun } from '@/features/qa/types.ts';
+import type { QaRun } from '@/features/qa/runs.ts';
 import { AnswerView } from './AnswerView.tsx';
 import { CitationCheckView } from './CitationCheckView.tsx';
 import { ModelRequestView } from './ModelRequestView.tsx';

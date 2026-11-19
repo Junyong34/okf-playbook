@@ -9,7 +9,7 @@ import { HStack, VStack } from '@astryxdesign/core/Layout';
 import { Text } from '@astryxdesign/core/Text';
 import { Token } from '@astryxdesign/core/Token';
 import { useBundles } from '@/features/bundles/BundleContext.ts';
-import type { QaRun } from '@/features/qa/types.ts';
+import type { QaRun } from '@/features/qa/runs.ts';
 import { SettingsGroup } from './SettingsGroup.tsx';
 
 export function CitationCheckView({ run }: { run: QaRun }) {

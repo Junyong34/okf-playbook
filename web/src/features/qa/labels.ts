@@ -2,7 +2,7 @@
 import type { Caution, Tier } from '@okf/trust.ts';
 import type { Pick } from '@okf/retrieve.ts';
 import type { StopReason } from '@claude/types.ts';
-import type { RunPhase } from './types.ts';
+import type { RunPhase } from './runs.ts';
 
 type BadgeVariant = 'neutral' | 'info' | 'success' | 'warning' | 'error';
 type DotVariant = 'neutral' | 'accent' | 'success' | 'warning' | 'error';

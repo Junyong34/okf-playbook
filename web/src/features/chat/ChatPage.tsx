@@ -12,7 +12,7 @@ import { CHAT_GENERATION } from '@/config/models.ts';
 import { DEFAULT_OPTIONS } from '@okf/retrieve.ts';
 import { useBundles } from '@/features/bundles/BundleContext.ts';
 import { useQaRuns } from '@/features/qa/useQaRuns.ts';
-import type { QaInput } from '@/features/qa/types.ts';
+import type { QaInput } from '@/features/qa/runs.ts';
 import { useClaudeStatus } from '@/lib/claude/status.ts';
 import { PageHeader } from '@/shared/ui/PageHeader.tsx';
 import { AssistantTurn } from './components/AssistantTurn.tsx';
