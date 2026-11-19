@@ -14,6 +14,7 @@ okf-playbook/
 │   ├── README.md
 │   ├── agents/                # 에이전트 스킬 설정 (이슈 트래커, 라벨, 도메인 문서 규칙)
 │   ├── okf-learning-plan.md   # 전체 학습·실습 계획 (기준 문서)
+│   ├── okf-modules.md         # src/okf 모듈별 역할과 CLI별 흐름 (구조를 바꾸면 함께 갱신)
 │   ├── team-rules.md          # OKF 명세 위에 정한 팀 규칙 (validate.ts가 team/* 경고로 검사)
 │   └── sessions/              # 회차별 학습 노트
 ├── learn/                     # /teach 학습 공간 (절차: learn/README.md)
