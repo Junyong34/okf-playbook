@@ -1,15 +1,12 @@
 // 상담원 답변 한 개. 고객에게 보이는 화면이라 내부 정보(고른 개념, 인용 검사)는 보여 주지 않는다.
-import { useLayoutEffect, useRef } from 'react';
 import { Avatar } from '@astryxdesign/core/Avatar';
 import { ChatMessage, ChatMessageBubble, ChatSystemMessage } from '@astryxdesign/core/Chat';
-import { Citation, type CitationProps } from '@astryxdesign/core/Citation';
 import { useAnnounce, useClipboard } from '@astryxdesign/core/hooks';
 import { Icon } from '@astryxdesign/core/Icon';
 import { IconButton } from '@astryxdesign/core/IconButton';
 import { HStack } from '@astryxdesign/core/Layout';
 import { Spinner } from '@astryxdesign/core/Spinner';
 import { Text } from '@astryxdesign/core/Text';
-import { Tooltip } from '@astryxdesign/core/Tooltip';
 import { CheckIcon, Square2StackIcon } from '@heroicons/react/24/outline';
 import * as stylex from '@stylexjs/stylex';
 import { normalizeCitations } from '@/features/qa/citations.ts';
@@ -62,30 +59,11 @@ function Thinking() {
   );
 }
 
-function ChatCitation({ source, number, variant }: Pick<CitationProps, 'source' | 'number' | 'variant'>) {
-  const anchorRef = useRef<HTMLElement>(null);
-  const title = source.title ?? String(number);
-  useLayoutEffect(function removeNativeTooltip() {
-    // Citation은 기본 title을 붙인다. 같은 제목의 브라우저 툴팁이 겹치지 않게 한다.
-    anchorRef.current?.removeAttribute('title');
-  }, [title]);
-
-  return (
-    <>
-      <Citation ref={anchorRef} source={source} number={number} variant={variant} tabIndex={0} />
-      <Tooltip anchorRef={anchorRef} content={title} />
-    </>
-  );
-}
-
-const CHAT_MARKDOWN_COMPONENTS = { citation: ChatCitation };
-
 function AnswerBody({ run, onRetry }: AssistantTurnProps) {
   const answerProps = {
     text: run.text,
     providedPaths: run.providedPaths,
     hideUnknownCitations: true,
-    components: CHAT_MARKDOWN_COMPONENTS,
   };
   switch (run.phase) {
     case 'skipped':
