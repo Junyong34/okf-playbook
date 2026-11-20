@@ -47,6 +47,7 @@ okf-playbook/
 │   └── sample_mart_faq/       # 테스트용 마트 FAQ의 OKF v0.3 번들
 │       ├── index.md · log.md  # 번들 목차와 변경 기록
 │       ├── faqs/              # 카테고리별 목차와 질문별 Markdown
+│       ├── topics/            # 카테고리를 가로지르는 주제 허브 29개 (type: Topic, FAQ마다 하나에 속함)
 │       └── references/        # 원본 JSON 사본과 자료 목차
 ├── shared/claude/             # 웹·서버 공용 모델 옵션, 요청 변환, 타입, 생성 이벤트 프로토콜(protocol.ts: NDJSON 인코딩·디코딩·요청 검증·오류 문구)
 ├── src/okf/                   # 검증·검색 로직 (파일 시스템과 분리, 웹 UI에서 재사용)
