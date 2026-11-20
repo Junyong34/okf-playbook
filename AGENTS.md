@@ -23,6 +23,7 @@ okf-playbook/
 │   ├── images/                # README용 웹 화면 스크린샷 (상담·디버깅·그래프)
 │   ├── okf-learning-plan.md   # 전체 학습·실습 계획 (기준 문서)
 │   ├── okf-modules.md         # src/okf 모듈별 역할과 CLI별 흐름 (구조를 바꾸면 함께 갱신)
+│   ├── answer-pipeline.md     # 질문 → 답변 처리 순서와 단계별 고도화 지점 (흐름을 바꾸면 함께 갱신)
 │   ├── okf-v0.3-changes.md    # v0.2 → v0.3 변경 안내 (깨지는 변경, 절 번호 대응, 이 저장소의 결정)
 │   ├── okf-skills-comparison.md # 공식·외부 OKF 스킬 비교
 │   ├── voc-answer-guide.md    # 상담 말투 가이드 (디버깅 화면 말투 설정이 지시문 뒤에 붙임, 근거로 쓰지 않음)

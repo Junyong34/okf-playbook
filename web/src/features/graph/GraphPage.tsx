@@ -7,7 +7,7 @@ import type { LoadedBundle } from '@/lib/bundles/loadBundles.ts';
 import { PageHeader } from '@/shared/ui/PageHeader.tsx';
 import { ConceptInspector } from './ConceptInspector.tsx';
 import { GraphCanvas } from './GraphCanvas.tsx';
-import { EDGE_STYLES, LAYOUTS, faqCategoryStyles, type EdgeShape, type NodeLayout } from './graphLayout.ts';
+import { EDGE_STYLES, LAYOUTS, faqCategoryStyles, mergeEdges, type EdgeShape, type NodeLayout } from './graphLayout.ts';
 import './graph.css';
 
 export function GraphPage() {
@@ -31,8 +31,9 @@ function BundleGraph({ loaded }: { loaded: LoadedBundle }) {
   const graph = useMemo(() => buildGraph(loaded.bundle), [loaded.bundle]);
   const categoryStyles = useMemo(() => faqCategoryStyles(graph.nodes, loaded.bundle), [graph, loaded.bundle]);
   const titles = useMemo(() => new Map(graph.nodes.map(({ path, title }) => [path, title])), [graph]);
+  const drawnEdges = useMemo(() => mergeEdges(graph.nodes, graph.edges), [graph]);
   const edgeKinds = useMemo(() => [...new Set(graph.edges.map(({ kind }) => kind))], [graph]);
-  const [layout, setLayout] = useState<NodeLayout>('grid');
+  const [layout, setLayout] = useState<NodeLayout>('force');
   const [edgeKind, setEdgeKind] = useState<'all' | EdgeKind>('all');
   const [edgeShape, setEdgeShape] = useState<EdgeShape>('auto');
   const selectedPath = new URLSearchParams(location.hash.slice(1)).get('concept');
@@ -51,6 +52,7 @@ function BundleGraph({ loaded }: { loaded: LoadedBundle }) {
     void navigate(conceptHref(path), { preventScrollReset: true, state: { graphOrigin: 'canvas' } });
   }, [navigate, conceptHref]);
   const visibleEdgeCount = graph.edges.filter(({ kind }) => edgeKind === 'all' || kind === edgeKind).length;
+  const visibleLineCount = drawnEdges.filter(({ kinds }) => edgeKind === 'all' || kinds.includes(edgeKind)).length;
 
   return (
     <div className="okf-graph-workspace">
@@ -88,6 +90,7 @@ function BundleGraph({ loaded }: { loaded: LoadedBundle }) {
         <GraphCanvas
           key={layout}
           graph={graph}
+          edges={drawnEdges}
           categoryStyles={categoryStyles}
           layout={layout}
           edgeKind={edgeKind}
@@ -96,7 +99,7 @@ function BundleGraph({ loaded }: { loaded: LoadedBundle }) {
           onSelect={selectFromCanvas}
         />
         <footer className="okf-graph-legend">
-          <p>개념 {graph.nodes.length}개 · 간선 {visibleEdgeCount}개{graph.dangling.length > 0 && ` · 개념 이외 참조 ${graph.dangling.length}개`}</p>
+          <p>개념 {graph.nodes.length}개 · 간선 {visibleEdgeCount}개(선 {visibleLineCount}개){graph.dangling.length > 0 && ` · 개념 이외 참조 ${graph.dangling.length}개`}</p>
           {edgeKinds.map((kind) => (edgeKind === 'all' || edgeKind === kind) && (
             <span key={kind}><i aria-hidden="true" style={{ backgroundColor: EDGE_STYLES[kind].color }} />{EDGE_STYLES[kind].label}</span>
           ))}
