@@ -3,6 +3,7 @@
 // 배포할 때는 내부만 서버 fetch로 바꾼다. 그래서 지금도 Promise를 돌려준다.
 import type { Bundle } from '@okf/types.ts';
 import type { VoiceGuide } from '@okf/request.ts';
+import { DEFAULT_OPTIONS, type Options as RetrievalOptions } from '@okf/retrieve.ts';
 import { readConcepts } from '@okf/concept.ts';
 import { BUNDLE_ASSET_KEYS, BUNDLE_DOCUMENTS, BUNDLE_SETTINGS, BUNDLES_DIR, DEFAULT_VOICE } from '@/config/bundles.ts';
 import { readBundleMeta } from './bundleMeta.ts';
@@ -20,6 +21,7 @@ export type LoadedBundle = {
   bundle: Bundle;
   voice: VoiceGuide | null;
   sampleQuestions: string[];
+  retrieval: RetrievalOptions; // 이 번들의 기본 검색 설정 (DEFAULT_OPTIONS + BUNDLE_SETTINGS.retrieval)
   concepts: ConceptSummary[];
 };
 
@@ -42,6 +44,7 @@ function discover(): LoadedBundle[] {
       bundle,
       voice: settings.voice === undefined ? DEFAULT_VOICE : settings.voice,
       sampleQuestions: settings.sampleQuestions ?? [],
+      retrieval: { ...DEFAULT_OPTIONS, ...settings.retrieval },
       concepts: readConcepts(bundle).map((c) => ({ path: c.path, title: c.title || c.path, type: c.type })),
     });
   }

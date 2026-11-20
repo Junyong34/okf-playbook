@@ -24,8 +24,13 @@ describe('parseSearchArgs', () => {
   });
   test('옵션을 검색 설정으로 바꾼다', () => {
     assert.deepEqual(ok(['--fields', 'body', '--no-links', '--max', '5', '--min', '0', 'q']).options, {
-      fields: 'body', followLinks: false, maxDocs: 5, minScore: 0,
+      fields: 'body', followLinks: false, maxDocs: 5, minScore: 0, boostMeta: false,
     });
+  });
+  test('--boost-meta는 title·tags 가산을 켠다 (compare 같은 fixedSetting CLI도 받는다)', () => {
+    assert.equal(ok(['--boost-meta', 'q']).options.boostMeta, true);
+    const r = parseSearchArgs(['--boost-meta'], { fixedSetting: true });
+    assert.ok(r.ok && r.args.options.boostMeta);
   });
   test('상한·기준·fields·now가 잘못되면 오류', () => {
     assert.match(err(['--max', 'abc']), /--max/);

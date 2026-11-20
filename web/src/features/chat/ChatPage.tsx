@@ -10,7 +10,6 @@ import { Layout, LayoutContent } from '@astryxdesign/core/Layout';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import * as stylex from '@stylexjs/stylex';
 import { CHAT_GENERATION } from '@/config/models.ts';
-import { DEFAULT_OPTIONS } from '@okf/retrieve.ts';
 import { useBundles } from '@/features/bundles/BundleContext.ts';
 import type { QaInput } from '@/features/qa/runs.ts';
 import { useClaudeStatus } from '@/lib/claude/status.ts';
@@ -38,7 +37,7 @@ export function ChatPage() {
     const input: QaInput = {
       bundleId: current.id,
       question: text,
-      retrieval: DEFAULT_OPTIONS,
+      retrieval: current.retrieval,
       voiceEnabled: true,
       generation: CHAT_GENERATION,
     };

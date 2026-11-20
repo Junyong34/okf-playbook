@@ -54,7 +54,7 @@ export function AssemblyRecordView({ run }: { run: QaRun }) {
         <AssemblyStepItem index={++step} title="검색 단계" summary={`${asked.picks.length}개 고름 · ${pickSummary}`}>
           <Text type="supporting">
             검색 대상 {opts.fields === 'body' ? '본문만' : '본문 + 메타 필드'} · 링크 확장 {opts.followLinks ? '켬' : '끔'} · 상한{' '}
-            {opts.maxDocs} · 기준 {opts.minScore}
+            {opts.maxDocs} · 기준 {opts.minScore} · 제목·태그 가산 {opts.boostMeta ? '켬' : '끔'}
           </Text>
           {asked.warnings.length > 0 && (
             <Banner status="info" title={`경고 ${asked.warnings.length}건`} description={asked.warnings.join(' / ')} />

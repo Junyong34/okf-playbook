@@ -1,4 +1,4 @@
-// 검색 설정: CLI의 --fields, --no-links, --max, --min
+// 검색 설정: CLI의 --fields, --no-links, --max, --min, --boost-meta
 import { HStack, StackItem } from '@astryxdesign/core/Layout';
 import { NumberInput } from '@astryxdesign/core/NumberInput';
 import { SegmentedControl, SegmentedControlItem } from '@astryxdesign/core/SegmentedControl';
@@ -28,6 +28,16 @@ export function RetrievalSettings({ value, onChange }: RetrievalSettingsProps) {
         description="고른 개념의 링크를 한 단계 따라갑니다."
         value={value.followLinks}
         onChange={(followLinks) => onChange({ followLinks })}
+        labelPosition="start"
+        labelSpacing="spread"
+        width="100%"
+        size="sm"
+      />
+      <Switch
+        label="제목·태그 가산"
+        description="제목과 태그에서도 겹친 키워드를 한 번 더 셉니다. 본문 + 메타 필드일 때만 적용됩니다."
+        value={value.boostMeta}
+        onChange={(boostMeta) => onChange({ boostMeta })}
         labelPosition="start"
         labelSpacing="spread"
         width="100%"

@@ -4,6 +4,7 @@
 //  - 화면 이름·설명은 index.md의 title·description에서 읽는다.
 //  - index.md에 없는 정보(예시 질문, 말투 설정)만 아래 BUNDLE_SETTINGS에 적는다. 적지 않은 번들은 기본값을 쓴다.
 import type { VoiceGuide } from '@okf/request.ts';
+import type { Options as RetrievalOptions } from '@okf/retrieve.ts';
 import vocAnswerGuide from '../../../docs/voc-answer-guide.md?raw';
 
 // 저장소 루트 기준 번들 모음 디렉터리
@@ -22,6 +23,7 @@ export const BUNDLE_ASSET_KEYS: string[] = Object.keys(
 export type BundleSettings = {
   sampleQuestions?: string[]; // 빈 화면과 디버깅 화면의 예시 질문
   voice?: VoiceGuide | null;  // 말투 설정. null이면 말투 설정 없이 지시문만 보낸다
+  retrieval?: Partial<RetrievalOptions>; // 상담 화면과 디버깅 화면 기본값에서 DEFAULT_OPTIONS를 덮어쓸 검색 설정
 };
 
 export const DEFAULT_VOICE: VoiceGuide = { path: 'docs/voc-answer-guide.md', text: vocAnswerGuide };
@@ -36,6 +38,8 @@ export const BUNDLE_SETTINGS: Record<string, BundleSettings> = {
     ],
   },
   sample_mart_faq: {
+    // FAQ 265개는 본문에 "고객센터로 접수" 같은 말이 지나가듯 많다. 제목·태그가 맞는 FAQ를 위로 올린다 (docs/adr/0001-topic-retrieval.md).
+    retrieval: { boostMeta: true },
     sampleQuestions: [
       '교환이나 반품이 안 되는 경우가 있나요?',
       '오늘 적립한 포인트를 오늘 바로 쓸 수 있나요?',

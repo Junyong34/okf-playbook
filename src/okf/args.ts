@@ -34,6 +34,7 @@ export function parseSearchArgs(argv: string[], config: ParseConfig = {}): Parse
     min: { type: 'string', default: String(DEFAULT_OPTIONS.minScore) },
     dir: { type: 'string', default: DEFAULT_BUNDLE_DIR },
     now: { type: 'string' },
+    'boost-meta': { type: 'boolean', default: false }, // title·tags 일치 가산 (fixedSetting에서도 받는다)
   };
   if (!config.fixedSetting) {
     base.fields = { type: 'string', default: DEFAULT_OPTIONS.fields };
@@ -62,7 +63,13 @@ export function parseSearchArgs(argv: string[], config: ParseConfig = {}): Parse
   return {
     ok: true,
     args: {
-      options: { fields, followLinks: config.fixedSetting ? DEFAULT_OPTIONS.followLinks : !values['no-links'], maxDocs, minScore },
+      options: {
+        fields,
+        followLinks: config.fixedSetting ? DEFAULT_OPTIONS.followLinks : !values['no-links'],
+        maxDocs,
+        minScore,
+        boostMeta: values['boost-meta'] === true,
+      },
       dir: s('dir'),
       now,
       positionals,

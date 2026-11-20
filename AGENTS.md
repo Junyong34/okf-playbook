@@ -12,6 +12,7 @@ okf-playbook/
 ├── GLOSSARY.md                # 용어집 (개념·메타 필드·인용 등 정한 말과 피할 말)
 ├── docs/                      # 학습 계획과 기록
 │   ├── README.md
+│   ├── adr/                   # 결정 기록 (0001-topic-retrieval: 주제 허브를 검색에서 다루는 방식)
 │   ├── agents/                # 에이전트 스킬 설정 (이슈 트래커, 라벨, 도메인 문서 규칙)
 │   ├── okf-learning-plan.md   # 전체 학습·실습 계획 (기준 문서)
 │   ├── okf-modules.md         # src/okf 모듈별 역할과 CLI별 흐름 (구조를 바꾸면 함께 갱신)
@@ -67,7 +68,7 @@ okf-playbook/
 ├── tests/                     # node:test (pnpm test)
 ├── cli/                       # 루트 pnpm 명령이 실행하는 OKF CLI 진입점
 │   ├── validate.ts                # 번들 검증 CLI (pnpm validate [dir])
-│   ├── retrieve.ts                # 질문별 개념 검색 CLI, 고른 개념마다 신뢰·주의 표시 (pnpm retrieve "질문" [--fields --no-links --max --min --now])
+│   ├── retrieve.ts                # 질문별 개념 검색 CLI, 고른 개념마다 신뢰·주의 표시 (pnpm retrieve "질문" [--fields --no-links --max --min --boost-meta --dir --now])
 │   ├── prompt.ts                  # 모델에 붙여 넣을 프롬프트 출력 (pnpm prompt "질문")
 │   ├── check-answer.ts            # 저장한 답변의 인용 검사 (pnpm check-answer "질문" answers/qN.txt [--prompt answers/qN.prompt.txt])
 │   ├── compare.ts                 # 질문 목록 × 세 설정 비교표 출력 (pnpm compare [--max --min])

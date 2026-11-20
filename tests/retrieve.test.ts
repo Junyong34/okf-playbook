@@ -116,3 +116,39 @@ describe('R5단계 실제 번들과 학습 계획의 질문 6개', () => {
     });
   }
 });
+
+describe('R6단계 주제 허브(Topic)와 title·tags 가산 (docs/adr/0001-topic-retrieval.md)', () => {
+  const b = bundle({
+    'topics/delivery.md': doc('Topic', '배송 문의 고객센터 안내 요약. [지연](../faqs/late.md) [변경](../faqs/change.md)', 'title: 배송\ntags: [배송, 지연]\n'),
+    'faqs/late.md': doc('FAQ', '늦으면 고객센터로 문의. [주제](../topics/delivery.md) [옆](change.md)', 'title: 배송이 늦어요\n'),
+    'faqs/change.md': doc('FAQ', '시간 변경은 주문상세에서.', 'title: 배송 시간 변경\n'),
+    'faqs/contact.md': doc('FAQ', '마이페이지에서 연락한다.', 'title: 연락처는 어디로\ntags: [고객센터]\n'),
+  });
+  test('Topic은 점수가 높아도 직접 고르지 않는다', () => {
+    assert.ok(!picks(b, '배송 문의 고객센터 안내', { followLinks: false }).some((p) => p.includes('topics/')));
+  });
+  test('질문 키워드가 title·tags에 있는 Topic이 링크하는 개념은 +1, 그 Topic을 기록한다', () => {
+    const p = retrieve(b, '배송 지연', { followLinks: false }).picks.find((x) => x.path === 'faqs/late.md')!;
+    assert.equal(p.topic, 'topics/delivery.md');
+    assert.equal(p.score, p.matched.length + 1);
+  });
+  test('Topic으로 가는 링크는 따라가지 않고 경고도 남기지 않는다. 옆 개념 링크는 따라간다', () => {
+    const r = retrieve(b, '늦으면 고객센터', { maxDocs: 5 });
+    assert.deepEqual(r.picks.map((p) => `${p.via[0]}:${p.path}`).filter((x) => x.startsWith('l:')), ['l:faqs/change.md']);
+    assert.ok(!r.warnings.some((w) => w.includes('topics/')));
+  });
+  test('boostMeta: title·tags에서 겹친 키워드를 한 번 더 센다 (기본은 꺼짐)', () => {
+    assert.deepEqual(picks(b, '고객센터 문의', { followLinks: false }), ['k:faqs/late.md', 'k:faqs/contact.md']);
+    const r = retrieve(b, '고객센터 문의', { followLinks: false, boostMeta: true });
+    assert.deepEqual(r.picks.map((p) => [p.path, p.score]), [['faqs/contact.md', 6], ['faqs/late.md', 4]]);
+    assert.deepEqual(r.picks[0].metaMatched, ['객센', '고객', '센터']);
+  });
+  test("boostMeta는 fields='body'에서는 적용하지 않는다", () => {
+    const p = retrieve(b, '고객센터 문의', { fields: 'body', followLinks: false, boostMeta: true }).picks;
+    assert.ok(p.every((x) => x.metaMatched === undefined));
+  });
+  test('실제 번들 기록: sample_mart_faq에서 "고객센터 문의 어떻게 해요 ?"는 가산을 켜면 문의처 FAQ가 1위다', async () => {
+    const mart = await loadBundle('bundles/sample_mart_faq');
+    assert.equal(retrieve(mart, '고객센터 문의 어떻게 해요 ?', { boostMeta: true }).picks[0].path, 'faqs/item/faq-038.md');
+  });
+});

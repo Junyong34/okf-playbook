@@ -25,16 +25,25 @@ export type Options = {
   followLinks: boolean;         // 처음 고른 개념의 링크를 한 단계 따라갈지
   maxDocs: number;              // 모델에 넘길 개념 수 상한 (링크로 추가한 것 포함)
   minScore: number;             // 이 점수 미만이면 고르지 않는다
+  boostMeta: boolean;           // body+meta일 때 title·tags에서도 겹친 키워드를 한 번 더 센다 (번들마다 켠다)
 };
 
-export const DEFAULT_OPTIONS: Options = { fields: 'body+meta', followLinks: true, maxDocs: 3, minScore: 2 };
+export const DEFAULT_OPTIONS: Options = { fields: 'body+meta', followLinks: true, maxDocs: 3, minScore: 2, boostMeta: false };
+
+// 주제 허브 개념의 type. 여러 개념을 묶어 링크하는 목차라 검색에서 직접 고르지 않는다 (docs/adr/0001-topic-retrieval.md).
+//  - 키워드 검색 후보에서 뺀다. 요약이 많아 어느 질문에나 점수가 잘 나오고, 뽑히면 자리 하나에 2차 요약이 통째로 들어간다.
+//  - 질문 키워드가 title·tags에 있는 Topic이 링크하는 개념은 점수 +1 (그 주제 영역을 먼저 본다).
+//  - 링크 따라가기도 Topic으로는 가지 않는다 (FAQ → 소속 주제 같은 위쪽 링크).
+export const TOPIC_TYPE = 'Topic';
 
 export type Pick = {
   path: string;
   via: 'keyword' | 'link';
-  score: number;      // keyword: 겹친 키워드 수, link: 0
+  score: number;      // keyword: 겹친 키워드 수 + 가산, link: 0
   matched: string[];  // keyword: 겹친 키워드, link: []
   from?: string;      // link: 링크를 따라온 출발 개념
+  metaMatched?: string[]; // keyword, boostMeta: title·tags에서도 겹쳐 한 번 더 센 키워드
+  topic?: string;         // keyword: +1을 준 주제 허브(Topic) 경로
 };
 
 export type Result = { picks: Pick[]; warnings: string[] };
@@ -50,6 +59,33 @@ export function score(question: string, c: Concept, fields: Options['fields']): 
   return { score: matched.length, matched };
 }
 
+// title·tags에서 겹친 키워드. boostMeta 가산과 주제 허브 매칭에 쓴다 (description은 "어떻게" 같은 말이 많아 뺀다).
+export function metaMatches(question: string, c: Concept): string[] {
+  const meta = bigrams([c.title, c.tags.join(' ')].join('\n'));
+  return [...bigrams(question)].filter((b) => meta.has(b)).sort();
+}
+
+const isTopic = (c: Concept) => c.type === TOPIC_TYPE;
+
+// 질문 키워드가 title·tags에 있는 주제 허브 → 그 허브가 링크하는 개념(경로 → 허브 경로). 겹친 수가 많은 허브가 먼저다.
+function topicArea(question: string, concepts: Concept[], byPath: Map<string, Concept>): Map<string, string> {
+  const hits = concepts
+    .filter(isTopic)
+    .map((t) => ({ t, n: metaMatches(question, t).length }))
+    .filter((h) => h.n > 0)
+    .sort((a, b) => b.n - a.n || a.t.path.localeCompare(b.t.path));
+  const area = new Map<string, string>();
+  for (const { t } of hits) {
+    for (const raw of t.links) {
+      const target = resolveLink(t.path, raw);
+      if (target === null || area.has(target)) continue;
+      const c = byPath.get(target);
+      if (c && !isTopic(c)) area.set(target, t.path);
+    }
+  }
+  return area;
+}
+
 export function retrieve(bundle: Bundle, question: string, options: Partial<Options> = {}): Result {
   const opt = { ...DEFAULT_OPTIONS, ...options };
   const concepts = readConcepts(bundle);
@@ -58,12 +94,27 @@ export function retrieve(bundle: Bundle, question: string, options: Partial<Opti
   const warnings: string[] = [];
 
   // 1) 키워드로 고르기: 점수 내림차순, 같으면 경로순. minScore 이상, maxDocs까지.
+  //    점수 = 겹친 키워드 수 + title·tags 가산(boostMeta) + 주제 영역 가산(1). 주제 허브는 후보가 아니다.
+  const area = topicArea(question, concepts, byPath);
   const ranked = concepts
-    .map((c) => ({ c, ...score(question, c, opt.fields) }))
-    .filter((r) => r.score >= opt.minScore)
-    .sort((a, b) => b.score - a.score || a.c.path.localeCompare(b.c.path));
+    .filter((c) => !isTopic(c))
+    .map((c) => {
+      const base = score(question, c, opt.fields);
+      const meta = opt.boostMeta && opt.fields === 'body+meta' ? metaMatches(question, c) : [];
+      const topic = area.get(c.path);
+      return { c, ...base, meta, topic, total: base.score + meta.length + (topic ? 1 : 0) };
+    })
+    .filter((r) => r.total >= opt.minScore)
+    .sort((a, b) => b.total - a.total || a.c.path.localeCompare(b.c.path));
   for (const r of ranked.slice(0, opt.maxDocs)) {
-    picks.push({ path: r.c.path, via: 'keyword', score: r.score, matched: r.matched });
+    picks.push({
+      path: r.c.path,
+      via: 'keyword',
+      score: r.total,
+      matched: r.matched,
+      ...(r.meta.length > 0 ? { metaMatched: r.meta } : {}),
+      ...(r.topic ? { topic: r.topic } : {}),
+    });
   }
 
   // 2) 링크 한 단계: 키워드로 고른 개념의 링크만 본다. 링크로 추가한 개념의 링크는 따라가지 않는다.
@@ -83,6 +134,7 @@ export function retrieve(bundle: Bundle, question: string, options: Partial<Opti
           warnings.push(`${seed.path}의 링크 ${raw}(${target})가 ${why} 건너뛴다.`);
           continue;
         }
+        if (isTopic(byPath.get(target)!)) continue; // 주제 허브로 올라가는 링크는 따라가지 않는다 (경고 없이)
         if (picks.length >= opt.maxDocs) {
           warnings.push(`상한 ${opt.maxDocs}개에 걸려 ${target}를 추가하지 않았다.`);
           continue;

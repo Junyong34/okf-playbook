@@ -52,6 +52,19 @@ export function PickCard({ order, pick, title, bodyChars }: PickCardProps) {
             {hidden > 0 && <Text type="supporting">외 {hidden}개</Text>}
           </HStack>
         )}
+        {pick.metaMatched && (
+          <HStack gap={1} wrap="wrap" vAlign="center">
+            <Text type="supporting">제목·태그 가산</Text>
+            {pick.metaMatched.map((m) => (
+              <Token key={m} size="sm" label={m} />
+            ))}
+          </HStack>
+        )}
+        {pick.topic && (
+          <Text type="supporting">
+            주제 <Text type="code">{pick.topic}</Text>에 속해 +1점을 받았습니다.
+          </Text>
+        )}
         {pick.replacement && (
           <Text type="supporting">
             대체 개념: <Text type="code">{pick.replacement.target ?? pick.replacement.raw}</Text>

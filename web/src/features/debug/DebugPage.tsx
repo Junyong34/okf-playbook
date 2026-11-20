@@ -17,7 +17,7 @@ const CONTROLS_WIDTH = 380;
 
 export function DebugPage() {
   const { current } = useBundles();
-  const formApi = useDebugForm();
+  const formApi = useDebugForm(current.retrieval);
   // 번들마다 실행 목록이 따로 있다. 번들을 바꾸면 그 번들의 마지막 결과가 보인다(메모리에만 둔다).
   const { latest, isRunning, start, stop } = useQaRuns(useQaSessions().debug.get(current.id));
   const [tab, setTab] = useState<ResultTab>('record');

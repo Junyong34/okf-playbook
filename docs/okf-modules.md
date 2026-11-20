@@ -61,7 +61,7 @@ flowchart TB
 | `load.ts` | 디렉터리 아래 파일을 `Bundle`로 만든다. `.md`는 내용을 읽고, `.md`가 아닌 파일은 asset이라 경로만 담는다(내용은 빈 문자열, §3.2-3). `.`으로 시작하는 파일·디렉터리는 번들이 아니라 읽지 않는다(§3.2-4). 유일하게 디스크를 읽는다 | `loadBundle` | CLI, 실제 번들 테스트 | 3 |
 | `concept.ts` | **개념 읽기.** 파일 하나를 frontmatter와 본문으로 나누고 YAML을 한 번 파싱하고 링크를 뽑는다. 예약 파일(`index.md`·`log.md`)과 개념이 아닌 파일(type 없음, §3.2)을 구분한다. 빈 값·단일 값(§11.2), 시각(§5), 번들 버전(§8.1), 경로 필드와 v0.2 대체 해석(§6.2, §12.1)도 여기서 공통으로 읽는다 | `readBundle`(`.md`만), `readFile`, `readBundleFile`(asset이면 `null`), `isMarkdown`, `readConcepts`, `toConcept`, `conceptType`, `isConceptPath`, `frontmatterData`, `splitFrontmatter`, `resolveLink`, `extractLinks`, `dateText`, `isBlank`, `asList`, `parseTimestamp`, `bundleVersion`, `allowsLegacyPaths`, `classifyResource`, `pathFields`, `resolvePathField` | 모든 소비자 모듈 | 3·4 (리팩터링으로 모음) |
 | `validate.ts` | **이 저장소의 검증 기준.** 명세 §11.1 적합성 오류(YAML 파싱, 예약 파일 구조)와, 공식 검증기(`okf-generate`의 `validate.py`)에서 옮긴 경고·정보(행위자 형식, status 어휘, sources·각주, 경로 필드 대상, 시각, 검토 기록이 낡음 …), 팀 규칙 경고를 낸다. Attested Computation 규칙(§10)은 아직 없다 | `validateBundle(bundle, { now? })`, `ValidateOptions` (+ concept.ts 함수 다시 내보냄) | `validate` CLI | 3 |
-| `retrieve.ts` | **검색 단계.** 질문과 개념의 두 글자 묶음(bigram) 겹침으로 점수를 매기고, 기준·상한으로 고른 뒤 링크 확장을 한 단계 한다 | `retrieve`, `score`, `bigrams`, `DEFAULT_OPTIONS`, `Options`, `Pick` | `ask`, `compare`, `args` | 4 |
+| `retrieve.ts` | **검색 단계.** 질문과 개념의 두 글자 묶음(bigram) 겹침으로 점수를 매기고, 기준·상한으로 고른 뒤 링크 확장을 한 단계 한다 | `retrieve`, `score`, `metaMatches`, `bigrams`, `DEFAULT_OPTIONS`, `TOPIC_TYPE`, `Options`, `Pick` | `ask`, `compare`, `args` | 4 |
 | `answer.ts` | **생성 단계의 입력과 출력.** 고른 개념의 본문으로 프롬프트를 만들고, 모델 답변의 인용을 검사한다 | `buildPrompt`, `providedPaths`, `checkAnswer`, `extractCitations`, `splitSentences`, `INSTRUCTION` | `ask`, `check-answer` CLI | 5 |
 | `compare.ts` | 질문 목록 × 검색 설정 세 가지로 검색을 돌려 기대 근거와 비교한다 (빠진 근거, 불필요한 개념, 링크가 살린 근거) | `compare`, `judge`, `settings`, `QUESTIONS`, `toMarkdown`, `summarize` | `compare` CLI | 6 |
 | `provenance.ts` | frontmatter `sources`와 본문 각주를 읽고 서로 맞는지 검사한다. 출처를 `resolvePathField`로 풀어 원문 개념까지 거슬러 올라간다 | `readProvenance`, `provenanceOf`, `classifyResource`, `checkAttribution`, `trace`, `formatTrace` | `graph`, `trace` CLI | 7 |
@@ -133,9 +133,10 @@ sequenceDiagram
 검색 단계 안쪽(`retrieve.ts`):
 
 1. `readConcepts`로 개념을 읽는다 (인덱스·로그·type 없는 파일·파싱 실패 제외).
-2. 개념마다 `score`: 질문 bigram ∩ 개념 bigram 수. `fields`가 `body+meta`이면 type·title·description·tags도 본다.
-3. 기준(`minScore`) 이상을 점수 내림차순·경로순으로 상한(`maxDocs`)까지 고른다.
-4. `followLinks`이면 키워드로 고른 개념의 링크만 한 단계 따라가 더한다. 대상이 개념이 아니면(번들에 없음, type 없음) 경고하고 건너뛴다. 상한을 넘으면 경고만 남긴다.
+2. 주제 허브(`type: Topic`)는 후보에서 뺀다. 질문 bigram이 title·tags에 하나라도 있는 허브를 찾아, 그 허브가 링크하는 개념을 "주제 영역"으로 표시한다 ([ADR 0001](adr/0001-topic-retrieval.md)).
+3. 나머지 개념마다 점수 = `score`(질문 bigram ∩ 개념 bigram 수, `fields`가 `body+meta`이면 type·title·description·tags도 본다) + `boostMeta`이면 title·tags에서 겹친 수(`metaMatched`) + 주제 영역이면 1(`topic`).
+4. 기준(`minScore`) 이상을 점수 내림차순·경로순으로 상한(`maxDocs`)까지 고른다.
+5. `followLinks`이면 키워드로 고른 개념의 링크만 한 단계 따라가 더한다. 주제 허브로 가는 링크는 경고 없이 건너뛴다. 대상이 개념이 아니면(번들에 없음, type 없음) 경고하고 건너뛴다. 상한을 넘으면 경고만 남긴다.
 
 `ask`는 고른 개념마다 `assess`를 부르고, `status: deprecated`에 `superseded_by`가 있으면 `resolvePathField`로 풀어 `replacement`에 담는다. 대체 개념을 검색 결과에 더하지는 않는다. `retrieve` CLI는 `대체 개념:` 줄로 보여 준다.
 

@@ -30,12 +30,12 @@ export const QUESTIONS: Question[] = [
 
 export type Setting = { name: string; options: Options };
 
-// 학습 계획 6회차의 세 설정. 상한(maxDocs)과 기준(minScore)은 세 설정이 같아야 비교가 된다.
-export function settings(maxDocs = 3, minScore = 2): Setting[] {
+// 학습 계획 6회차의 세 설정. 상한(maxDocs)·기준(minScore)·가산(boostMeta)은 세 설정이 같아야 비교가 된다.
+export function settings(maxDocs = 3, minScore = 2, boostMeta = false): Setting[] {
   return [
-    { name: '본문', options: { fields: 'body', followLinks: false, maxDocs, minScore } },
-    { name: '본문+분류', options: { fields: 'body+meta', followLinks: false, maxDocs, minScore } },
-    { name: '본문+분류+링크', options: { fields: 'body+meta', followLinks: true, maxDocs, minScore } },
+    { name: '본문', options: { fields: 'body', followLinks: false, maxDocs, minScore, boostMeta } },
+    { name: '본문+분류', options: { fields: 'body+meta', followLinks: false, maxDocs, minScore, boostMeta } },
+    { name: '본문+분류+링크', options: { fields: 'body+meta', followLinks: true, maxDocs, minScore, boostMeta } },
   ];
 }
 
