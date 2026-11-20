@@ -2,6 +2,7 @@
 
 ## 2026-11-20
 
+* 문의처를 직접 안내하는 FAQ 4개([etc/faq-070](faqs/etc/faq-070.md), [membership/faq-071](faqs/membership/faq-071.md), [purchase/faq-213](faqs/purchase/faq-213.md), [etc/faq-090](faqs/etc/faq-090.md))의 `tags`에 `고객센터`(와 `1:1문의`·`콜센터`)를 더했다. [item/faq-038](faqs/item/faq-038.md)에는 이미 있다. 고객센터는 여러 주제를 가로지르는 문의 채널이라 주제 문서 대신 tags로 묶는다. 답변 본문은 바꾸지 않아 `generated`는 그대로 두었다.
 * 원문끼리 숫자가 다른 FAQ를 한쪽 값으로 통일했다(사용자 결정). 판매자 택배 기간은 [faq-221](faqs/purchase/faq-221.md)의 4~7일로([faq-247](faqs/purchase/faq-247.md), [faq-216](faqs/purchase/faq-216.md)), 지연배송 시 기사 연락 시각은 [faq-187](faqs/purchase/faq-187.md)의 20시로([benefit/faq-004](faqs/benefit/faq-004.md)), 부분취소 카드사 확인은 [claim/faq-182](faqs/claim/faq-182.md)의 3~5일로([claim/faq-192](faqs/claim/faq-192.md)) 맞췄다. 고친 FAQ에는 원본 JSON 값과 바꾼 이유를 적고 `generated`를 갱신했다. 원본 JSON 사본은 바꾸지 않았다.
 * (나머지 카테고리) 주제 문서 19개를 [주제](topics/index.md)에 추가하고 남은 FAQ 175개를 이었다. 배송 시간과 받기·결제수단·상품권 결제 주제에도 FAQ 4개를 더했다. 이제 FAQ 258개 모두가 주제 문서 하나에 속한다.
 * 같은 질문이 두 카테고리에 있는 FAQ(예: 부분취소란, 쿠폰 사용 시 환불금액)는 서로 링크했다. 
