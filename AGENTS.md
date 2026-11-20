@@ -2,6 +2,12 @@
 
 OKF(Open Knowledge Format) v0.3을 학습하고, 반품·환불 지식 번들로 근거를 붙인 질의응답을 실습하는 저장소.
 
+## 명령
+
+- 수정 후 확인: `pnpm test` · `pnpm typecheck` (루트 + web 타입 검사)
+- 번들을 고쳤으면: `pnpm validate bundles/<이름>`
+- 웹: `pnpm dev:api`(Express, 127.0.0.1:3001)와 `pnpm dev`(Vite)를 각각 실행한다. 키 없이도 디버깅 화면의 "조립만 보기"는 동작한다
+
 ## 디렉터리 구조
 
 ```
@@ -19,6 +25,7 @@ okf-playbook/
 │   ├── okf-modules.md         # src/okf 모듈별 역할과 CLI별 흐름 (구조를 바꾸면 함께 갱신)
 │   ├── okf-v0.3-changes.md    # v0.2 → v0.3 변경 안내 (깨지는 변경, 절 번호 대응, 이 저장소의 결정)
 │   ├── okf-skills-comparison.md # 공식·외부 OKF 스킬 비교
+│   ├── voc-answer-guide.md    # 상담 말투 가이드 (디버깅 화면 말투 설정이 지시문 뒤에 붙임, 근거로 쓰지 않음)
 │   ├── team-rules.md          # OKF 명세 위에 정한 팀 규칙 (validate.ts가 team/* 경고로 검사)
 │   └── sessions/              # 회차별 학습 노트
 ├── learn/                     # /teach 학습 공간 (절차: learn/README.md)
@@ -75,11 +82,11 @@ okf-playbook/
 │   ├── compare.ts                 # 질문 목록 × 세 설정 비교표 출력 (pnpm compare [--max --min])
 │   ├── trace.ts                   # 개념의 출처를 원문까지 따라가기 (pnpm trace policies/returns.md)
 │   └── graph.ts                   # 번들 그래프 출력 (pnpm graph [--mermaid])
-├── answers/                   # 질문별 모델 답변 (q1.txt ~ q6.txt)
+├── answers/                   # 질문별 모델 답변 (q1.txt ~ q6.txt 자리, 현재 q4.txt만 있음. 저장 방법은 answers/README.md)
 ├── evaluation.md              # 질문별 검색·답변 평가표 (4~9회차에 채움)
 ├── package.json · tsconfig.json  # Node 22.18+ TS 직접 실행, yaml 패키지
 ├── .env.example               # 로컬 Express용 ANTHROPIC_API_KEY 예시 (.env로 복사)
-├── server/                    # 로컬 Express API (pnpm dev:api). app.ts = createApp({ generate }), index.ts = 키 읽기·SDK adapter·listen. 의존성은 server/package.json
+├── server/                    # 로컬 Express API (pnpm dev:api). app.ts = createApp({ generate }), generate.ts = SDK 호출 결과 → GenerationResult, errors.ts = SDK 오류 → GenerationError(화면 문구), index.ts = 키 읽기·listen. 의존성은 server/package.json
 ├── web/                       # 웹 화면 (pnpm dev / pnpm build:web), 웹 의존성은 web/package.json
 │   ├── vite.config.ts · tsconfig.json · index.html
 │   └── src/
