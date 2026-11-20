@@ -1,4 +1,4 @@
-// 라우트: / → /chat, /chat(상담), /debug(디버깅), /graph(준비 중). 쿼리(?bundle=)는 이동할 때 유지한다.
+// 라우트: / → /chat, /chat(상담), /debug(디버깅), /graph(그래프). 쿼리(?bundle=)는 이동할 때 유지한다.
 // 상담 화면은 첫 화면이라 바로 싣고, 디버깅·그래프 화면은 처음 열 때 불러온다 (코드 분할).
 import { createBrowserRouter, Navigate, useLocation } from 'react-router';
 import { ROUTES } from '@/config/routes.ts';

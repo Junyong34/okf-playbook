@@ -83,13 +83,13 @@ okf-playbook/
 │       ├── app/               # 앱 틀: 테마·라우터·좌측 메뉴(AppShell + SideNav)
 │       ├── config/            # 번들 자동 탐색·번들별 설정(bundles.ts)·라우트·모델 표시 및 기본값(models.ts)
 │       ├── lib/               # 브라우저 번들 로딩과 Claude API 호출
-│       ├── features/          # 화면별 기능: bundles·qa(공용 처리, 실행 store는 qa/runs.ts)·chat(상담)·debug(디버깅)·graph(준비 중)
+│       ├── features/          # 화면별 기능: bundles·qa(공용 처리, 실행 store는 qa/runs.ts)·chat(상담)·debug(디버깅)·graph(Sigma.js)
 │       ├── shared/            # 화면 공용 UI·유틸
 │       └── styles/            # 전역 CSS (Astryx 레이어 순서)
 │
 │  # 아래는 실습하면서 만들 예정 (docs/okf-learning-plan.md §4)
 ├── source/returns-faq.md      # 실습용 원본 FAQ (선택)
-└── (다음) 그래프 화면(sigma.js), 배포용 서버
+└── (다음) 배포용 서버
 ```
 
 디렉터리를 추가하거나 옮기면 이 구조도를 함께 갱신한다. 새 번들은 `bundles/<이름>/`에 두고 그 `index.md`에 `okf_version`을 넣는다. 웹 화면은 `bundles/` 아래를 자동으로 찾는다. 예시 질문이나 다른 말투 설정이 필요할 때만 `web/src/config/bundles.ts`의 `BUNDLE_SETTINGS`에 적는다.

@@ -47,6 +47,6 @@ export const NAV_ITEMS: readonly NavItem[] = [
     description: '개념·링크·출처 그래프',
     icon: ShareIcon,
     selectedIcon: ShareSolidIcon,
-    isReady: false,
+    isReady: true,
   },
 ];
