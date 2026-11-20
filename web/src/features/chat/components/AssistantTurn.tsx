@@ -17,7 +17,7 @@ import { AnswerMarkdown } from '@/features/qa/components/AnswerMarkdown.tsx';
 import { GenerationErrorBanner } from '@/features/qa/components/GenerationErrorBanner.tsx';
 import { RefusalBanner } from '@/features/qa/components/RefusalBanner.tsx';
 import { NO_PICKS_ANSWER } from '@/features/qa/labels.ts';
-import type { QaRun } from '@/features/qa/runs.ts';
+import type { ChatTurn } from '@/features/chat/history.ts';
 
 export const ASSISTANT_NAME = '상담원';
 
@@ -47,7 +47,7 @@ const styles = stylex.create({
 });
 
 type AssistantTurnProps = {
-  run: QaRun;
+  run: ChatTurn;
   onRetry: () => void;
 };
 
@@ -83,7 +83,7 @@ const CHAT_MARKDOWN_COMPONENTS = { citation: ChatCitation };
 function AnswerBody({ run, onRetry }: AssistantTurnProps) {
   const answerProps = {
     text: run.text,
-    providedPaths: run.prepared.assembled.record.providedPaths,
+    providedPaths: run.providedPaths,
     hideUnknownCitations: true,
     components: CHAT_MARKDOWN_COMPONENTS,
   };
@@ -95,7 +95,7 @@ function AnswerBody({ run, onRetry }: AssistantTurnProps) {
     case 'streaming':
       return run.text === '' ? <Thinking /> : <AnswerMarkdown {...answerProps} isStreaming />;
     case 'done':
-      if (run.result?.refusal) return <RefusalBanner refusal={run.result.refusal} />;
+      if (run.refusal) return <RefusalBanner refusal={run.refusal} />;
       return <AnswerMarkdown {...answerProps} isStreaming={false} />;
     case 'stopped':
     case 'assembled':
@@ -135,7 +135,7 @@ export function AssistantTurn({ run, onRetry }: AssistantTurnProps) {
   const at = run.finishedAt ?? run.startedAt;
   const footer = run.phase !== 'streaming' && run.phase !== 'assembled';
   const copyText = run.phase === 'skipped' ? NO_PICKS_ANSWER
-    : run.phase === 'stopped' || (run.phase === 'done' && !run.result?.refusal) ? run.text
+    : run.phase === 'stopped' || (run.phase === 'done' && !run.refusal) ? run.text
     : '';
   return (
     <>

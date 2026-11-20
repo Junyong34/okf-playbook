@@ -1,6 +1,7 @@
 // 상담 화면 (/chat): 질문과 답변만 보인다. Astryx ai-chat 템플릿 구조(ChatLayout + ChatMessageList + ChatComposer).
 // 질문 하나에 모델 요청 하나(단일 턴). 이전 대화는 화면에만 남고 모델에는 보내지 않는다.
-import { Fragment, useEffect, useState } from 'react';
+// 대화는 번들마다 따로 있고 브라우저에 저장된다(session.ts). 다른 화면에 다녀오거나 새로고침해도 남는다.
+import { Fragment, useState } from 'react';
 import { Badge } from '@astryxdesign/core/Badge';
 import { Button } from '@astryxdesign/core/Button';
 import { ChatComposer, ChatLayout, ChatMessageList, ChatSystemMessage } from '@astryxdesign/core/Chat';
@@ -11,13 +12,14 @@ import * as stylex from '@stylexjs/stylex';
 import { CHAT_GENERATION } from '@/config/models.ts';
 import { DEFAULT_OPTIONS } from '@okf/retrieve.ts';
 import { useBundles } from '@/features/bundles/BundleContext.ts';
-import { useQaRuns } from '@/features/qa/useQaRuns.ts';
 import type { QaInput } from '@/features/qa/runs.ts';
 import { useClaudeStatus } from '@/lib/claude/status.ts';
 import { PageHeader } from '@/shared/ui/PageHeader.tsx';
 import { AssistantTurn } from './components/AssistantTurn.tsx';
 import { ChatWelcome } from './components/ChatWelcome.tsx';
 import { UserTurn } from './components/UserTurn.tsx';
+import { dayLabel, sameDay } from './dayLabel.ts';
+import { useChatSession } from './useChatSession.ts';
 
 // ChatLayout은 flex: 1로 남은 높이를 채운다. 부모가 높이를 가진 세로 flex여야 입력창이 바닥에 붙는다.
 const styles = stylex.create({
@@ -26,12 +28,9 @@ const styles = stylex.create({
 
 export function ChatPage() {
   const { current } = useBundles();
-  const { runs, isRunning, start, stop, reset } = useQaRuns();
+  const { turns, isRunning, start, stop, clear } = useChatSession(current.id);
   const [draft, setDraft] = useState('');
   const { keyReady, message } = useClaudeStatus();
-
-  // 번들이 바뀌면 이전 대화의 근거가 달라지므로 대화를 새로 시작한다.
-  useEffect(() => reset(), [current.id, reset]);
 
   const ask = (question: string) => {
     const text = question.trim();
@@ -61,8 +60,8 @@ export function ChatPage() {
               variant="secondary"
               size="sm"
               icon={<Icon icon={ArrowPathIcon} size="sm" />}
-              isDisabled={runs.length === 0}
-              onClick={reset}
+              isDisabled={turns.length === 0}
+              onClick={clear}
             />
           }
         />
@@ -88,13 +87,15 @@ export function ChatPage() {
                     statusPosition="top"
                   />
                 }>
-                {runs.length > 0 && (
+                {turns.length > 0 && (
                   <ChatMessageList isStreaming={isRunning}>
-                    <ChatSystemMessage variant="divider">오늘</ChatSystemMessage>
-                    {runs.map((run) => (
-                      <Fragment key={run.id}>
-                        <UserTurn question={run.input.question} at={run.startedAt} />
-                        <AssistantTurn run={run} onRetry={() => ask(run.input.question)} />
+                    {turns.map((turn, i) => (
+                      <Fragment key={turn.id}>
+                        {(i === 0 || !sameDay(turns[i - 1].startedAt, turn.startedAt)) && (
+                          <ChatSystemMessage variant="divider">{dayLabel(turn.startedAt, Date.now())}</ChatSystemMessage>
+                        )}
+                        <UserTurn question={turn.question} at={turn.startedAt} />
+                        <AssistantTurn run={turn} onRetry={() => ask(turn.question)} />
                       </Fragment>
                     ))}
                   </ChatMessageList>

@@ -1,10 +1,11 @@
 // 디버깅 화면 (/debug): 질문 하나를 처리하는 단계를 모두 펼쳐 본다.
 // 왼쪽 열은 입력(질문·검색 설정·말투 설정·모델·effort), 오른쪽 열은 결과(요약 + 탭 네 개).
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Badge } from '@astryxdesign/core/Badge';
 import { Layout, LayoutContent, LayoutPanel } from '@astryxdesign/core/Layout';
 import { useBundles } from '@/features/bundles/BundleContext.ts';
 import type { QaInput } from '@/features/qa/runs.ts';
+import { useQaSessions } from '@/features/qa/sessions.ts';
 import { useQaRuns } from '@/features/qa/useQaRuns.ts';
 import { useClaudeStatus } from '@/lib/claude/status.ts';
 import { PageHeader } from '@/shared/ui/PageHeader.tsx';
@@ -17,12 +18,10 @@ const CONTROLS_WIDTH = 380;
 export function DebugPage() {
   const { current } = useBundles();
   const formApi = useDebugForm();
-  const { latest, isRunning, start, stop, reset } = useQaRuns();
+  // 번들마다 실행 목록이 따로 있다. 번들을 바꾸면 그 번들의 마지막 결과가 보인다(메모리에만 둔다).
+  const { latest, isRunning, start, stop } = useQaRuns(useQaSessions().debug.get(current.id));
   const [tab, setTab] = useState<ResultTab>('record');
   const { keyReady, message } = useClaudeStatus();
-
-  // 번들이 바뀌면 이전 결과는 다른 번들 기준이므로 지운다.
-  useEffect(() => reset(), [current.id, reset]);
 
   const run = (dryRun: boolean) => {
     const question = formApi.form.question.trim();
