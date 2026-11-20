@@ -15,8 +15,10 @@
   <p class="kicker">Lesson 0002 · 2회차</p>
   <h1>첫 번들 완성, 인덱스에서 근거까지 걸어가기</h1>
   <p class="lede">개념 두 개와 루트 <code>index.md</code>를 더 써서 인덱스에서 출발해 복합 질문의 근거 세 개를 링크로 찾아간다.</p>
-  <div class="meta"><span>약 90분</span><span>회상 5 · 읽기 15 · 연습 15 · 실습 40 · 검토 15</span><span>용어: <a href="../reference/okf-v0.2-core.html">핵심 규칙과 용어집</a></span></div>
+  <div class="meta"><span>약 90분</span><span>회상 5 · 읽기 15 · 연습 15 · 실습 40 · 검토 15</span><span>용어: <a href="../reference/okf-v0.3-core.html">핵심 규칙과 용어집</a></span></div>
 </header>
+
+<p class="note">2026-11-19 OKF v0.3 기준으로 갱신했다. v0.2에서 바뀐 점은 <a href="../../docs/okf-v0.3-changes.md">docs/okf-v0.3-changes.md</a>에 있다.</p>
 
 <div class="box win">
   <h3>왜 이것이 다음인가</h3>
@@ -25,15 +27,15 @@
 
 <h2>0. 레슨 0001 회상</h2>
 <p>노트 없이 답한 뒤 펼쳐 확인한다.</p>
-<details><summary>개념 문서가 적합하려면 필요한 두 가지는?</summary>
-<p>파싱 가능한 YAML frontmatter, 그리고 그 안의 비어 있지 않은 <code>type</code>. <a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#11-conformance">§11</a></p></details>
+<details><summary><code>.md</code> 파일이 개념이 되려면 필요한 두 가지는? 둘 중 하나가 없으면?</summary>
+<p>파싱 가능한 YAML frontmatter, 그리고 그 안의 비어 있지 않은 <code>type</code>. frontmatter나 <code>type</code>이 없으면 개념이 아닌 파일이라 소비자가 건너뛴다. 번들 적합성에는 영향이 없다. frontmatter가 있는데 YAML로 파싱되지 않으면 그때는 적합하지 않다. <a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#32-concepts-assets-and-other-files">§3.2</a><a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#111-bundle-conformance">§11.1</a></p></details>
 <details><summary><code>policies/returns.md</code> 안의 <code>../processes/refunds.md</code>는 어디를 가리키나?</summary>
-<p><code>processes/refunds.md</code>. <code>policies/</code>에서 한 단계 올라가 번들 루트, 거기서 <code>processes/</code>로. <a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#61-links-between-concepts">§6.1</a></p></details>
+<p><code>processes/refunds.md</code>. <code>/</code>로 시작하지 않으므로 그 파일이 있는 <code>policies/</code>에서 출발해 한 단계 올라가 번들 루트, 거기서 <code>processes/</code>로. <a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#6-links-and-paths">§6</a></p></details>
 <details><summary>검색기가 문서를 <em>고를 때</em>와 모델이 <em>답할 때</em> 주로 쓰는 부분은?</summary>
 <p>고를 때는 frontmatter(<code>type</code>·<code>tags</code>·<code>description</code>)와 본문 키워드, 답할 때는 본문. 6회차에서 이 차이를 실험한다.</p></details>
 
 <h2>1. YAML 목록은 두 가지로 쓴다</h2>
-<p><code>tags</code>는 YAML 목록이다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#41-frontmatter">§4.1</a> 같은 목록을 한 줄(flow) 또는 여러 줄(block)로 쓸 수 있다.<a class="cite" href="https://yaml.org/spec/1.2.2/#flow-sequences">YAML 7.4.1</a><a class="cite" href="https://yaml.org/spec/1.2.2/#block-sequences">8.2.1</a></p>
+<p><code>tags</code>는 YAML 목록이다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#41-frontmatter">§4.1</a> 같은 목록을 한 줄(flow) 또는 여러 줄(block)로 쓸 수 있다.<a class="cite" href="https://yaml.org/spec/1.2.2/#flow-sequences">YAML 7.4.1</a><a class="cite" href="https://yaml.org/spec/1.2.2/#block-sequences">8.2.1</a></p>
 <div class="grid2">
 <pre><code># flow: 대괄호와 쉼표
 tags: [반품, 예외]</code></pre>
@@ -43,23 +45,42 @@ tags:
   - 예외</code></pre>
 </div>
 <p>들여쓰기는 공백만 쓴다. 탭은 YAML 들여쓰기에 쓸 수 없다.<a class="cite" href="https://yaml.org/spec/1.2.2/#indentation-spaces">YAML 6.1</a> <code>키:</code> 뒤에는 공백이 있어야 값으로 읽힌다.</p>
+<p>v0.3 소비자는 목록 대신 값 하나를 쓴 <code>tags: 반품</code>도 태그 하나짜리 목록으로 읽는다. <code>tags: 반품, 예외</code>는 태그 두 개가 아니라 <code>"반품, 예외"</code>라는 태그 하나다. 쉼표로 나누지 않는다. 빈 목록 <code>tags: []</code>는 키가 없는 것과 같다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#112-consumer-rules">§11.2</a></p>
 
 <h2>2. 인덱스는 목차일 뿐이다</h2>
-<p><code>index.md</code>는 문서를 열기 전에 무엇이 있는지 보여 주는 목차다(점진적 공개). 제목 아래 <code>* [제목](경로) - 설명</code> 목록을 두고 설명에는 연결한 개념의 <code>description</code>을 넣는 것을 권장한다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#8-index-files">§8</a></p>
+<p><code>index.md</code>는 문서를 열기 전에 무엇이 있는지 보여 주는 목차다(점진적 공개). 제목 아래 <code>* [제목](경로) - 설명</code> 목록을 두고 설명에는 연결한 개념의 <code>description</code>을 넣는 것을 권장한다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#8-index-files">§8</a></p>
 <pre><code>---
-okf_version: "0.2"      ← 번들 루트 index.md에서만 허용
+okf_version: "0.3"      ← 번들 메타데이터: 번들 루트 index.md에서만 허용
+title: 반품과 환불
+description: 쇼핑몰 반품 신청 기한, 반품 예외, 환불 절차를 담은 번들. 반품·환불 문의에 답할 때 쓴다.
 ---
 
 # 반품과 환불
 
 - [반품 정책](policies/returns.md) - 반품 신청 기한과 할인 상품 규칙.</code></pre>
 <ul>
-  <li>인덱스는 frontmatter가 없다. 예외는 번들 루트 <code>index.md</code>의 <code>okf_version</code> 하나다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#12-versioning">§12</a></li>
+  <li>하위 디렉터리 인덱스는 frontmatter가 없다. 번들 루트 <code>index.md</code>만 번들 메타데이터를 frontmatter로 둘 수 있다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#8-index-files">§8</a></li>
   <li>인덱스는 길 안내용이다. 답변의 근거는 인덱스가 아니라 정책 개념 본문에서 가져온다(학습 계획 §4 구현 순서 2).</li>
-  <li>공식 예제와 비교: <a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/bundles/acme_retail/index.md">Acme Retail <code>index.md</code></a>는 하위 디렉터리마다 한 줄씩 <code>* [tables](tables/index.md) - 설명</code>으로 안내한다.</li>
+  <li>공식 예제와 비교: <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/bundles/acme_retail/index.md">Acme Retail <code>index.md</code></a>는 frontmatter에 <code>okf_version</code>·<code>title</code>·<code>description</code>을 두고, 본문에서 하위 디렉터리마다 한 줄씩 <code>* [tables](tables/index.md) - 설명</code>으로 안내한다.</li>
 </ul>
+<div class="box">
+  <h3>v0.3: 번들 메타데이터</h3>
+  <ul>
+    <li>루트 <code>index.md</code> frontmatter에 둘 수 있는 키는 <code>okf_version</code>(따옴표 문자열), <code>title</code>, <code>description</code>, <code>license</code>(SPDX 식 또는 번들 안 라이선스 파일 경로)와 확장 키다. 모두 선택이고, 번들에 적용되지 개념에 적용되지 않는다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#81-bundle-metadata">§8.1</a></li>
+    <li><code>description</code>은 번들 범위와 언제 쓰는지를 한 문장으로 적는다. 여러 번들을 가진 에이전트가 이 문장으로 번들을 고른다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#81-bundle-metadata">§8.1</a></li>
+    <li>생산자는 각 번들에 <code>okf_version</code>을 둔 루트 <code>index.md</code>를 두는 편이 좋다(SHOULD). 인덱스를 다시 만드는 생산자는 기존 frontmatter를 지켜야 한다(MUST).<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#81-bundle-metadata">§8.1</a></li>
+    <li>v0.2는 루트 <code>index.md</code>에 <code>okf_version</code> 하나만 허용했다. 이 실습의 <code>bundles/knowledge/index.md</code>도 v0.3으로 올리면서 <code>title</code>·<code>description</code>을 넣었다. <code>license</code>는 정할 정보가 없어 넣지 않았다.</li>
+  </ul>
+</div>
 
 <h2>3. 경로 계산 연습</h2>
+<p>v0.3은 본문 링크와 frontmatter 경로 필드에 같은 해석 규칙을 쓴다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#6-links-and-paths">§6</a></p>
+<ol>
+  <li>URI 스킴이 있는 값(<code>https:</code> 등)은 절대 URL이다.</li>
+  <li><code>/</code>로 시작하는 값은 번들 루트 기준이다.</li>
+  <li>그 밖의 값은 그 값이 들어 있는 파일의 디렉터리 기준이다.</li>
+</ol>
+<p>번들 루트 밖으로 나가는 값은 외부라서 로컬 파일 시스템에서 읽지 않는다. <code>#fragment</code>는 떼고 계산한다. 경로는 대소문자를 구별한다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#6-links-and-paths">§6</a></p>
 <p>링크가 번들의 어느 파일을 가리키는지 적는다. 4회차 링크 따라가기가 하는 계산을 사람이 먼저 해 본다.</p>
 <div class="path-drill" data-items='[
   {"from":"policies/returns.md","link":"return-exceptions.md"},
@@ -69,6 +90,18 @@ okf_version: "0.2"      ← 번들 루트 index.md에서만 허용
   {"from":"index.md","link":"processes/refunds.md"},
   {"from":"policies/return-exceptions.md","link":"./returns.md#반품-조건"},
   {"from":"processes/refunds.md","link":"../policies/../processes/refunds.md"}
+]'></div>
+
+<h3>경로 필드와 v0.2 대체 해석</h3>
+<p><code>resource</code>, <code>sources[].resource</code>, <code>superseded_by</code> 같은 경로 필드도 위 규칙으로 푼다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#62-path-fields">§6.2</a> v0.2 예제는 경로 필드를 <code>/</code> 없이 번들 루트 기준으로 썼는데 v0.3에서는 파일 디렉터리 기준으로 읽힌다. v0.3의 깨지는 변경 두 개 가운데 하나다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#131-breaking-changes">§13.1</a> 그래서 소비자에게 대체 해석을 허용한다. <code>/</code> 없는 경로 필드가 파일 기준으로 번들에 없고, 번들이 <code>okf_version</code> 0.2 이하를 선언했거나 선언이 없으면 번들 루트 기준으로 다시 찾아도 된다(MAY). <strong>본문 링크에는 대체 해석이 없다.</strong><a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#121-bundles-from-earlier-versions">§12.1</a> 이 저장소 코드도 그렇게 한다(<code>src/okf/concept.ts</code>의 <code>resolvePathField</code>).</p>
+<p>아래 번들에는 <code>index.md</code>, <code>policies/returns.md</code>, <code>policies/return-exceptions.md</code>, <code>processes/refunds.md</code>, <code>references/returns-faq.md</code>가 있다. 칸마다 번들 루트 <code>index.md</code>가 선언한 버전이 다르다.</p>
+<div class="path-drill" data-known="index.md,policies/returns.md,policies/return-exceptions.md,processes/refunds.md,references/returns-faq.md" data-items='[
+  {"from":"policies/returns.md","field":"sources[].resource","link":"/references/returns-faq.md","version":"0.3"},
+  {"from":"policies/returns.md","field":"sources[].resource","link":"references/returns-faq.md","version":"0.3"},
+  {"from":"policies/returns.md","field":"sources[].resource","link":"references/returns-faq.md","version":"0.2"},
+  {"from":"policies/returns.md","field":"sources[].resource","link":"references/returns-faq.md","version":null},
+  {"from":"policies/returns.md","link":"references/returns-faq.md","version":"0.2"},
+  {"from":"policies/return-exceptions.md","field":"superseded_by","link":"returns.md","version":"0.2"}
 ]'></div>
 
 <h2>4. 기억에서 꺼내기</h2>
@@ -84,7 +117,7 @@ okf_version: "0.2"      ← 번들 루트 index.md에서만 허용
   </ol>
 </div>
 
-<div class="quiz" data-answer="4" data-why="frontmatter는 번들 루트 <code>index.md</code>에서만, <code>okf_version</code>으로만 허용된다 (§8, §12).">
+<div class="quiz" data-answer="4" data-why="하위 디렉터리 <code>index.md</code>에는 frontmatter가 없다. <code>okf_version</code> 같은 번들 메타데이터는 번들 루트 <code>index.md</code>에만 둔다 (§8, §8.1).">
   <p class="q">Q2. 하위 디렉터리 <code>policies/index.md</code>에 <code>okf_version</code>을 넣으면?</p>
   <ol><li>루트보다 우선 적용된다</li><li>하위 번들로 취급된다</li><li>경고 없이 무시된다</li><li>명세상 허용되지 않는다</li></ol>
 </div>
@@ -94,16 +127,21 @@ okf_version: "0.2"      ← 번들 루트 index.md에서만 허용
   <ol><li>개념의 <code>description</code> 값</li><li>개념 본문 첫 줄</li><li>디렉터리 이름 그대로</li><li><code>log.md</code> 최신 항목</li></ol>
 </div>
 
-<div class="quiz" data-answer="3" data-why="선택 필드 누락으로 거부할 수 없다. <code>type</code>만 있어도 적합하다 (§4.1, §11). 레슨 0001 복습 문제다.">
+<div class="quiz" data-answer="3" data-why="선택 필드 누락으로 거부할 수 없다. <code>type</code>만 있어도 적합하다 (§4.1, §11.2). 레슨 0001 복습 문제다.">
   <p class="q">Q4. <code>processes/refunds.md</code>에 <code>type</code>만 있고 다른 필드가 없다면?</p>
   <ol><li>권장 필드 누락 오류</li><li>인덱스에서 제외된다</li><li>적합한 개념 문서다</li><li><code>type</code> 값이 무시된다</li></ol>
+</div>
+
+<div class="quiz" data-answer="2" data-why="<code>/</code>로 시작하지 않으므로 그 파일의 디렉터리 <code>policies/</code> 기준이다 (§6). 번들 루트 기준 대체 해석은 번들이 0.2 이하이거나 버전 선언이 없을 때만 허용된다 (§6.2, §12.1).">
+  <p class="q">Q5. <code>okf_version: "0.3"</code> 번들의 <code>policies/returns.md</code>에 <code>sources: [{resource: references/returns-faq.md}]</code>가 있다. 소비자의 해석은?</p>
+  <ol><li>번들 루트 기준 <code>references/returns-faq.md</code></li><li>파일 기준 <code>policies/references/returns-faq.md</code></li><li>잘못된 값이라 번들을 거부한다</li><li>스킴이 없으니 외부 URL로 본다</li></ol>
 </div>
 
 <h2>5. 실습: 번들 완성</h2>
 <p>사실은 두 개다. ① 주문할 때 최종 판매로 표시된 상품은 반품할 수 없다. ② 환불은 반품 승인 후 영업일 기준 3~5일 걸린다. 모범 답안을 보기 전에 각 검사기에서 통과시킨다.</p>
 
 <h3>5-1. <code>policies/return-exceptions.md</code></h3>
-<p>여유가 있으면 <code>returns.md</code>로 돌아가는 링크도 넣어 본다. 링크에는 방향이 있다. 이 링크가 있으면 4회차 검색기가 예외 문서를 먼저 찾았을 때 일반 규칙으로 갈 길이 생긴다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#61-links-between-concepts">§6.1</a></p>
+<p>여유가 있으면 <code>returns.md</code>로 돌아가는 링크도 넣어 본다. 링크에는 방향이 있다. 이 링크가 있으면 4회차 검색기가 예외 문서를 먼저 찾았을 때 일반 규칙으로 갈 길이 생긴다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#61-links-between-concepts">§6.1</a></p>
 <div class="box"><div class="okf-check" data-path="policies/return-exceptions.md"
   data-known="index.md,policies/returns.md,policies/return-exceptions.md,processes/refunds.md"></div></div>
 
@@ -144,7 +182,9 @@ tags: [환불]
 환불은 반품 승인 후 영업일 기준 3~5일 걸린다.</code></pre>
 <pre><code># index.md
 ---
-okf_version: "0.2"
+okf_version: "0.3"
+title: 반품과 환불
+description: 쇼핑몰 반품 신청 기한, 반품 예외, 환불 절차를 담은 번들. 반품·환불 문의에 답할 때 쓴다.
 ---
 
 # 반품과 환불
@@ -152,19 +192,19 @@ okf_version: "0.2"
 - [반품 정책](policies/returns.md) - 반품 신청 기한과 할인 상품 규칙.
 - [반품 예외](policies/return-exceptions.md) - 최종 판매 상품의 처리 기준.
 - [환불 절차](processes/refunds.md) - 반품 승인부터 환불까지의 기간.</code></pre>
-<p class="note"><strong>개념 ID와 <code>resource</code>가 없는 이유.</strong> 개념 ID는 frontmatter에 쓰는 필드가 아니라 파일 경로에서 정해지는 값이다. <code>knowledge/processes/refunds.md</code>의 ID는 <code>processes/refunds</code>다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#2-terminology">§2</a> <code>resource</code>는 테이블·API처럼 가리킬 실물 자산이 있을 때만 쓰는 권장 필드라서, 규칙이나 절차를 설명하는 개념에서는 생략한다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#41-frontmatter">§4.1</a> 비교: Acme Retail <a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/bundles/acme_retail/tables/orders.md"><code>tables/orders.md</code></a>는 BigQuery 테이블을 가리키므로 <code>resource</code>가 있다.</p>
+<p class="note"><strong>개념 ID와 <code>resource</code>가 없는 이유.</strong> 개념 ID는 frontmatter에 쓰는 필드가 아니라 파일 경로에서 정해지는 값이다. <code>bundles/knowledge/processes/refunds.md</code>의 ID는 <code>processes/refunds</code>다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#2-terminology">§2</a> <code>resource</code>는 테이블·API처럼 가리킬 실물 자산이 있을 때만 쓰는 권장 필드라서, 규칙이나 절차를 설명하는 개념에서는 생략한다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#41-frontmatter">§4.1</a> 비교: Acme Retail <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/bundles/acme_retail/tables/orders.md"><code>tables/orders.md</code></a>는 BigQuery 테이블을 가리키므로 <code>resource</code>가 있다.</p>
 </details>
 
 <h3>5-4. 저장하고 걸어가 보기</h3>
 <ol>
-  <li>세 파일을 저장소의 <code>knowledge/</code> 아래 같은 경로로 저장한다. <code>knowledge/policies/returns.md</code>는 이미 있다.</li>
-  <li>에디터의 Markdown 미리보기(VS Code는 <kbd>⌘⇧V</kbd>)로 <code>knowledge/index.md</code>를 연다.</li>
+  <li>세 파일을 저장소의 <code>bundles/knowledge/</code> 아래 같은 경로로 저장한다. <code>bundles/knowledge/policies/returns.md</code>는 이미 있다.</li>
+  <li>에디터의 Markdown 미리보기(VS Code는 <kbd>⌘⇧V</kbd>)로 <code>bundles/knowledge/index.md</code>를 연다.</li>
   <li>질문 "할인 상품을 반품할 수 있나요? 환불은 언제 들어오나요?"의 근거를 링크만 눌러서 찾는다: 인덱스 → 반품 정책 → 반품 예외, 반품 정책 → 환불 절차.</li>
   <li><strong>링크 하나는 미리보기에서 열리지 않는다.</strong> 어느 링크인지, 왜 그런지 적는다.</li>
 </ol>
 <details><summary>4번을 직접 찾은 뒤에 열기</summary>
-<p><code>returns.md</code>의 <code>/processes/refunds.md</code>다. OKF 소비자는 <code>/</code>를 <strong>번들 루트</strong>(<code>knowledge/</code>)로 해석하지만<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#61-links-between-concepts">§6.1</a>, 일반 Markdown 미리보기나 GitHub는 <code>/</code>를 <strong>저장소 루트</strong>로 해석해 <code>okf-playbook/processes/refunds.md</code>를 찾는다.</p>
-<p>명세는 번들 루트 기준 경로를 권장하고 학습 계획은 미리보기 탐색을 위해 상대 경로를 택했다. 둘 다 명세에 맞는다. 이 실습에서 어느 쪽을 <em>팀 규칙</em>으로 삼을지 정해서 적어 둔다. 3회차 "명세 요구사항과 팀 규칙 대조"의 첫 항목이 된다. 상대 경로로 정했다면 <code>../processes/refunds.md</code>로 고친다.</p>
+<p><code>returns.md</code>의 <code>/processes/refunds.md</code>다. OKF 소비자는 <code>/</code>를 <strong>번들 루트</strong>(<code>bundles/knowledge/</code>)로 해석하지만<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#6-links-and-paths">§6</a>, 일반 Markdown 미리보기나 GitHub는 <code>/</code>를 <strong>저장소 루트</strong>로 해석해 <code>okf-playbook/processes/refunds.md</code>를 찾는다.</p>
+<p>v0.3 명세는 두 형식을 동등하게 두고 어느 쪽도 권장하지 않는다(v0.2는 링크에 <code>/</code>를 권장했다).<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#132-clarifications-and-errata">§13.2</a> 학습 계획은 미리보기 탐색을 위해 상대 경로를 택했다. 둘 다 명세에 맞는다. 이 실습에서 어느 쪽을 <em>팀 규칙</em>으로 삼을지 정해서 적어 둔다. 3회차 "명세 요구사항과 팀 규칙 대조"의 첫 항목이 된다. 상대 경로로 정했다면 <code>../processes/refunds.md</code>로 고친다.</p>
 </details>
 
 <div class="box">
@@ -185,7 +225,7 @@ okf_version: "0.2"
 
 <div class="box">
   <h3>1차 자료</h3>
-  <p><a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#8-index-files">OKF v0.2 명세 §8 Index files</a>와 <a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#61-links-between-concepts">§6.1</a>. 이어서 <a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/tree/main/bundles/acme_retail">Acme Retail 번들</a>을 GitHub에서 인덱스부터 눌러 들어가 보면 실제 번들의 디렉터리 구성을 볼 수 있다.</p>
+  <p><a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#8-index-files">OKF v0.3 명세 §8 Index files</a>와 <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#81-bundle-metadata">§8.1</a>, <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#6-links-and-paths">§6</a>. 이어서 <a href="https://github.com/open-knowledge-format/open-knowledge-format/tree/527e81aff55992be21507e97004286789126f88c/bundles/acme_retail">Acme Retail 번들</a>을 GitHub에서 인덱스부터 눌러 들어가 보면 실제 번들의 디렉터리 구성을 볼 수 있다.</p>
   <p>2회차를 마친 뒤에는 <a href="https://www.mariehaynes.com/build-an-okf-brain-like-mine/">Marie Haynes의 적용 글</a>에서 폴더 분류를 보고 쇼핑몰 실습에 옮겨 쓸 분류를 두 개 적는다(학습 계획 §2).</p>
   <p>막히거나 궁금한 점은 언제든 에이전트에게 물어본다.</p>
 </div>

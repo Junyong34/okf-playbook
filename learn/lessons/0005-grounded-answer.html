@@ -13,15 +13,17 @@
   <p class="kicker">Lesson 0005 · 5회차</p>
   <h1>근거를 붙인 답변</h1>
   <p class="lede">검색 결과로 프롬프트를 만들어 채팅 모델에 넘기고, 돌아온 답변의 인용을 코드와 눈으로 검사한다.</p>
-  <div class="meta"><span>약 90분</span><span>회상 5 · 읽기 15 · 퀴즈 5 · 실습 50 · 검토 15</span><span>용어: <a href="../reference/okf-v0.2-core.html">핵심 규칙과 용어집</a></span></div>
+  <div class="meta"><span>약 90분</span><span>회상 5 · 읽기 15 · 퀴즈 5 · 실습 50 · 검토 15</span><span>용어: <a href="../reference/okf-v0.3-core.html">핵심 규칙과 용어집</a></span></div>
 </header>
+
+<p class="note">2026-11-19 OKF v0.3 기준으로 갱신했다. v0.2에서 바뀐 점은 <a href="../../docs/okf-v0.3-changes.md">docs/okf-v0.3-changes.md</a>에 있다. 이 레슨의 코드(<code>answer.ts</code>)는 v0.3에서 바뀐 것이 없고 명세 링크와 절 번호만 고쳤다.</p>
 
 <div class="box win">
   <h3>왜 이것이 다음인가</h3>
   <p>4회차 검색기가 고른 개념은 생성 단계의 입력이 된다.<a class="cite" href="https://arxiv.org/abs/2005.11401">Lewis et al.</a> 오늘은 그 입력을 만들고 출력을 검사한다. 질문 6처럼 검색이 엉뚱한 개념을 넘겨도 모델이 "확인할 수 없다"고 답하는지가 오늘의 핵심 확인 사항이다.</p>
 </div>
 
-<div class="note"><strong>시작 전 확인.</strong> <code>pnpm prompt</code>는 0004의 <code>retrieve</code>를 쓴다. 0004 R3단계까지 통과해야 프롬프트가 만들어지고, R4단계까지 해야 링크로 추가한 개념도 들어간다. A1·A2단계 테스트 자체는 <code>retrieve</code> 없이 돈다.</div>
+<div class="note"><strong>시작 전 확인.</strong> <code>pnpm prompt</code>는 0004의 <code>retrieve</code>를 쓴다. 0004 R3단계까지 통과해야 프롬프트가 만들어지고, R4단계까지 해야 링크로 추가한 개념도 들어간다. A1·A2단계 테스트 자체는 <code>retrieve</code> 없이 돈다. 지금 저장소의 <code>pnpm prompt</code>·<code>pnpm check-answer</code>는 질의응답 모듈 <code>src/okf/ask.ts</code>를 거치므로 0008의 <code>trust.ts</code>도 쓴다. <code>trust.ts</code>가 TODO이면 <code>Error: TODO</code>로 멈춘다.</div>
 
 <h2>0. 회상</h2>
 <details><summary>질문 6처럼 검색이 엉뚱한 개념을 고르면 생성 단계에서 무엇으로 막아야 하나?</summary>
@@ -48,9 +50,9 @@
 
 &lt;question&gt;할인 상품을 반품할 수 있나요? 환불은 언제 들어오나요?&lt;/question&gt;</code></pre>
 <ul>
-  <li><strong>경로를 같이 넘긴다.</strong> 모델이 경로를 인용해야 사람이 그 파일을 열어 확인할 수 있다. 개념 ID가 경로에서 정해지므로 경로가 곧 근거의 주소다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#2-terminology">§2</a></li>
+  <li><strong>경로를 같이 넘긴다.</strong> 모델이 경로를 인용해야 사람이 그 파일을 열어 확인할 수 있다. 개념 ID가 경로에서 정해지므로 경로가 곧 근거의 주소다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#2-terminology">§2</a></li>
   <li><strong>본문만 넘긴다.</strong> frontmatter는 검색에 썼고, 답의 근거는 본문이다. 인덱스도 넘기지 않는다.</li>
-  <li><strong>문서와 지시를 태그로 나눈다.</strong> OKF 번들은 에이전트가 계속 고쳐 쓰는 것을 전제로 한다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#1-motivation">§1</a> 남이 쓴 문서 안에 "이전 지시를 무시하라" 같은 문장이 들어올 수 있으므로, 문서는 자료이고 지시가 아니라고 경계를 그어 둔다. 태그 이름과 구조는 이 과정에서 정한 설계다.</li>
+  <li><strong>문서와 지시를 태그로 나눈다.</strong> OKF 번들은 에이전트가 계속 고쳐 쓰는 것을 전제로 한다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#1-motivation">§1</a> 남이 쓴 문서 안에 "이전 지시를 무시하라" 같은 문장이 들어올 수 있으므로, 문서는 자료이고 지시가 아니라고 경계를 그어 둔다. 태그 이름과 구조는 이 과정에서 정한 설계다.</li>
 </ul>
 <p class="note">Anthropic의 프롬프트 작성 가이드는 회사 네트워크에서 열리지 않아 이 레슨에서는 인용하지 않았다. 개인 환경에서 읽어 보고 지시문을 다듬어도 된다.</p>
 
@@ -102,25 +104,29 @@
 
 <details><summary>모범 답안: <code>buildPrompt</code>와 <code>checkAnswer</code> (테스트를 직접 통과시킨 뒤에 열기)</summary>
 <pre><code>export function buildPrompt(bundle: Bundle, question: string, picks: Pick[]): string {
+  // A1단계 (완료)
+  // 고른 순서대로 개념마다 &lt;document&gt; 블록을 만든다. frontmatter는 검색에만 쓰고 본문만 넘긴다.
   const docs = picks.map((p) =&gt; {
     const { body } = splitFrontmatter(bundle.get(p.path) ?? '');
     return `&lt;document path="${p.path}"&gt;\n${body.trim()}\n&lt;/document&gt;`;
   });
+  // 지시문 → 빈 줄 → 문서 묶음 → 빈 줄 → 질문
   return [INSTRUCTION, '', '&lt;documents&gt;', ...docs, '&lt;/documents&gt;', '', `&lt;question&gt;${question}&lt;/question&gt;`].join('\n');
 }
-
 export function checkAnswer(answer: string, providedPaths: string[]): AnswerCheck {
+  // A2단계 (완료)
   const provided = new Set(providedPaths);
   const cited: string[] = [];
   const uncitedSentences: string[] = [];
   for (const sentence of splitSentences(answer)) {
     const cs = extractCitations(sentence);
+    // 인용이 없는 문장은 경고 대상. 단 "확인할 수 없다"는 선언은 근거가 없는 게 정상이다.
     if (cs.length === 0 &amp;&amp; !NO_EVIDENCE.test(sentence)) uncitedSentences.push(sentence);
-    for (const c of cs) if (!cited.includes(c)) cited.push(c);
+    for (const c of cs) if (!cited.includes(c)) cited.push(c); // 중복 없이 처음 나온 순서
   }
   return {
     cited,
-    unknownCitations: cited.filter((c) =&gt; !provided.has(c)),
+    unknownCitations: cited.filter((c) =&gt; !provided.has(c)), // 모델에 주지 않은 문서 = 지어낸 근거
     uncitedSentences,
     noEvidence: NO_EVIDENCE.test(answer),
   };
@@ -148,13 +154,13 @@ export function checkAnswer(answer: string, providedPaths: string[]): AnswerChec
 
 <div class="box">
   <h3>1차 자료</h3>
-  <p><a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#51-provenance-sources">OKF v0.2 명세 §5.1 Provenance: sources</a>. 개념 안에서 문장 단위 근거를 각주와 <code>sources</code>로 연결하는 방법이다(본문 근거 규칙은 <a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#42-body">§4.2</a>). 오늘 답변에 붙인 경로 인용과 나란히 놓고 읽으면 심화 1(원문으로 거슬러 올라가기)의 준비가 된다.</p>
+  <p><a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#51-provenance-sources">OKF v0.3 명세 §5.1 Provenance: sources</a>. 개념 안에서 문장 단위 근거를 각주와 <code>sources</code>로 연결하는 방법이다. 본문은 CommonMark에 GFM 표와 <code>[^label]</code> 각주를 쓰고, 각주 라벨은 <code>sources</code> 항목의 <code>id</code>다(<a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#42-body">§4.2</a>). v0.3 소비자는 <code>sources</code>에 목록 대신 항목 하나만 써도 목록 하나로 읽는다(<a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#112-consumer-rules">§11.2</a>). 오늘 답변에 붙인 경로 인용과 나란히 놓고 읽으면 심화 1(원문으로 거슬러 올라가기)의 준비가 된다.</p>
   <p>답변이 이상하거나 검사 결과가 납득되지 않으면 답변과 검사 출력을 그대로 에이전트에게 붙여 넣고 물어본다.</p>
 </div>
 
 <nav class="course">
   <a href="0004-retrieve.html">← 0004 질문별 문서 찾기</a>
-  <span>다음: 0006 검색 설정 비교 (예정)</span>
+  <a href="0006-compare-settings.html">0006 검색 설정 비교 →</a>
 </nav>
 </main>
 </body>

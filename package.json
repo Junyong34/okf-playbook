@@ -6,12 +6,22 @@
     "node": ">=22.18"
   },
   "scripts": {
-    "validate": "node validate.ts",
+    "validate": "node cli/validate.ts",
     "test": "node --test \"tests/**/*.test.ts\"",
-    "typecheck": "tsc --noEmit",
-    "retrieve": "node retrieve.ts",
-    "prompt": "node prompt.ts",
-    "check-answer": "node check-answer.ts"
+    "typecheck": "tsc --noEmit && pnpm --filter @okf-playbook/web typecheck",
+    "retrieve": "node cli/retrieve.ts",
+    "prompt": "node cli/prompt.ts",
+    "check-answer": "node cli/check-answer.ts",
+    "compare": "node cli/compare.ts",
+    "trace": "node cli/trace.ts",
+    "graph": "node cli/graph.ts",
+    "okf:validate": "uv run -q --no-project --with pyyaml python -I .agents/skills/okf-generate/scripts/validate.py",
+    "okf:scan": "uv run -q --no-project --with pyyaml python -I .agents/skills/okf-consume/scripts/scan.py",
+    "okf:sync-skills": "scripts/sync-okf-skills.sh",
+    "dev": "pnpm --filter @okf-playbook/web dev",
+    "dev:api": "pnpm --filter @okf-playbook/server dev",
+    "build:web": "pnpm --filter @okf-playbook/web build",
+    "preview:web": "pnpm --filter @okf-playbook/web preview"
   },
   "dependencies": {
     "yaml": "^2.9.1"

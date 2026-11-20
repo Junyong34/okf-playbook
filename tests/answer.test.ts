@@ -63,6 +63,11 @@ describe('A2단계 checkAnswer', () => {
     assert.deepEqual(r.uncitedSentences, []);
     assert.equal(r.noEvidence, true);
   });
+  test('"확인하기 어렵" 문장도 근거 없음 선언이다 (말투 설정의 표현)', () => {
+    const r = checkAnswer('현재 정보만으로는 문의하신 내용을 확인하기 어렵습니다.', provided);
+    assert.deepEqual(r.uncitedSentences, []);
+    assert.equal(r.noEvidence, true);
+  });
   test('cited는 중복 없이 처음 나온 순서', () => {
     assert.deepEqual(checkAnswer('a. [processes/refunds.md] b. [policies/returns.md][processes/refunds.md]', provided).cited, ['processes/refunds.md', 'policies/returns.md']);
   });

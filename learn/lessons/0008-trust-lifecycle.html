@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0008 · 검토 상태와 낡은 개념</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/quiz.js" defer></script>
+</head>
+<body>
+<main>
+<header class="lesson">
+  <p class="kicker">Lesson 0008 · 심화 2</p>
+  <h1>검토 상태와 낡은 개념</h1>
+  <p class="lede">개념에 "누가 확인했나"(<code>verified</code>), "지금 쓸 내용인가"(<code>status</code>), "언제부터 낡았다고 볼까"(<code>stale_after</code>)를 적는다. 검색기가 고른 개념마다 신뢰 등급과 주의를 붙여 보여 주게 만든다.</p>
+  <div class="meta"><span>약 90분</span><span>회상 5 · 읽기 15 · 퀴즈 5 · 실습 50 · 검토 15</span><span>용어: <a href="../../GLOSSARY.md">GLOSSARY.md</a> · <a href="../reference/okf-v0.3-core.html">핵심 규칙</a></span></div>
+</header>
+
+<div class="note"><strong>v0.3 기준.</strong> 2026-11-19 OKF v0.3 기준으로 갱신했다. 명세 인용(§)은 v0.3 번호다. v0.2에서 바뀐 점은 <a href="../../docs/okf-v0.3-changes.md">docs/okf-v0.3-changes.md</a>에 있다. 이 레슨이 가장 많이 바뀌었다. 신뢰 등급을 <em>현재</em> 검토 기록으로만 정하고, 검토 기록에 <code>by</code>와 <code>at</code>이 둘 다 있어야 하며, 읽을 수 없는 <code>stale_after</code>는 신선하지 않다고 본다. <code>superseded_by</code>도 새로 생겼다.</div>
+
+<div class="box win">
+  <h3>왜 이것이 다음인가</h3>
+  <p>0007에서 정책 개념이 FAQ를 보고 썼다는 것(출처)을 적었다. 출처는 "무엇을 보고 썼나"만 말한다. 정책 문장이 FAQ와 정말 같은지 누가 확인했는지, 그 확인이 아직 유효한지는 말하지 않는다. 오늘은 그 두 가지를 적고, 소비자(검색기)가 그것을 읽어 사용자에게 보여 주게 한다. 학습 계획 §6의 심화 2다.</p>
+</div>
+
+<div class="note"><strong>시작 전 확인.</strong> 오늘 코드는 0003의 <code>splitFrontmatter</code>와 0004의 <code>pnpm retrieve</code>를 쓴다. 둘 다 구현되어 있다. 시각 읽기는 공용 함수 <code>parseTimestamp</code>(<code>src/okf/concept.ts</code>)가 맡는다. <code>pnpm retrieve</code>는 오늘 <code>--now</code> 옵션이 생겼다. 지금 저장소의 <code>pnpm retrieve</code>·<code>pnpm prompt</code>·<code>pnpm check-answer</code>는 <code>trust.ts</code>를 쓰는 질의응답 모듈(<code>src/okf/ask.ts</code>)을 거치므로, <code>trust.ts</code>가 TODO인 동안에는 <code>Error: TODO T1단계 …</code>로 멈춘다. 실습은 테스트로 먼저 진행한다.</div>
+
+<h2>0. 회상</h2>
+<details><summary>FAQ 개념이 검색에서 정책 개념을 밀어낸 이유를 말하고, <code>type</code>으로 그것을 막는 방법을 하나 든다.</summary>
+<p>FAQ는 고객이 묻는 말투로 써서 질문과 두 글자 묶음이 많이 겹쳤고, 상한 3개 가운데 한 자리를 차지했다. <code>type</code>은 소비자가 라우팅과 필터링에 쓰는 값이므로<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#41-frontmatter">§4.1</a>, 검색 단계에서 <code>type: Reference</code>를 근거 후보에서 빼거나 순위를 낮출 수 있다. 오늘도 검색기는 고치지 않는다. 실습 출력에서 FAQ가 계속 1순위로 나오는 것은 이 때문이다.</p></details>
+<details><summary>정책 문장과 FAQ가 같다는 것을 사람이 확인했다. 그 사실은 개념의 어디에 적는가?</summary>
+<p>frontmatter의 <code>verified</code>에 <code>{ by: human:&lt;id&gt;, at: &lt;시각&gt; }</code>로 적는다. <code>by</code>와 <code>at</code>은 둘 다 필수다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#52-trust-generated-and-verified">§5.2</a> 오늘 실습 3단계에서 직접 한다.</p></details>
+<details><summary>FAQ가 고쳐지면 정책 개념이 낡았다는 것을 소비자가 어떻게 알 수 있을까?</summary>
+<p>명세가 주는 신호는 두 가지다. 하나는 생산자가 미리 적어 둔 <code>stale_after</code>다. 그 시각이 지나면 낡았다고 본다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#55-lifecycle-stale_after">§5.5</a> 다른 하나는 출처 쪽 시각이다. <code>sources[].last_modified</code>(출처가 바뀐 시각)가 개념의 <code>verified</code> 시각보다 늦으면 다시 확인할 때가 됐다는 뜻이다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#51-provenance-sources">§5.1</a> 두 번째는 명세가 정한 판정이 아니라 소비자가 고를 수 있는 휴리스틱이다. 명세는 낡음을 <code>stale_after</code>로만 판단하라고 권한다(SHOULD).<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#112-consumer-rules">§11.2</a> 오늘 코드는 첫 번째만 쓴다.</p></details>
+
+<h2>1. 쓴 사람과 확인한 사람은 다르다</h2>
+<pre><code>generated: { by: reference_agent/gemini-2.5-pro, at: 2026-06-30T14:00:00Z }   # 누가 썼나, 언제 마지막으로 의미 있게 바뀌었나
+verified:
+  - { by: human:kliu@acme, at: 2026-07-01T16:00:00Z }                       # 누가 확인했나, 언제
+status: stable                                                              # 지금 쓸 내용인가
+stale_after: 2026-12-31T00:00:00Z                                           # 이 시각부터 낡았다</code></pre>
+<p>공식 예제 번들의 <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/bundles/acme_retail/tables/orders.md"><code>tables/orders.md</code></a> frontmatter다. 에이전트가 쓰고 사람이 확인했다. <code>generated</code>와 <code>verified</code>를 나눈 이유가 이것이다. 쓴 쪽이 확인한 쪽일 필요는 없다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#52-trust-generated-and-verified">§5.2</a> 시각도 본다. 확인(<code>2026-07-01T16:00</code>)이 마지막 변경(<code>2026-06-30T14:00</code>)보다 늦다. 그래서 이 확인은 지금 내용을 본 것이고, 등급은 human-reviewed다. 에이전트가 7월 2일에 내용을 다시 쓰고 <code>generated.at</code>을 올리면 같은 기록이 그대로 있어도 등급이 떨어진다. 2절에서 이유를 본다.</p>
+
+<h2>2. 명세 규칙</h2>
+<h3>시각 형식 (§5)</h3>
+<ul>
+  <li><strong>시각 키</strong>는 <code>generated.at</code>, <code>verified[].at</code>, <code>stale_after</code>, <code>sources[].last_modified</code>, <code>usage_window.from</code>·<code>to</code>다. 값은 RFC 3339의 두 형식뿐이다. 오프셋 있는 date-time(<code>2026-06-30T14:00:00Z</code>, <code>2026-11-18T15:00:00+09:00</code>)은 그 순간이고, 날짜만(<code>2026-06-30</code>)은 그날 UTC 0시다. 그 밖의 형식은 무효다. 오프셋 없는 <code>2026-06-30T14:00:00</code>도 무효다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#5-provenance-trust-and-lifecycle">§5</a></li>
+  <li>소비자는 따옴표 문자열과 YAML 고유 시각을 모두 받아야 한다(MUST). 생산자는 <code>generated.at</code>과 <code>verified[].at</code>에 date-time을 쓰는 편이 좋다(SHOULD). 두 값을 서로 비교하기 때문이다.</li>
+  <li>v0.2 처음 공개본은 날짜만 쓴 값의 시간대를 적지 않았고, 공개 뒤 본문을 고쳐 오프셋을 요구했다. v0.3은 날짜만 쓴 값을 다시 받되 "UTC 0시"라는 고정된 뜻을 붙였다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#132-clarifications-and-errata">§13.2</a></li>
+</ul>
+<h3>신뢰: <code>generated</code>와 <code>verified</code> (§5.2)</h3>
+<ul>
+  <li><strong><code>generated</code></strong>는 지금 내용이 어떻게 만들어졌는지 적는다. <code>by</code>는 필수이고, <code>at</code>은 내용이 마지막으로 의미 있게 바뀐 시각이다. 서식·공백·링크 수리 같은 사소한 수정은 <code>generated.at</code>을 바꾸지 않는다. 소비자는 <code>generated.at</code>으로 검토 기록이 현재인지 가린다. 낡음은 <code>stale_after</code>만 정한다.</li>
+  <li><strong><code>verified</code></strong>는 내용을 출처나 <code>resource</code>와 대조해 확인한 기록의 목록이다. 기록마다 <code>by</code>(행위자)와 <code>at</code>(시각)이 <strong>둘 다 필수</strong>이고, 하나라도 없는 기록은 소비자가 무시한다. 사람의 승인과 야간 프로세스처럼 서로 독립된 확인을 여럿 적을 수 있다. 가장 최근 확인은 가장 늦은 <code>at</code>이다.</li>
+  <li><strong>둘은 따로 움직인다.</strong> 내용이 바뀌어도 다시 확인하지 않았을 수 있고, 내용을 다시 쓰지 않고 다시 확인할 수도 있다.</li>
+  <li><strong>대시 없는 매핑 하나도 쓸 수 있다.</strong> <code>verified: { by: "human:ahormati", at: … }</code>. 소비자는 이것을 원소 하나짜리 목록으로 읽어야 한다(MUST).<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#52-trust-generated-and-verified">§5.2</a> <code>null</code>·빈 문자열·빈 목록(<code>verified: []</code>)은 키가 없는 것과 같다. 필수 키가 없는 항목은 무시하고 경고하는 편이 좋다(SHOULD).<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#112-consumer-rules">§11.2</a> T1단계가 이것이다.</li>
+</ul>
+<h3>신뢰 등급 (§5.3)과 행위자 표기 (§7)</h3>
+<p>검토 기록의 <code>at</code>이 <code>generated.at</code>과 같거나 늦으면, 또는 <code>generated</code>가 없으면 그 기록은 <strong>현재 기록</strong>이다. 소비자는 등급을 현재 기록으로만 정해야 한다(MUST).<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#53-trust-tiers">§5.3</a></p>
+<table>
+  <thead><tr><th>현재 기록</th><th>등급</th></tr></thead>
+  <tbody>
+    <tr><td>없다 (<code>verified</code>가 없거나, 모두 마지막 변경 전이거나, 모두 무시됨)</td><td><strong>unverified</strong></td></tr>
+    <tr><td><code>human:</code>이 아닌 행위자만 있다</td><td><strong>machine-confirmed</strong></td></tr>
+    <tr><td><code>human:&lt;id&gt;</code> 행위자가 있다</td><td><strong>human-reviewed</strong></td></tr>
+  </tbody>
+</table>
+<ul>
+  <li><strong>왜 현재 기록만 세는가.</strong> 에이전트가 사람 검토 뒤에 개념을 다시 쓰면, 그 사람은 새 문장을 읽지 않았다. 다시 확인하기 전까지는 human-reviewed가 아니다. 마지막 변경 전 기록은 파일에 이력으로 남고, 소비자는 "마지막 변경 전 검토"로 보여 줘도 된다(MAY).<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#53-trust-tiers">§5.3</a> v0.3의 깨지는 변경 두 개 가운데 하나다. 등급이 내려가기만 하므로 대체 해석은 없다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#131-breaking-changes">§13.1</a></li>
+  <li><strong>행위자는 두 형식이다.</strong> 에이전트·도구는 <code>&lt;producer&gt;/&lt;version&gt;</code>, 그 밖의 행위자는 <code>&lt;scheme&gt;:&lt;id&gt;</code>다. 명세가 정한 스킴은 <code>human:</code>(사람), <code>team:</code>(사람들의 묶음), <code>process:</code>(자동 프로세스)이고, 다른 스킴도 쓸 수 있지만 소비자는 사람이 아닌 것으로 본다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#7-actor-convention">§7</a></li>
+  <li><strong>등급은 <code>human:</code> 스킴으로만 정한다.</strong> 그래서 생산자는 사람이 쓰거나 확인한 내용에 반드시 이 스킴을 써야 한다(MUST). <code>team:finance-fpa</code>는 누가 확인했는지 특정하지 않으므로 machine-confirmed다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#7-actor-convention">§7</a> 거꾸로 말하면, 사람이 확인하지 않았는데 <code>human:</code>을 쓰면 소비자는 그대로 믿는다.</li>
+  <li><strong>등급은 권고 신호다.</strong> 접근 제어가 아니다. 신뢰 필드가 하나도 없는 개념도 읽을 수 있고, 소비자는 그것을 거부하면 안 된다(MUST NOT).<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#53-trust-tiers">§5.3</a></li>
+</ul>
+<h3>수명: <code>status</code>·<code>superseded_by</code>와 <code>stale_after</code> (§5.4·§5.5)</h3>
+<ul>
+  <li><strong><code>status</code></strong>는 <code>draft</code>(검토 전, 불완전할 수 있음), <code>stable</code>(기본, 쓸 수 있음), <code>deprecated</code>(링크와 기록용으로 남김, 현재 내용 아님) 중 하나다. 없으면 <code>stable</code>이다. 목록에 없는 값은 <code>stable</code>이 <em>아니다</em>. 현재 지식만 거르는 소비자는 그 개념을 빼고, 원래 값을 보여 주는 편이 좋다(SHOULD).<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#54-lifecycle-status-and-superseded_by">§5.4</a> 우리 검색기는 빼지 않고 <code>unknown-status</code> 주의와 원래 값을 보여 준다.</li>
+  <li><strong><code>superseded_by</code></strong>(v0.3 추가)는 <code>status: deprecated</code>인 개념을 대신하는 개념의 경로 하나다. deprecated일 때만 뜻이 있다. 경로 필드라서 §6 규칙으로 푼다. 현재 지식만 거르는 소비자는 이 경로를 따라가 대체 개념을 주는 편이 좋다(SHOULD). 개념을 옮기거나 이름을 바꿀 때는 옛 경로에 짧은 deprecated 개념을 남기고 <code>superseded_by</code>로 새 경로를 가리킨다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#54-lifecycle-status-and-superseded_by">§5.4</a> 공식 예는 <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/bundles/acme_retail/metrics/gross-margin-legacy.md">Acme Retail <code>metrics/gross-margin-legacy.md</code></a>다.</li>
+  <li><strong><code>stale_after</code></strong>는 절대 시각이다. <code>now &gt;= stale_after</code>이면 낡았다. "30일 뒤" 같은 상대 기간이 아니라서, 언제 읽었는지와 상관없이 단순 비교로 정해진다. 같은 시각이면 이미 낡은 것이다("on or after"). 낡았다는 것은 "다시 확인하라"는 뜻이지 "틀렸다"는 뜻이 아니다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#55-lifecycle-stale_after">§5.5</a></li>
+  <li><strong>읽을 수 없는 <code>stale_after</code>는 신선하지 않다.</strong> 빈 값·<code>null</code>은 키가 없는 것과 같다. 하지만 값이 있는데 시각으로 읽을 수 없으면, 소비자는 그 개념을 신선하다고 보면 안 되고(MUST NOT) 형식이 잘못됐다고 보여 주는 편이 좋다(SHOULD).<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#55-lifecycle-stale_after">§5.5</a> 우리 <code>assess</code>는 <code>stale: false</code>, <code>fresh: false</code>와 <code>bad-date</code> 주의를 낸다. "낡았다"고 단정하지도 "신선하다"고 하지도 않는다.</li>
+  <li><strong>소비자는 등급을 현재 검토 기록으로, 낡음을 <code>stale_after</code>로만 판단한다.</strong><a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#112-consumer-rules">§11.2</a> 예를 들어 파일 수정 시각이나 <code>generated.at</code>으로 낡음을 판정하지 않는다.</li>
+</ul>
+
+<h3>이 저장소에서 정직하게 적기</h3>
+<p><code>evaluation.md</code> 7회차를 보면 "세 곳 모두 같다 (에이전트가 파일을 열어 대조함)"이라고 적혀 있다. 그 대조는 사람의 확인이 아니다. 지금 그 사실을 기록한다면 <code>{ by: claude-code/opus-5-5, … }</code>이고 등급은 machine-confirmed다. <code>human:</code>은 여러분이 직접 파일을 열어 대조한 뒤에만 쓴다. 학습 계획도 "실제로 사람이 확인한 문서에만 <code>verified</code>를 기록한다"고 말한다.</p>
+
+<h2>3. 기억에서 꺼내기</h2>
+<p>점수: <span class="quiz-score"></span></p>
+<div class="quiz" data-answer="2" data-why="§5.3: <code>generated</code>가 없으면 모든 기록이 현재 기록이다. 현재 기록에 <code>human:</code> 행위자가 하나라도 있으면 human-reviewed다. 프로세스 기록이 함께 있어도 등급은 내려가지 않는다.">
+  <p class="q">Q1. <code>generated</code>는 없고, <code>verified</code>에 <code>process:nightly</code>와 <code>human:kim</code> 두 기록이 있다(둘 다 <code>by</code>·<code>at</code> 있음). 등급은?</p>
+  <ol><li>unverified</li><li>human-reviewed</li><li>machine-confirmed</li><li>둘이 섞여서 판정할 수 없다</li></ol>
+</div>
+<div class="quiz" data-answer="3" data-why="§5.2·§11.2: 소비자는 대시 없는 매핑을 원소 하나짜리 목록으로 읽어야 한다(MUST). 오류도 경고도 아니다.">
+  <p class="q">Q2. <code>verified: { by: human:kim, at: 2026-11-18T09:00:00+09:00 }</code>처럼 대시 없이 쓴 값을 소비자는 어떻게 다루는가?</p>
+  <ol><li>목록이 아니므로 무시한다</li><li>형식 오류로 보고한다</li><li>원소 하나짜리 목록으로 읽는다</li><li>human-reviewed보다 한 단계 낮게 본다</li></ol>
+</div>
+<div class="quiz" data-answer="1" data-why="§5.5: <code>now &gt;= stale_after</code>이면 낡았다. 같은 시각도 포함한다(on or after).">
+  <p class="q">Q3. <code>stale_after: 2026-11-18T00:00:00Z</code>인 개념을 정확히 2026-11-18T00:00:00Z에 읽었다. 낡았는가?</p>
+  <ol><li>낡았다</li><li>아직 아니다, 1초 뒤부터다</li><li><code>generated.at</code>을 봐야 안다</li><li><code>status</code>가 deprecated일 때만 낡았다</li></ol>
+</div>
+<div class="quiz" data-answer="4" data-why="§5.4: <code>status</code>가 없으면 <code>stable</code>이다. §5.3: 현재 검토 기록이 없으면 unverified지만, 소비자는 개념을 거부하면 안 된다.">
+  <p class="q">Q4. <code>status</code>도 <code>verified</code>도 없는 개념은?</p>
+  <ol><li>draft, unverified</li><li>명세 위반이므로 검색에서 뺀다</li><li>deprecated, machine-confirmed</li><li>stable, unverified</li></ol>
+</div>
+<div class="quiz" data-answer="2" data-why="§7: 등급은 <code>human:</code> 스킴으로만 정한다. 스킴 없는 이름은 사람으로 보지 않는다. 사람이 확인했다면 생산자가 <code>human:</code>을 써야 한다(MUST).">
+  <p class="q">Q5. <code>verified: { by: junni34, at: 2026-11-18T15:00:00+09:00 }</code>라고 적었다. 본인이 직접 확인했더라도 소비자가 보는 등급은?</p>
+  <ol><li>human-reviewed</li><li>machine-confirmed</li><li>unverified</li><li>소비자가 이름을 보고 추측한다</li></ol>
+</div>
+<div class="quiz" data-answer="3" data-why="§5.3: 기록의 <code>at</code>(11-18)이 <code>generated.at</code>(11-19)보다 이르므로 현재 기록이 아니다. 현재 기록이 없으니 unverified다. 사람 기록은 사라지지 않고 '마지막 변경 전 검토' 이력으로 보여 줄 수 있다.">
+  <p class="q">Q6. <code>generated: { by: claude-code/opus-5-5, at: 2026-11-19T10:00:00+09:00 }</code>, <code>verified: { by: human:jun, at: 2026-11-18T15:00:00+09:00 }</code>인 개념의 등급은?</p>
+  <ol><li>human-reviewed</li><li>machine-confirmed</li><li>unverified (사람 기록은 이력으로 남는다)</li><li>파일을 거부한다</li></ol>
+</div>
+<div class="quiz" data-answer="4" data-why="§5: 오프셋 없는 date-time은 무효다. §5.5: 읽을 수 없는 값을 신선하다고 보면 안 된다(MUST NOT). '낡았다'고 단정하는 것도 아니고, 형식이 잘못됐다고 보여 주는 편이 좋다(SHOULD).">
+  <p class="q">Q7. <code>stale_after: 2026-12-01T00:00:00</code>(오프셋 없음)인 개념을 2026-11-20에 읽었다. 소비자가 해야 할 일은?</p>
+  <ol><li>UTC로 추측해 아직 신선하다고 본다</li><li>키가 없는 것으로 본다</li><li>문서를 거부한다</li><li>신선하다고 보지 않고, 형식이 잘못됐다고 보여 준다</li></ol>
+</div>
+
+<h2>4. 실습: 확인을 기록하고, 낡은 개념에 주의를 붙인다</h2>
+<ol>
+  <li><code>src/okf/trust.ts</code>의 TODO를 채운다. <strong>T1</strong> <code>normalizeVerified</code> → <strong>T2</strong> <code>trustTier</code> → <strong>T3</strong> <code>assess</code>. frontmatter 읽기(<code>readFrontmatter</code>), 날짜 문자열 만들기(<code>dateText</code>), 출력(<code>formatAssessment</code>)은 들어 있다. 시각 비교는 <code>Date.parse</code>가 아니라 <code>parseTimestamp</code>로 한다. 오프셋 없는 date-time을 무효로 보기 때문이다. 실패 메시지가 <code>Error: TODO T1단계 …</code>이면 남은 실습이다.
+<pre><code>node --test --test-name-pattern="T1단계" "tests/**/*.test.ts"
+node --test --test-name-pattern="T2단계" "tests/**/*.test.ts"
+node --test --test-name-pattern="T3단계" "tests/**/*.test.ts"</code></pre>
+  T4단계는 <code>bundles/knowledge/</code>의 실제 상태를 확인한다. 2026-11-18 기준 낡은 개념이 없고 <code>policies/return-exceptions.md</code>에만 <code>deprecated</code> 주의가 붙는지 검사한다. 4단계에서 다른 상태를 실험할 때는 번들 사본을 쓴다.</li>
+  <li><strong>기준점을 본다.</strong> 3단계 전이라면 모든 개념이 unverified다. <code>evaluation.md</code> 8회차에 예측을 먼저 적는다. "3·4단계를 하고 나면 질문 5의 출력이 어떻게 바뀔까?"
+<pre><code>pnpm retrieve "할인 상품을 반품할 수 있나요? 환불은 언제 들어오나요?" --now 2026-11-18T00:00:00Z</code></pre></li>
+  <li><strong>직접 확인하고 기록한다.</strong> <code>bundles/knowledge/policies/returns.md</code>와 <code>bundles/knowledge/references/returns-faq.md</code>를 나란히 연다. "7일 이내"와 "할인 상품 포함"이 같은지 눈으로 대조한다. 같으면 <code>returns.md</code> frontmatter에 대시 없는 매핑으로 한 줄 적는다. <code>&lt;id&gt;</code>는 여러분의 아이디, <code>at</code>은 지금 시각이다. <code>at</code>을 빼면 기록이 무시된다(<code>pnpm validate</code>가 <code>incomplete-verified</code> 경고를 낸다).
+<pre><code>verified: { by: human:&lt;id&gt;, at: 2026-11-18T15:00:00+09:00 }</code></pre>
+  다르거나 확인하지 않았다면 적지 않는다. 그것도 결과다. 그다음 확인한다.
+<pre><code>pnpm validate
+pnpm retrieve "할인 상품을 반품할 수 있나요?" --now 2026-11-18T00:00:00Z</code></pre></li>
+  <li><strong>낡은 사본으로 주의를 본다.</strong> 진짜 번들은 건드리지 않고 사본을 만든다. 사본의 <code>processes/refunds.md</code>에 이미 지난 <code>stale_after</code>를, <code>policies/return-exceptions.md</code>에 <code>status: deprecated</code>를 넣는다.
+<pre><code>rm -rf /tmp/okf-stale &amp;&amp; cp -r bundles/knowledge /tmp/okf-stale
+# /tmp/okf-stale/processes/refunds.md frontmatter에:          stale_after: 2026-10-01T00:00:00Z
+# /tmp/okf-stale/policies/return-exceptions.md frontmatter에:  status: deprecated
+pnpm validate /tmp/okf-stale
+pnpm retrieve "반품이 승인됐는데 언제 환불되나요?" --dir /tmp/okf-stale --now 2026-11-18T00:00:00Z
+pnpm retrieve "반품이 승인됐는데 언제 환불되나요?" --dir /tmp/okf-stale --now 2026-09-01T00:00:00Z
+pnpm retrieve "할인 상품인데 주문할 때 최종 판매로 표시됐어요." --dir /tmp/okf-stale --now 2026-11-18T00:00:00Z</code></pre>
+  <code>--now</code>만 바꿨는데 주의가 생기고 사라지는 것을 본다. 검증기가 낡은 개념을 오류로 보지 않는 것도 확인한다.
+  <p>이어서 같은 사본에 v0.3 규칙 세 가지를 더 넣어 본다.</p>
+<pre><code># (가) return-exceptions.md:  superseded_by: returns.md       ← 대체 개념 (파일 기준 상대 경로)
+# (나) returns.md:            generated: { by: claude-code/opus-5-5, at: 2026-11-19T10:00:00+09:00 }
+#                             ← 3단계 사람 확인보다 늦은 변경
+# (다) refunds.md:            stale_after: 2026-12-01T00:00:00 ← 오프셋 없음 (기존 줄을 바꾼다)
+pnpm validate /tmp/okf-stale
+pnpm retrieve "할인 상품인데 주문할 때 최종 판매로 표시됐어요." --dir /tmp/okf-stale --now 2026-11-20T00:00:00Z
+pnpm retrieve "반품이 승인됐는데 언제 환불되나요?" --dir /tmp/okf-stale --now 2026-11-20T00:00:00Z</code></pre>
+  (가)는 대체 개념이 어떻게 보이는지, (나)는 사람 검토가 등급에서 이력으로 옮겨 가는지, (다)는 아직 12월 전인데도 "신선하다"고 하지 않는지 본다.</li>
+  <li><strong>소비자의 정책을 정한다.</strong> 지금 검색기는 주의를 붙여 보여 주기만 하고 개념을 빼지 않는다. <code>evaluation.md</code> 8회차에 아래 두 질문의 답을 한두 줄씩 적는다. 코드는 고치지 않는다.
+    <ul>
+      <li>낡은 개념·deprecated 개념을 (가) 표시만 할까, (나) 순위를 낮출까, (다) 근거 후보에서 뺄까? 질문 3("최종 판매로 표시됐어요")에서 <code>return-exceptions.md</code>를 빼면 답변은 어떻게 될까? <code>superseded_by</code>가 있다면 달라질까?</li>
+      <li>주의를 모델에게도 넘길까? 넘긴다면 0005의 프롬프트 어디에 어떤 모양으로 넣을까? (예: <code>&lt;document path="…" status="deprecated"&gt;</code>)</li>
+    </ul>
+  단서: 등급은 권고 신호다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#53-trust-tiers">§5.3</a> <code>deprecated</code>는 "링크와 기록용으로 남긴" 개념이고, 현재 지식만 거르는 소비자는 <code>superseded_by</code>를 따라가 대체 개념을 주는 편이 좋다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#54-lifecycle-status-and-superseded_by">§5.4</a> 근거로 쓰지 않는 것과 번들을 읽지 않는 것(거부)은 다르다. 공식 스킬 <code>okf-consume</code>은 개념끼리 충돌하면 현재 개념, 높은 신뢰 등급, 낡지 않은 개념, 늦은 <code>generated.at</code> 순으로 고르라고 안내한다(<a href="../RESOURCES.md">RESOURCES.md</a>).</li>
+</ol>
+<p class="note">여유가 있으면 팀 규칙을 하나 생각해 본다. 예: "사람이 확인한 정책 개념에는 확인 후 6개월 뒤를 <code>stale_after</code>로 적는다." 정했다면 <code>docs/team-rules.md</code>에 이유와 함께 한 줄로 남긴다. 명세는 기간을 정하지 않는다.</p>
+
+<details><summary>모범 답안: <code>normalizeVerified</code>, <code>trustTier</code>, <code>assess</code> (테스트를 직접 통과시킨 뒤에 열기)</summary>
+<p>T1. 지금 코드는 무시한 항목 수도 세려고(<code>bad-verified</code> 주의, <code>incomplete-verified</code> 경고) 읽기를 <code>readVerified</code>로 나눴다. <code>normalizeVerified</code>는 그 결과의 기록만 돌려준다.</p>
+<pre><code>export function readVerified(value: unknown): VerifiedRead {
+  const out: VerifiedRead = { events: [], ignored: 0 };
+  for (const item of asList(value)) { // 빈 값은 없는 것, 대시 없는 매핑 하나 = 원소 하나짜리 목록 (§5.2, §11.2)
+    const o = item &amp;&amp; typeof item === 'object' &amp;&amp; !Array.isArray(item) ? (item as Record&lt;string, unknown&gt;) : null;
+    if (o === null || isBlank(o.by) || isBlank(o.at) || parseTimestamp(o.at) === null) {
+      out.ignored++;
+      continue;
+    }
+    out.events.push({ by: String(o.by), at: dateText(o.at)! });
+  }
+  return out;
+}
+
+export function normalizeVerified(value: unknown): Verification[] {
+  return readVerified(value).events;
+}</code></pre>
+<p>T2. 현재 기록을 가르는 <code>generatedAt</code>·<code>isCurrent</code>를 먼저 둔다.</p>
+<pre><code>export function generatedAt(fm: Record&lt;string, unknown&gt;): string | undefined {
+  const g = fm.generated;
+  if (!g || typeof g !== 'object' || Array.isArray(g)) return undefined;
+  const o = g as Record&lt;string, unknown&gt;;
+  if (isBlank(o.by) || parseTimestamp(o.at) === null) return undefined;
+  return dateText(o.at);
+}
+
+export function isCurrent(v: Verification, generated?: string): boolean {
+  if (generated === undefined) return true;
+  const g = parseTimestamp(generated);
+  const t = parseTimestamp(v.at);
+  return g === null || (t !== null &amp;&amp; t &gt;= g);
+}
+
+export function trustTier(verified: Verification[], generated?: string): Tier {
+  const current = verified.filter((v) =&gt; isCurrent(v, generated));
+  if (current.length === 0) return 'unverified';
+  return current.some((v) =&gt; v.by.startsWith('human:')) ? 'human-reviewed' : 'machine-confirmed';
+}</code></pre>
+<p>T3.</p>
+<pre><code>export function assess(fm: Record&lt;string, unknown&gt;, now: Date): Assessment {
+  const { events, ignored } = readVerified(fm.verified);
+  const generated = generatedAt(fm);
+  const a: Assessment = { tier: trustTier(events, generated), history: [], status: 'stable', stale: false, fresh: true, cautions: [] };
+  if (generated !== undefined) a.generatedAt = generated;
+  let latest = -Infinity;
+  for (const v of events) {
+    if (!isCurrent(v, generated)) {
+      a.history.push(v);
+      continue;
+    }
+    const t = parseTimestamp(v.at)!;
+    if (t &gt; latest) {
+      latest = t;
+      a.latestVerifiedAt = v.at;
+    }
+  }
+  if (!isBlank(fm.status)) a.status = String(fm.status);
+  if (a.status === 'draft' || a.status === 'deprecated') a.cautions.push(a.status);
+  else if (a.status !== 'stable') a.cautions.push('unknown-status');
+  if (a.status === 'deprecated' &amp;&amp; typeof fm.superseded_by === 'string' &amp;&amp; fm.superseded_by.trim() !== '') a.supersededBy = fm.superseded_by;
+  const staleAfter = dateText(fm.stale_after);
+  if (staleAfter !== undefined) {
+    a.staleAfter = staleAfter;
+    const t = parseTimestamp(fm.stale_after);
+    if (t === null) {
+      a.fresh = false; // 읽을 수 없는 값을 신선하다고 보지 않는다 (§5.5, §11.2 MUST NOT)
+      a.cautions.push('bad-date');
+    } else if (now.getTime() &gt;= t) {
+      a.stale = true;
+      a.fresh = false;
+      a.cautions.push('stale');
+    }
+  }
+  if (ignored &gt; 0) {
+    a.ignoredVerified = ignored;
+    a.cautions.push('bad-verified');
+  }
+  return a;
+}</code></pre>
+<p>v0.2 기준 답안과 다른 곳: <code>at</code> 없는 기록을 받지 않는다, 등급은 현재 기록으로만 정하고 나머지는 <code>history</code>에 둔다, 빈 <code>status</code>는 <code>stable</code>이다, <code>superseded_by</code>를 담는다, 읽을 수 없는 <code>stale_after</code>는 <code>fresh: false</code>다, 시각은 <code>parseTimestamp</code>로 읽는다(날짜만 쓴 값 = UTC 0시, 오프셋 없는 date-time = 무효).</p>
+</details>
+
+<details><summary>모범 답안: 사본에서 본 출력 (직접 돌려 본 뒤에 열기)</summary>
+<p>3단계에서 <code>returns.md</code>에 사람 확인을 적은 뒤, 4단계 사본으로 질문 4를 <code>--now 2026-11-18T00:00:00Z</code>로 돌린 결과다. 아이디와 시각은 예시다. FAQ 줄은 FAQ에 <code>verified</code>가 없으면 unverified다. 지금 저장소 FAQ에는 사용자가 대조한 <code>{ by: "human:jun", at: … }</code>가 있어 human-reviewed로 나온다. 2026-11-19 전에는 <code>by: human</code>(콜론 없음)이라 <code>human:</code> 스킴이 아니어서 machine-confirmed였다.</p>
+<pre><code>[키워드] references/returns-faq.md  점수 7  일치: 나요, 되나, 반품, 승인, 언제, 품이, 환불
+         신뢰: unverified · 검토 기록 없음
+[키워드] policies/returns.md  점수 3  일치: 반품, 승인, 환불
+         신뢰: human-reviewed · 사람 검토 (최근 2026-11-18T15:00:00+09:00)
+[키워드] processes/refunds.md  점수 3  일치: 반품, 승인, 환불
+         신뢰: unverified · 검토 기록 없음
+         주의: stale_after 2026-10-01T00:00:00Z가 지났다
+WARN 상한 3개에 걸려 policies/return-exceptions.md를 추가하지 않았다.</code></pre>
+<p><code>--now 2026-09-01T00:00:00Z</code>로 바꾸면 <code>refunds.md</code>의 주의 줄만 사라진다. 고른 개념은 그대로다. 신뢰 신호가 검색 순위에 영향을 주지 않기 때문이다. 질문 3에서는 <code>return-exceptions.md</code> 아래에 "주의: status: deprecated, 현재 내용이 아니다"가 붙는다. <code>pnpm validate /tmp/okf-stale</code>는 오류 0개, 경고 0개다.</p>
+<p>v0.3 규칙 (가)(나)(다)를 넣은 뒤 <code>pnpm validate /tmp/okf-stale</code>는 오류 0개, 경고 1개다(<code>bad-timestamp</code>: <code>stale_after: 2026-12-01T00:00:00</code>는 허용된 시각 형식이 아니다). 질문 3과 질문 4의 출력에서 바뀐 줄만 옮긴다.</p>
+<pre><code>[키워드] policies/return-exceptions.md  점수 7  일치: 매로, 문할, 상품, 주문, 최종, 판매, 표시
+         신뢰: unverified · 검토 기록 없음
+         주의: status: deprecated, 현재 내용이 아니다
+         대체: returns.md
+         대체 개념: policies/returns.md
+[키워드] policies/returns.md  점수 6  일치: 매로, 상품, 최종, 판매, 표시, 할인
+         신뢰: unverified · 검토 기록 없음
+         이력: 마지막 변경(2026-11-19T10:00:00+09:00) 전 검토 human:jun (2026-11-18T15:00:00+09:00)
+…
+[키워드] processes/refunds.md  점수 3  일치: 반품, 승인, 환불
+         신뢰: unverified · 검토 기록 없음
+         주의: stale_after를 시각으로 읽을 수 없어 신선하다고 보지 않는다: 2026-12-01T00:00:00</code></pre>
+<p><code>대체:</code>는 파일에 쓴 값 그대로이고, <code>대체 개념:</code>은 질의응답 모듈(<code>ask.ts</code>)이 §6 규칙으로 번들 경로를 푼 결과다. (나)에서 사람 기록은 지워지지 않았다. 등급에서 빠지고 이력으로만 보인다. 다시 대조하고 새 <code>at</code>으로 기록을 더하면 human-reviewed로 돌아온다.</p>
+<p>5단계에 정답은 없다. 한 가지 예: "deprecated는 근거 후보에서 빼되 <code>superseded_by</code>가 있으면 대체 개념을 대신 넣고, trace로는 따라갈 수 있게 둔다. 낡은 개념과 날짜를 읽을 수 없는 개념은 표시만 하고 모델에도 status·stale을 속성으로 넘겨 답변에 '확인 필요'를 붙이게 한다."</p>
+</details>
+
+<h2>5. 검토</h2>
+<ul>
+  <li><strong>기록은 기록일 뿐이다.</strong> <code>human:</code>이라고 적으면 소비자는 믿는다. 확인을 하지 않은 사람이 적으면 신호가 거짓이 된다. 그래서 오늘 실습은 직접 대조한 뒤에만 적게 했다.</li>
+  <li><strong>사람 검토는 내용이 바뀌면 효력을 잃는다.</strong> 에이전트가 번들을 계속 고쳐 쓰는 환경에서는 <code>generated.at</code>이 자주 올라간다. 사람이 다시 보지 않은 문장에 human-reviewed를 붙이지 않으려는 규칙이다. 그래서 생산자는 사소한 수정(서식, 링크 수리)에는 <code>generated.at</code>을 올리지 않는다.</li>
+  <li><strong>낡음과 검토 시점은 다른 질문이다.</strong> <code>stale_after</code>는 생산자가 미리 정한 유효 기한이고, <code>verified[].at</code>은 마지막 확인 시점이다. 확인을 다시 하면 생산자가 <code>stale_after</code>도 뒤로 미뤄 적는 것이 자연스럽다. 명세는 둘을 묶어 두지 않는다.</li>
+  <li><strong>신호는 순위를 바꾸지 않았다.</strong> 오늘 검색기는 주의를 붙이기만 했다. 그래서 FAQ가 여전히 1순위다. 신호를 검색과 답변에 어떻게 반영할지는 5단계에서 정한 소비자 정책이고, 0009 뒤 웹 화면에서 구현할 수 있다.</li>
+  <li><strong>출처 쪽 신호도 있다.</strong> §5.1의 <code>author</code>, <code>usage_count</code>, <code>last_modified</code>는 출처 자체의 신뢰 신호다. <code>author</code>도 §7 행위자 표기를 쓴다. 특히 <code>usage_count</code>는 점수가 아니라 "살아 있나, 늘고 있나"로 읽으라고 명세가 말한다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#51-provenance-sources">§5.1</a></li>
+</ul>
+
+<div class="box">
+  <h3>완료 기준 (학습 계획 §6 심화 2)</h3>
+  <ul>
+    <li><code>pnpm test</code>의 T1~T4단계 통과.</li>
+    <li>직접 대조한 개념에만 <code>verified</code>(<code>human:</code>, <code>by</code>·<code>at</code> 모두)를 적었다. <code>pnpm validate</code> 오류 0개.</li>
+    <li>낡은 사본에서 <code>pnpm retrieve</code>가 stale·deprecated 주의를 붙이는 것을 보고, <code>--now</code>로 주의가 바뀌는 것을 확인했다. v0.3 규칙(대체 개념, 이력, 읽을 수 없는 시각)의 출력도 봤다.</li>
+    <li>낡은·deprecated 개념을 소비자가 어떻게 다룰지 <code>evaluation.md</code> 8회차에 적었다.</li>
+  </ul>
+</div>
+
+<h2>6. 다음 회차 시작 질문</h2>
+<ol>
+  <li>에이전트가 대조한 사실과 내가 대조한 사실을 <code>verified</code>에 각각 어떻게 적고, 등급은 각각 무엇인가? 그 뒤 에이전트가 문장을 고쳐 쓰면 등급은 어떻게 되는가?</li>
+  <li><code>stale_after</code>를 "30일" 같은 상대 기간이 아니라 절대 시각으로 정한 이유는? 날짜만 쓴 값은 어느 순간인가?</li>
+  <li>지금 CLI 출력에서 개념 사이의 링크와 출처, 대체 관계는 어떻게 보이는가? 그림으로 보면 무엇이 더 잘 보일까?</li>
+</ol>
+
+<div class="box">
+  <h3>1차 자료</h3>
+  <p><a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#5-provenance-trust-and-lifecycle">OKF v0.3 명세 §5</a>(시각 형식), <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#52-trust-generated-and-verified">§5.2 Trust</a>(<code>generated</code>·<code>verified</code>, 대시 없는 매핑), <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#53-trust-tiers">§5.3 Trust tiers</a>(현재 기록), <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#54-lifecycle-status-and-superseded_by">§5.4 status와 superseded_by</a>, <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#55-lifecycle-stale_after">§5.5 stale_after</a>, <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#7-actor-convention">§7 Actor convention</a>, <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#112-consumer-rules">§11.2 Consumer rules</a>(소비자 의무, 빈 값·단일 값), <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#131-breaking-changes">§13.1 Breaking changes</a>. 실제 사용 예는 <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/bundles/acme_retail/tables/orders.md">Acme Retail <code>tables/orders.md</code></a>와 <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/bundles/acme_retail/metrics/gross-margin-legacy.md"><code>metrics/gross-margin-legacy.md</code></a>. 동기는 <a href="https://cloud.google.com/blog/products/data-analytics/okf-v0-2-adds-trust-signals">OKF v0.2 trust signals 발표</a>(v0.2 시점 글).</p>
+  <p>출력이 예상과 다르면 출력을 그대로 에이전트에게 붙여 넣고 물어본다.</p>
+</div>
+
+<nav class="course">
+  <a href="0007-sources-footnotes.html">← 0007 원문으로 거슬러 올라가기</a>
+  <a href="0009-read-bundle-differently.html">다음: 0009 같은 번들을 다른 방식으로 읽기 →</a>
+</nav>
+</main>
+</body>
+</html>

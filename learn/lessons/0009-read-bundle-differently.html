@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0009 · 같은 번들을 다른 방식으로 읽기</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/quiz.js" defer></script>
+</head>
+<body>
+<main>
+<header class="lesson">
+  <p class="kicker">Lesson 0009 · 심화 3 (마지막)</p>
+  <h1>같은 번들을 다른 방식으로 읽기</h1>
+  <p class="lede">우리 번들을 그래프로 읽는 소비자를 하나 더 만든다. 같은 번들을 공식 시각화 도구로도 그려 보고, 두 소비자가 같은 파일을 다르게 읽는 지점을 찾는다. 마지막으로 명세 §10의 계산 검증 예제를 읽는다.</p>
+  <div class="meta"><span>약 90분</span><span>회상 5 · 읽기 15 · 퀴즈 5 · 실습 50 · 검토 15</span><span>용어: <a href="../../GLOSSARY.md">GLOSSARY.md</a> · <a href="../reference/okf-v0.3-core.html">핵심 규칙</a></span></div>
+</header>
+
+<div class="note"><strong>v0.3 기준.</strong> 2026-11-19 OKF v0.3 기준으로 갱신했다. 명세 인용(§)은 v0.3 번호다. v0.2에서 바뀐 점은 <a href="../../docs/okf-v0.3-changes.md">docs/okf-v0.3-changes.md</a>에 있다. 이 레슨에서는 번들 그래프의 정의(§6.4)가 새로 생겼고, 공식 뷰어도 v0.3 새 저장소의 것으로 바꿨다. v0.2 뷰어와 갈리던 지점 가운데 두 곳은 v0.3에서 사라졌다.</div>
+
+<div class="box win">
+  <h3>왜 이것이 다음인가</h3>
+  <p>지금까지 소비자를 다섯 개 만들었다. 검증기, 검색기, 프롬프트·답변 검사, 비교표, 출처 따라가기다. 모두 이 저장소의 코드다. OKF가 내세우는 것은 형식이지 도구가 아니다. 누구나 만들고 누구나 읽을 수 있어야 한다. 그렇다면 다른 사람이 만든 소비자도 우리 번들을 같은 뜻으로 읽을까? 오늘 그것을 직접 확인한다. 학습 계획 §6의 심화 3이고, 이 과정의 마지막 레슨이다.</p>
+</div>
+
+<div class="note"><strong>시작 전 확인.</strong> 오늘 코드는 개념 읽기 모듈(<code>src/okf/concept.ts</code>)의 <code>readBundle</code>·<code>toConcept</code>, 0003의 <code>resolveLink</code>, 0007에서 쓴 경로 필드 함수 <code>pathFields</code>·<code>resolvePathField</code>를 쓴다. 모두 구현되어 있다. 공식 뷰어를 돌리려면 Git과 Python 3.11 이상이 필요하다. <code>uv</code>가 있으면 더 쉽다. 그래프를 브라우저에 그리려면 CDN(jsdelivr)에 접속할 수 있어야 한다. 회사망에서 막히면 실습 3단계의 대안을 쓴다.</div>
+
+<h2>0. 회상</h2>
+<details><summary>에이전트가 대조한 사실과 내가 대조한 사실을 <code>verified</code>에 각각 어떻게 적고, 등급은 각각 무엇인가? 그 뒤 에이전트가 문장을 고쳐 쓰면 등급은 어떻게 되는가?</summary>
+<p>에이전트는 <code>{ by: claude-code/opus-5-5, at: … }</code>로 적고 machine-confirmed다. 나는 <code>{ by: human:&lt;id&gt;, at: … }</code>로 적고 human-reviewed다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#7-actor-convention">§7</a> <code>human</code>만 쓰고 <code>:&lt;id&gt;</code>를 빼면 <code>human:</code> 스킴이 아니므로 machine-confirmed가 된다. 에이전트가 문장을 고치고 <code>generated.at</code>을 올리면 두 기록 모두 현재 기록이 아니게 되어 unverified로 떨어진다. 기록은 "마지막 변경 전 검토" 이력으로 남는다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#53-trust-tiers">§5.3</a> 실습 5단계에서 공식 도구로도 등급을 확인한다.</p></details>
+<details><summary><code>stale_after</code>를 "30일" 같은 상대 기간이 아니라 절대 시각으로 정한 이유는? 날짜만 쓴 값은 어느 순간인가?</summary>
+<p>낡았는지를 단순 비교로 정하기 위해서다. 언제 읽었는지나 언제 받았는지를 따로 알 필요가 없다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#55-lifecycle-stale_after">§5.5</a> 날짜만 쓴 <code>2026-10-01</code>은 그날 UTC 0시다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#5-provenance-trust-and-lifecycle">§5</a> v0.2 시절에는 명세가 이것을 정하지 않아 v0.2 뷰어와 우리 소비자의 답이 갈렸다. 오늘은 v0.3 뷰어가 정말 같은 답을 내는지 확인한다.</p></details>
+<details><summary>지금 CLI 출력에서 개념 사이의 링크와 출처, 대체 관계는 어떻게 보이는가?</summary>
+<p>흩어져 있다. 링크는 <code>pnpm retrieve</code>의 링크 확장에서 한 단계만 보이고, 출처는 <code>pnpm trace</code>에서 한 개념부터 따라갈 때만 보이고, 대체 개념은 <code>pnpm retrieve</code>의 주의 줄에만 보인다. 번들 전체에서 누가 누구를 가리키는지 한눈에 보는 출력은 아직 없다. 오늘 만드는 <code>pnpm graph</code>가 그 역할을 한다.</p></details>
+
+<h2>1. 형식은 하나, 소비자는 여럿</h2>
+<p>공식 저장소 README는 OKF를 특정 벤더에 묶이지 않는 형식이라고 소개한다. 누구나 만들 수 있고(사람이 손으로, 에이전트가, 카탈로그 내보내기가), 누구나 읽을 수 있다(정적 파일 서버, Obsidian 같은 지식 도구, LLM 컨텍스트, 검색 색인, 그래프 뷰어). 저장소에 들어 있는 에이전트와 뷰어는 각각 생산자와 소비자의 <strong>개념 증명(proof of concept)</strong>일 뿐이다. 기여하는 것은 형식 자체라고 말한다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/README.md#open-knowledge-format-okf">README</a></p>
+<table>
+  <thead><tr><th>소비자</th><th>읽는 것</th><th>보여 주는 것</th></tr></thead>
+  <tbody>
+    <tr><td><code>pnpm validate</code> (0003)</td><td>frontmatter, 본문 링크</td><td>적합성 오류, 끊어진 링크·개념이 아닌 파일 경고</td></tr>
+    <tr><td><code>pnpm retrieve</code> (0004·0008)</td><td>메타 필드, 본문, 링크, 신뢰 필드</td><td>질문별 고른 개념, 신뢰·주의, 대체 개념</td></tr>
+    <tr><td><code>pnpm trace</code> (0007)</td><td><code>sources</code>, 각주</td><td>한 개념에서 원문까지의 계보</td></tr>
+    <tr><td><strong><code>pnpm graph</code> (오늘)</strong></td><td>본문 링크, 경로 필드(<code>sources[].resource</code>, <code>superseded_by</code>, <code>resource</code>, §10 필드)</td><td>번들 전체 그래프, 가리키는 개념, 개념이 아닌 대상, Mermaid 그림</td></tr>
+    <tr><td><strong>공식 뷰어 <code>viz.html</code></strong></td><td>frontmatter, 본문 링크</td><td>그래프, 상세 패널, 신뢰 배지, Cited by, 검색</td></tr>
+  </tbody>
+</table>
+
+<h2>2. 명세가 정한 그래프와 공식 뷰어</h2>
+<h3>번들 그래프 (§6.4, v0.3 추가)</h3>
+<p>v0.3은 번들 그래프를 정의한다. 방향 있는 간선이 두 종류다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#64-the-bundle-graph">§6.4</a></p>
+<ul>
+  <li><strong>링크</strong>: 개념에서 번들 안 개념으로 가는 본문 링크. <code>#fragment</code>를 뺀 대상이 개념 파일로 풀릴 때만 개념을 가리키는 링크다. asset, 디렉터리, <code>type</code> 없는 <code>.md</code>로 가는 링크도 유효하지만 개념을 가리키지는 않는다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#61-links-between-concepts">§6.1</a></li>
+  <li><strong>경로 필드</strong>: 개념으로 풀리는 경로 필드(<code>resource</code>, <code>sources[].resource</code>, <code>superseded_by</code>, <code>computation</code>, <code>executor.resource</code>, <code>attester.resource</code>). 필드를 가진 개념에서 대상으로 간다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#62-path-fields">§6.2</a> 0007의 출처 간선과 0008의 <code>superseded_by</code>가 여기에 든다.</li>
+  <li><strong>끊어진 링크도 받아야 한다(MUST).</strong> 대상이 번들에 없는 링크는 잘못된 것이 아니라 아직 아무도 쓰지 않은 지식일 수 있다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#61-links-between-concepts">§6.1</a> 그래서 <code>buildGraph</code>는 개념을 가리키지 않는 참조를 간선으로 만들지 않되 버리지도 않고 <code>dangling</code>에 남긴다(번들에 없음 <code>missing</code>, 개념이 아님 <code>not-a-concept</code>).</li>
+  <li><strong>v0.2 대체 해석은 경로 필드에만</strong> 쓴다. 본문 링크에는 쓰지 않는다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#121-bundles-from-earlier-versions">§12.1</a> 그렇게 찾은 간선에는 <code>legacy: true</code>가 붙는다.</li>
+  <li>명세는 간선 종류(참조, 의존 등)를 정하지 않는다. 링크는 종류 없는 관계다. 우리 그래프는 경로 필드 간선을 필드마다 나눠(<code>source</code>, <code>superseded-by</code>, <code>executor</code> 등) 표시한다. 그것은 이 과정의 설계다.</li>
+</ul>
+
+<h3>공식 뷰어가 하는 일</h3>
+<p><code>reference_agent visualize</code>는 번들 하나를 HTML 파일 하나로 만든다. 서버도 설치도 필요 없고, 번들을 생성할 때 JSON으로 파일 안에 넣어 둔다. 그래프는 Cytoscape.js, 본문은 marked로 그리는데 둘 다 CDN에서 불러온다. README는 뷰어도 소비자의 개념 증명이라고 다시 말한다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/README.md#visualize">README Visualize</a></p>
+<ul>
+  <li><strong>그래프</strong>: 개념마다 노드가 하나다. 색은 <code>type</code>으로 정하고, 간선은 <em>본문의 링크</em>로만 그린다. v0.3 뷰어는 <code>/</code> 시작 링크와 상대 링크를 둘 다 푼다.</li>
+  <li><strong>상세 패널</strong>: frontmatter(<code>description</code>, <code>resource</code>, <code>tags</code>, <code>sources</code>)와 본문을 보여 준다. v0.3 배지(status, 현재 기록으로 정한 신뢰 등급, 낡음)도 붙인다.</li>
+  <li><strong>Cited by</strong>: 링크를 거꾸로 따라가 이 개념을 가리키는 개념을 보여 준다.</li>
+  <li><strong>검색 상자</strong>: title, 개념 ID, tags에서 찾는다. 본문과 <code>description</code>은 찾지 않는다.</li>
+</ul>
+<p>위 내용은 README와 뷰어 코드(새 저장소 커밋 <code>527e81a</code>)에서 확인했다. 코드를 직접 읽을 사람을 위해 위치를 적어 둔다.</p>
+<ul>
+  <li>링크 추출: <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/src/reference_agent/viewer/generator.py#L84-L108"><code>viewer/generator.py</code> 84~108행</a>, 개념 모으기 111~151행</li>
+  <li>시각 읽기·낡음 판정: <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/src/reference_agent/bundle/document.py#L219-L257"><code>bundle/document.py</code> 219~257행</a></li>
+</ul>
+<p>오늘 실습은 이 코드를 읽어서가 아니라 직접 돌려서 차이를 찾는다.</p>
+
+<h3>명세 §10: 계산 검증 (읽기만)</h3>
+<p>표·지표 문서로 넘어가면 "이 숫자를 어떻게 계산했나"가 중요해진다. §10은 승인된 계산 방법 자체를 <code>type: Attested Computation</code> 개념으로 둔다. 그래서 소비자는 에이전트가 계산식을 즉석에서 지어내지 않고 승인된 계산을 돌렸는지 확인할 수 있다. OKF는 계산과 확인 방법을 기록만 하고, 직접 실행하지 않는다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#10-attested-computations">§10</a></p>
+<ul>
+  <li><strong>계약 필드</strong> (§10.2)
+    <ul>
+      <li><code>runtime</code>: 이 타입에서는 필수다. 어떻게 실행하는지, 그리고 <code>parameters</code>가 무슨 뜻인지를 정한다.</li>
+      <li><code>parameters</code>: 에이전트가 채워도 되는 이름 있는 빈칸이다. 각 항목은 <code>{ name, type, required }</code>로 쓴다. <code>name</code>과 <code>type</code>은 필수이고, <code>required</code>는 없으면 <code>false</code>다.</li>
+      <li><code>computation</code>: 계산을 담은 파일의 경로다. 쓰지 않으면 본문 <code>Computation</code> 절의 첫 코드 블록이 계산이다(§10.3).</li>
+      <li><code>executor</code>: 실행 방법(<code>resource</code>)과, 실행이 돌려줄 증빙 필드(<code>receipt</code>)다.</li>
+      <li><code>attester</code>: 증빙을 받아 판정을 내리는 결정적 코드(<code>resource</code>)다. LLM을 쓰지 않는다.</li>
+    </ul>
+    <code>computation</code>, <code>executor.resource</code>, <code>attester.resource</code>는 경로 필드다. 대상이 개념이면 번들 그래프의 간선이다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#102-contract-fields">§10.2</a></li>
+  <li><strong>에이전트는 값만 넣는다.</strong> 선언된 <code>parameters</code>에 값을 넣을 수는 있다(MAY). 계산식을 쓰거나 고치면 안 된다(MUST NOT).<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#103-the-computation">§10.3</a></li>
+  <li><strong>소비자의 흐름</strong> (§10.5, 참고용): 찾기(frontmatter를 훑어 <code>type: Attested Computation</code>) → 불러오기 → 값 넣기 → 실행 → 판정(최소 <code>ok</code>, 선택 <code>reason</code>) → 게이트. 마지막 게이트는 판정에 실패한 값을 보여 주지 않는 단계다. <code>now &gt;= stale_after</code>이면 경고하거나 값을 보여 주지 않는다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#105-how-a-consumer-uses-an-attested-computation-informative">§10.5</a></li>
+  <li><strong><code>verified</code>와 판정은 다르다.</strong> <code>verified</code>는 <em>정의</em>가 아직 정책과 맞는지를 확인한다. 문서 단위이고, 느리고, 번들에 기록된다. 판정은 <em>한 번의 실행</em>이 승인된 방식으로 값을 만들었는지를 확인한다. 호출마다 하고, 번들에 저장하지 않는다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#106-verification-and-attestation">§10.6</a></li>
+</ul>
+<p>실행과 판정은 이 과정의 범위 밖이다(<a href="../MISSION.md">MISSION.md</a>). 오늘은 예제를 읽고 구조만 짚는다.</p>
+
+<h2>3. 기억에서 꺼내기</h2>
+<p>점수: <span class="quiz-score"></span></p>
+<div class="quiz" data-answer="3" data-why="README: 형식 자체가 기여이고, 에이전트와 뷰어는 생산·소비 양쪽을 보여 주는 개념 증명이다. 다른 도구가 다르게 읽어도 기준은 명세다.">
+  <p class="q">Q1. 공식 저장소의 뷰어에 대해 README가 말하는 것은?</p>
+  <ol><li>OKF를 읽는 표준 구현이다</li><li>뷰어가 그리지 못하면 번들이 틀린 것이다</li><li>소비자의 한 가지 예(개념 증명)일 뿐이다</li><li>번들에 반드시 viz.html을 넣어야 한다</li></ol>
+</div>
+<div class="quiz" data-answer="2" data-why="§10.3: 에이전트는 선언된 parameters에 값만 넣을 수 있다(MAY). 계산식을 쓰거나 고치면 안 된다(MUST NOT). 그래서 '승인된 것이 돌았나'를 기계적으로 비교할 수 있다.">
+  <p class="q">Q2. Attested Computation에서 에이전트가 해도 되는 일은?</p>
+  <ol><li>더 빠른 SQL로 고쳐 쓴다</li><li>선언된 parameters에 값을 넣는다</li><li>attester 코드를 바꾼다</li><li>receipt 필드를 줄인다</li></ol>
+</div>
+<div class="quiz" data-answer="4" data-why="§10.6: verified는 정의가 정책과 맞는지(문서 단위, 번들에 기록), 판정은 한 번의 실행이 승인된 방식이었는지(호출마다, 번들에 저장 안 함)를 본다. 그래서 둘 다 필요하다.">
+  <p class="q">Q3. <code>verified</code>와 판정(attestation)의 차이로 맞는 것은?</p>
+  <ol><li>둘은 같은 것을 두 번 적는다</li><li>판정은 번들에 기록되고 verified는 런타임에만 있다</li><li>human-reviewed면 판정이 필요 없다</li><li>verified는 정의를, 판정은 한 번의 실행을 확인한다</li></ol>
+</div>
+<div class="quiz" data-answer="1" data-why="공식 뷰어는 본문 링크로만 간선을 그린다. sources는 상세 패널에 목록으로만 보인다. 그래서 출처로만 이어진 FAQ는 그래프에서 떨어져 보인다. §6.4로 보면 출처 간선도 번들 그래프의 간선이지만, 그림에 무엇을 그릴지는 뷰어가 정한다. 실습 3단계에서 확인한다.">
+  <p class="q">Q4. 공식 뷰어 그래프에서 <code>references/returns-faq.md</code>는 어떻게 보일까? (README 설명으로 예측)</p>
+  <ol><li>간선 없이 떨어진 노드</li><li>returns.md에서 오는 점선 간선</li><li>그래프에 나오지 않는다</li><li>모든 개념과 이어진 중심 노드</li></ol>
+</div>
+<div class="quiz" data-answer="3" data-why="§3.2: frontmatter나 type이 없는 .md는 개념이 아니다. §6.1: 개념이 아닌 파일로 가는 링크도 유효하지만 개념을 가리키지 않는다. §6.4: 그래서 번들 그래프의 간선이 아니다. 우리 buildGraph는 dangling(not-a-concept)에 남긴다.">
+  <p class="q">Q5. <code>returns.md</code> 본문에서 frontmatter가 없는 <code>references/README.md</code>로 링크했다. v0.3 번들 그래프에서 이 링크는?</p>
+  <ol><li>링크 간선이다</li><li>끊어진 링크라서 번들이 적합하지 않다</li><li>간선이 아니다. 개념을 가리키지 않는 링크다</li><li>README.md가 <code>type: Unknown</code> 개념이 된다</li></ol>
+</div>
+<div class="quiz" data-answer="2" data-why="§6.2: superseded_by는 경로 필드다. §6.4: 개념으로 풀리는 경로 필드는 필드를 가진 개념에서 대상으로 가는 간선이다. 그래서 deprecated 개념에서 대체 개념으로 간다.">
+  <p class="q">Q6. <code>return-exceptions.md</code>(deprecated)에 <code>superseded_by: returns.md</code>를 적었다. 번들 그래프의 간선은?</p>
+  <ol><li>없다. frontmatter 값은 간선이 아니다</li><li>return-exceptions.md → returns.md</li><li>returns.md → return-exceptions.md</li><li>deprecated 개념은 그래프에서 빠진다</li></ol>
+</div>
+
+<h2>4. 실습: 두 소비자로 같은 번들 읽기</h2>
+<ol>
+  <li><code>src/okf/graph.ts</code>의 TODO를 채운다. <strong>G1</strong> <code>buildGraph</code> → <strong>G2</strong> <code>backlinks</code>. 텍스트 출력(<code>formatGraph</code>)과 Mermaid 출력(<code>toMermaid</code>)은 들어 있고 G0단계 테스트가 확인한다. 실패 메시지가 <code>Error: TODO G1단계 …</code>이면 남은 실습이다. G2까지 통과하면 G3단계(실제 번들)도 통과한다.
+<pre><code>node --test --test-name-pattern="G1단계" "tests/**/*.test.ts"
+node --test --test-name-pattern="G2단계" "tests/**/*.test.ts"</code></pre></li>
+  <li><strong>우리 소비자로 읽는다.</strong>
+<pre><code>pnpm graph
+pnpm graph --mermaid</code></pre>
+  Mermaid 출력은 <code>```mermaid</code> 코드 블록 안에 넣는다. 그 Markdown을 GitHub나 에디터 미리보기에서 열면 그림이 된다. 링크는 실선, 경로 필드는 종류 이름(출처, 대체 등)을 단 점선이다. 번들에 없는 대상은 빨간 점선 노드로 그린다. 이 그림을 남기고 싶으면 <code>docs/bundle-graph.md</code>에 저장한다.</li>
+  <li><strong>공식 뷰어로 같은 번들을 그린다.</strong> v0.3 공식 저장소는 이 저장소 밖 임시 디렉터리에 받는다. 옛 저장소(<code>GoogleCloudPlatform/open-knowledge-format</code>)는 deprecated다.
+<pre><code>git clone --depth 1 https://github.com/open-knowledge-format/open-knowledge-format.git /tmp/okf-official
+git -C /tmp/okf-official log -1 --format=%h   # 이 레슨은 527e81a로 확인했다
+cd /tmp/okf-official</code></pre>
+  <strong>정식 방법</strong>은 README대로 설치한다. google-adk, BigQuery 클라이언트 같은 의존성이 함께 설치되므로 무겁다.
+<pre><code>python3.13 -m venv .venv
+.venv/bin/pip install --index-url https://pypi.org/simple/ -e .
+.venv/bin/python -m reference_agent visualize --bundle ~/workspace/junD/okf-playbook/bundles/knowledge --out /tmp/okf-viz.html --name "반품·환불"</code></pre>
+  <strong>가벼운 방법</strong>도 있다. 뷰어가 필요로 하는 것은 <code>pyyaml</code>뿐이라서 생성 함수를 직접 부를 수 있다. 아래는 <code>uv</code>를 쓰는 예다. 받은 저장소 안이 아니라 다른 디렉터리에서 돌리고, 경로는 인자로 넘긴다.
+<pre><code>cd /tmp
+uv run --no-project --python 3.13 --with pyyaml python -I -c "
+import sys; sys.path.insert(0, '/tmp/okf-official/src')
+from pathlib import Path
+from reference_agent.viewer.generator import generate_visualization
+print(generate_visualization(Path(sys.argv[1]), Path('/tmp/okf-viz.html'), bundle_name='반품·환불'))
+" ~/workspace/junD/okf-playbook/bundles/knowledge
+open /tmp/okf-viz.html</code></pre>
+  <strong>CDN이 막혀</strong> 그림이 안 나오면, 같은 방식으로 <code>_walk_concepts</code>와 <code>_build_graph</code>를 불러 개념과 간선을 텍스트로 출력한다(모범 답안의 스크립트 참고). 화면에서는 FAQ 노드, 상세 패널의 Sources와 배지, Cited by, 검색 상자를 본다. 검색 상자에는 "3~5일"과 "환불"을 넣어 본다.</li>
+  <li><strong>표로 비교한다.</strong> <code>evaluation.md</code> 9회차 첫 표를 채운다. 비교할 것은 간선 수(링크·출처), FAQ가 어떻게 이어지는지, 신뢰 등급과 낡음 표시, 검색이 무엇을 보는지다.</li>
+  <li><strong>갈리는 지점을 찾는다.</strong> 진짜 번들은 건드리지 않고 사본에서 다섯 가지를 바꾼다. 그다음 두 소비자로 읽는다.
+<pre><code>rm -rf /tmp/okf-exp &amp;&amp; cp -r bundles/knowledge /tmp/okf-exp
+# (가) /tmp/okf-exp/policies/returns.md 본문:           (../processes/refunds.md) → (/processes/refunds.md)
+# (나) /tmp/okf-exp/processes/refunds.md frontmatter:   stale_after: 2026-10-01        ← 날짜만
+# (다) /tmp/okf-exp/policies/return-exceptions.md:      verified: { by: human, at: 2026-11-18T15:00:00+09:00 }
+# (라) /tmp/okf-exp/policies/return-exceptions.md:      status: deprecated, superseded_by: /policies/returns.md
+# (마) /tmp/okf-exp/references/README.md 새 파일(frontmatter 없음, "# 참고 자료 안내" 한 줄)
+#      returns.md 본문 끝에: 원문 목록은 [참고 자료](../references/README.md)에 있다.
+pnpm validate /tmp/okf-exp
+pnpm graph --dir /tmp/okf-exp
+pnpm retrieve "반품이 승인됐는데 언제 환불되나요?" --dir /tmp/okf-exp --now 2026-11-18T00:00:00Z
+# 공식 뷰어도 /tmp/okf-exp 로 다시 만든다</code></pre>
+  <code>evaluation.md</code> 9회차 둘째 표에 (가)~(마)마다 두 소비자의 결과를 적는다. 표에 (라)(마) 행이 없으면 더한다. 그리고 한 줄씩 판단한다. 명세로 보면 어느 쪽이 맞나? 둘 다 명세 안인가? 생산자는 어떻게 쓰면 두 소비자에서 같은 결과를 얻나? 단서: §6(두 경로 형식 모두 MUST resolve), §5("date only" = UTC 0시), §7(<code>human:&lt;id&gt;</code>), §6.4(경로 필드 간선), §3.2(개념 판별), 그리고 0002에서 정한 팀 규칙. 코드는 고치지 않는다.</li>
+  <li><strong>§10 예제를 읽는다.</strong> 받아 둔 저장소에서 <code>bundles/acme_retail/computations/revenue-ytd.md</code>와 그것을 링크하는 <code>bundles/acme_retail/metrics/revenue.md</code>를 연다. <code>evaluation.md</code> 9회차 셋째 표에 다섯 가지를 적는다. <code>runtime</code>, <code>parameters</code>, <code>executor.receipt</code>, <code>attester</code>, 그리고 <code>verified</code>·<code>stale_after</code>가 각각 무엇인지다. 끝으로 한 줄 생각해 본다. 이 매출 계산은 "반품 기간 30일이 끝난 주문"만 센다. 우리 번들의 "승인 후 영업일 3~5일"로 환불 예정일을 계산하는 개념을 만든다면 Attested Computation으로 둘 가치가 있을까?
+  <p>여유가 있으면 우리 그래프로 Acme Retail 번들도 읽는다. <code>pnpm graph --dir /tmp/okf-official/bundles/acme_retail</code>. §10 필드가 실행기 간선(<code>executor.resource</code> → <code>skills/run-on-bq.md</code>)으로, <code>gross-margin-legacy.md</code>의 <code>superseded_by</code>가 대체 간선으로 나온다.</p></li>
+</ol>
+<p class="note">여유가 있으면 (가)(마) 같은 차이를 피하는 작성 규칙을 <code>docs/team-rules.md</code>에 더할지 정한다. 예를 들면 "번들 안에 개념이 아닌 <code>.md</code>를 두지 않는다"가 있다. 0002의 상대 경로 규칙이 v0.3에서 무엇을 근거로 남는지도 본다.</p>
+
+<details><summary>모범 답안: <code>buildGraph</code>와 <code>backlinks</code> (테스트를 직접 통과시킨 뒤에 열기)</summary>
+<pre><code>export function buildGraph(bundle: Bundle): Graph {
+  // 번들을 한 번 읽어 개념과 경로 필드를 같은 파싱 결과에서 꺼낸다.
+  const read = readBundle(bundle).flatMap((file) =&gt; {
+    const c = toConcept(file); // index.md·log.md·개념이 아닌 파일은 null
+    return c === null ? [] : [{ file, c }];
+  });
+  const nodes = read.map(({ c }) =&gt; ({ path: c.path, type: c.type, title: c.title }));
+  const has = new Set(nodes.map((n) =&gt; n.path));
+  const edges: GraphEdge[] = [];
+  const dangling: DanglingRef[] = [];
+  const warnings: string[] = [];
+  const seen = new Set&lt;string&gt;();
+  const add = (from: string, raw: string, kind: EdgeKind, to: string | null, legacy = false) =&gt; {
+    if (to === null) {
+      warnings.push(`${from}의 ${KIND[kind]} ${raw}가 번들 밖을 가리켜 그리지 않는다.`);
+      return;
+    }
+    const key = `${from}\n${to}\n${kind}`;
+    if (to === from || seen.has(key)) return; // 자기 자신, 같은 (from, to, kind)는 건너뛴다
+    seen.add(key);
+    if (has.has(to)) edges.push(legacy ? { from, to, kind, raw, legacy: true } : { from, to, kind, raw });
+    else {
+      const exists = bundle.has(to) || bundle.has(`${to.replace(/\/$/, '')}/index.md`);
+      dangling.push({ from, to, kind, raw, reason: exists ? 'not-a-concept' : 'missing' });
+    }
+  };
+  for (const { file, c } of read) {
+    for (const raw of file.links) add(file.path, raw, 'link', resolveLink(file.path, raw));
+    for (const f of pathFields(c.frontmatter)) {
+      const r = resolvePathField(bundle, file.path, f.value);
+      add(file.path, f.value, FIELD_KIND[f.field], r.target, r.legacy);
+    }
+  }
+  return { nodes, edges, dangling, warnings };
+}
+
+const ORDER: EdgeKind[] = ['link', 'source', 'superseded-by', 'resource', 'computation', 'executor', 'attester'];
+
+export function backlinks(graph: Graph, path: string): { from: string; kind: EdgeKind }[] {
+  return [...graph.edges, ...graph.dangling]
+    .filter((e) =&gt; e.to === path)
+    .map((e) =&gt; ({ from: e.from, kind: e.kind }))
+    .sort((a, b) =&gt; a.from.localeCompare(b.from) || ORDER.indexOf(a.kind) - ORDER.indexOf(b.kind));
+}</code></pre>
+<p><code>FIELD_KIND</code>(경로 필드 이름 → 간선 종류)와 <code>KIND</code>(출력용 한국어 이름)는 파일 위쪽에 제공된다. v0.2 기준 답안과 다른 곳: <code>sources</code>만이 아니라 모든 경로 필드를 <code>pathFields</code> 순서(resource → sources → superseded_by → …)로 보고, <code>resolvePathField</code>로 v0.2 대체 해석을 받으며, 개념이 아닌 대상은 <code>broken</code> 표시가 붙은 간선이 아니라 <code>dangling</code>으로 뺀다.</p>
+<p><code>pnpm graph</code> 출력 (2026-11-19, v0.3 갱신 시점 번들):</p>
+<pre><code>개념 4개, 링크 간선 3개, 출처 간선 1개, 개념이 아닌 대상 0개
+
+policies/return-exceptions.md  [Policy] 반품 예외
+  → policies/returns.md  (링크)  returns.md
+  ← 가리키는 개념: policies/returns.md(링크)
+
+policies/returns.md  [Policy] 반품 정책
+  → policies/return-exceptions.md  (링크)  return-exceptions.md
+  → processes/refunds.md  (링크)  ../processes/refunds.md
+  → references/returns-faq.md  (출처)  /references/returns-faq.md
+  ← 가리키는 개념: policies/return-exceptions.md(링크)
+
+processes/refunds.md  [Process] 환불 절차
+  ← 가리키는 개념: policies/returns.md(링크)
+
+references/returns-faq.md  [Reference] 반품·환불 FAQ
+  ← 가리키는 개념: policies/returns.md(출처)</code></pre>
+</details>
+
+<details><summary>모범 답안: 두 소비자 비교 (직접 돌려 본 뒤에 열기)</summary>
+<p>공식 뷰어의 개념·간선을 텍스트로 보는 스크립트다. 공식 저장소 안이 아니라 <code>/tmp/okf-scripts/viz.py</code>처럼 다른 디렉터리에 둔다.</p>
+<pre><code>import sys
+sys.path.insert(0, '/tmp/okf-official/src')
+from pathlib import Path
+from reference_agent.viewer.generator import _walk_concepts, _build_graph
+cs = _walk_concepts(Path(sys.argv[1])); g = _build_graph(cs)
+for c in cs: print(c.id, c.type, c.trust_tier, 'stale' if c.stale else '-', c.status, c.links_to)
+print('edges:', [(e['data']['source'], e['data']['target']) for e in g['edges']])</code></pre>
+<pre><code>cd /tmp &amp;&amp; uv run --no-project --python 3.13 --with pyyaml python -I /tmp/okf-scripts/viz.py /tmp/okf-exp</code></pre>
+<p>진짜 번들 (4단계, 2026-11-19 기준). 공식 뷰어는 낡음을 실행한 시각으로 판정한다.</p>
+<table>
+  <thead><tr><th></th><th><code>pnpm graph</code></th><th>공식 뷰어</th></tr></thead>
+  <tbody>
+    <tr><td>간선</td><td>링크 3, 출처 1</td><td>링크 3 (출처는 간선이 아님)</td></tr>
+    <tr><td>FAQ</td><td>returns.md에서 출처 점선</td><td>떨어진 노드. returns.md 상세 패널의 Sources 목록에만 보인다</td></tr>
+    <tr><td>신뢰·낡음</td><td>(<code>pnpm retrieve</code>가 표시)</td><td>상세 패널 배지. 등급은 우리와 같다(returns.md human-reviewed, FAQ machine-confirmed, 나머지 unverified)</td></tr>
+    <tr><td>검색</td><td><code>pnpm retrieve</code>: 메타 필드 + 본문 bigram</td><td>title·ID·tags 부분 문자열. "3~5일"은 아무것도 못 찾고, "환불"은 tags로 찾는다</td></tr>
+  </tbody>
+</table>
+<p>사본 (5단계):</p>
+<table>
+  <thead><tr><th>바꾼 것</th><th>우리 (<code>graph</code>·<code>retrieve</code>)</th><th>공식 뷰어 (v0.3)</th><th>판단의 실마리</th></tr></thead>
+  <tbody>
+    <tr><td>(가) 본문 링크 <code>/processes/refunds.md</code></td><td>간선 유지 (<code>resolveLink</code>가 <code>/</code>를 번들 루트로 푼다)</td><td>간선 유지 (간선 수 그대로)</td><td>§6: 소비자는 두 형식을 모두 풀어야 한다(MUST). v0.3은 어느 쪽도 권장하지 않는다. v0.2 뷰어(옛 저장소 <code>ad30107</code>)는 <code>/</code> 링크를 건너뛰어 여기서 갈렸다. 상대 경로 팀 규칙(0002)은 이제 미리보기만이 근거다</td></tr>
+    <tr><td>(나) <code>stale_after: 2026-10-01</code></td><td>낡음 (그날 UTC 0시)</td><td>낡음 (그날 UTC 0시)</td><td>§5: 날짜만 쓴 값은 그날 UTC 0시다. v0.2 뷰어는 시각 <code>T</code>가 없는 값을 무시해 여기서 갈렸다. 오프셋 없는 <code>2026-10-01T00:00:00</code>은 여전히 무효다. 그 값이면 우리 쪽은 <code>bad-date</code> 주의(신선하지 않음), 뷰어는 낡음으로 표시한다. 둘 다 "신선하다고 보지 않는다"(§5.5)를 지킨다</td></tr>
+    <tr><td>(다) <code>by: human</code></td><td>machine-confirmed</td><td>machine-confirmed</td><td>둘이 같다. <code>human:</code> 스킴이 없다(§7). 생산자가 틀렸다</td></tr>
+    <tr><td>(라) <code>superseded_by: /policies/returns.md</code></td><td><strong>대체 간선</strong> return-exceptions → returns (점선 "대체"), <code>retrieve</code>에 "대체 개념: policies/returns.md"</td><td><strong>간선 없음</strong>. 본문 링크만 그린다. status 배지만 deprecated</td><td>§6.4로는 개념으로 풀리는 경로 필드가 번들 그래프의 간선이다. 뷰어가 그림에 그리지 않는 것은 뷰어의 선택이다. 대체 관계를 어느 소비자에서나 보이게 하려면 본문에도 대체 개념으로 가는 링크를 둔다(Acme의 <code>gross-margin-legacy.md</code>가 그렇게 한다)</td></tr>
+    <tr><td>(마) frontmatter 없는 <code>references/README.md</code>와 그쪽 링크</td><td>노드 아님. <code>⇢ references/README.md (링크, 개념이 아님, 간선 아님)</code>. <code>retrieve</code>는 링크를 건너뛰고 경고한다</td><td><strong>노드가 생긴다</strong>(<code>type</code> Unknown), returns.md에서 간선 하나 더(4개)</td><td>§3.2: <code>type</code> 없는 <code>.md</code>는 개념이 아니고 소비자가 건너뛴다. v0.3 뷰어 코드는 이 규칙을 따르지 않는다. 우리 쪽이 명세에 맞다. 생산자는 번들 안에 개념이 아닌 <code>.md</code>를 두지 않거나, 둔다면 개념 링크처럼 걸지 않는다</td></tr>
+  </tbody>
+</table>
+<p><code>pnpm validate /tmp/okf-exp</code>는 오류 0개, 경고 2개(<code>team/relative-links</code>, <code>not-a-concept</code>)다. 팀 규칙 검사가 (가)를, 개념 판별 경고가 (마)를 미리 잡는다. (나)의 날짜만 쓴 값은 v0.3에서 유효하므로 경고가 없다.</p>
+</details>
+
+<details><summary>모범 답안: §10 예제 읽기 (직접 읽은 뒤에 열기)</summary>
+<table>
+  <thead><tr><th>필드</th><th><code>computations/revenue-ytd.md</code></th></tr></thead>
+  <tbody>
+    <tr><td><code>runtime</code></td><td><code>bigquery</code>. 그래서 <code>parameters</code>는 SQL 바인드 변수(<code>@year</code>)다</td></tr>
+    <tr><td><code>parameters</code></td><td><code>{ name: year, type: integer, required: true }</code> 하나. 에이전트는 연도만 넣는다</td></tr>
+    <tr><td><code>executor.receipt</code></td><td><code>[job_id, executed_sql, result]</code>. 판정은 실제로 실행된 SQL과 작업 ID를 본다. <code>executor.resource</code>는 <code>/skills/run-on-bq.md</code>로, 번들 안 개념이라 그래프 간선이다</td></tr>
+    <tr><td><code>attester</code></td><td><code>/attesters/sql_equality.py</code>. LLM 없는 결정적 코드다(<code>.md</code>가 아니므로 개념이 아닌 asset이고 그래프 간선이 아니다). 두 가지를 본다. ① 실제로 실행된 SQL(<code>executed_sql</code>)이 계산 본문과 같은가. 공백·키워드 대소문자·주석을 정규화해서 비교하고, <code>@year</code> 같은 바인드 변수는 기호로 비교한다. ② 사용자에게 보여 준 값이 <code>result</code>의 첫 칸과 같은가</td></tr>
+    <tr><td><code>verified</code>·<code>stale_after</code></td><td><code>human:jsmith@acme</code> 2026-07-01T09:00:00Z, <code>2026-12-31T00:00:00Z</code>. <code>generated.at</code>(2026-06-30T14:00:00Z)보다 늦은 현재 기록이라 human-reviewed다. 정의(SQL이 정책과 맞나)에 대한 기록이다. 실행 판정과는 따로다</td></tr>
+  </tbody>
+</table>
+<p><code>metrics/revenue.md</code>는 평범한 <code>Metric</code> 개념이다. 본문 링크로 계산 개념을 가리키고, "직접 SUM을 만들지 말고 이 계산을 돌려 판정하라"고 쓴다. 우리 환불 예정일은 "승인일 + 영업일 3~5일"이라 값이 하나가 아니라 범위이고, 영업일 달력이라는 외부 자료가 필요하다. 고객에게 날짜를 약속하는 숫자라면 계산을 승인된 형태로 고정할 가치가 있다. 문장으로만 안내한다면 지금의 Process 개념으로 충분하다. 정답은 하나가 아니다.</p>
+<p>우리 그래프로 Acme Retail을 읽으면 <code>개념 9개, 링크 간선 14개, 출처 간선 8개, 대체 간선 1개, 실행기 간선 2개, 개념이 아닌 대상 2개</code>가 나온다. 개념이 아닌 대상 2개는 두 계산 개념의 <code>attester.resource</code>(<code>attesters/sql_equality.py</code>)이고 "번들에 없음"으로 표시된다. 우리 <code>loadBundle</code>이 <code>.md</code> 파일만 읽기 때문이다. 실제로는 번들에 있는 asset이다(§3.2-3). 이 과정의 번들에는 asset이 없어 그대로 두었다.</p>
+</details>
+
+<h2>5. 검토</h2>
+<ul>
+  <li><strong>기준은 명세이고, 도구는 해석이다.</strong> 공식 뷰어도 소비자 하나일 뿐이다. v0.2에서 두 소비자가 갈린 (가)와 (나)는 명세가 열어 둔 곳이었다. v0.3은 그 두 곳을 닫았다. 링크와 경로 필드에 하나의 해석 규칙을 두고, 날짜만 쓴 값의 뜻을 정했다. 그러자 v0.3 뷰어와 우리 소비자가 같은 답을 냈다. 명세가 정확해지면 소비자 차이가 줄어든다. 그래도 생산자가 분명한 형식(오프셋 있는 시각, <code>human:&lt;id&gt;</code>, 개념에는 <code>type</code>)으로 쓰는 편이 어떤 소비자에서든 안전하다.</li>
+  <li><strong>명세가 정한 그래프와 그림에 그리는 그래프는 다를 수 있다.</strong> §6.4는 출처와 <code>superseded_by</code>도 번들 그래프의 간선이라고 정했다. 공식 뷰어는 여전히 본문 링크만 그린다. 그림에 무엇을 그릴지는 소비자가 정한다. 우리는 경로 필드 간선을 점선으로 나눠 그렸다. 그래서 FAQ가 출처로만 이어져 있다는 것(0007)과 대체 관계(0008)가 한눈에 보였다.</li>
+  <li><strong>도구도 명세와 어긋날 수 있다.</strong> (마)에서 공식 뷰어는 <code>type</code> 없는 파일을 노드로 그렸다. 공식 저장소의 코드라도 명세의 규칙(§3.2)이 기준이다. 어긋남을 찾으면 공식 저장소 Issues에 알릴 수 있다(<a href="../RESOURCES.md">RESOURCES.md</a>).</li>
+  <li><strong>검색은 소비자마다 다르다.</strong> 공식 뷰어의 검색 상자는 사람이 개념을 찾는 도구라서 이름과 태그만 본다. 우리 검색기는 모델에 넘길 근거를 찾는 도구라서 본문까지 본다. 같은 번들이라도 목적이 다르면 읽는 필드가 다르다. <code>description</code>을 고르는 용도로 쓴다는 §4.1이 여기서도 맞는다.</li>
+  <li><strong>계산은 기록과 실행이 나뉜다.</strong> §10은 번들에 계약만 남기고, 실행과 판정은 소비자가 한다. 0008의 <code>verified</code>가 정의를 확인한다면, 판정은 한 번의 실행을 확인한다.</li>
+</ul>
+
+<div class="box">
+  <h3>완료 기준 (학습 계획 §6 심화 3)</h3>
+  <ul>
+    <li><code>pnpm test</code>의 G단계 통과. <code>pnpm graph</code>와 <code>pnpm graph --mermaid</code>로 번들 그래프를 봤다.</li>
+    <li>공식 뷰어(그림 또는 텍스트 출력)로 같은 번들을 읽고 <code>evaluation.md</code> 9회차에 비교표를 채웠다.</li>
+    <li>사본에서 두 소비자가 같거나 갈리는 지점을 확인하고, 명세로 판단을 한 줄씩 적었다.</li>
+    <li>§10 예제의 계약 필드 다섯 가지를 적었다.</li>
+  </ul>
+</div>
+
+<h2>6. 과정을 마치며: 복습 질문</h2>
+<p>레슨은 여기까지다. 다음 단계는 Vite + React + TS + Claude SDK 웹 화면이고, 요청하면 시작한다(<a href="../README.md">learn/README.md</a>). 아래 질문은 복습 간격(다음 날, 3일, 7일)마다 <code>reference/</code>만 보고 다시 푼다.</p>
+<ol>
+  <li>본문 링크를 상대 경로로 쓰는 팀 규칙의 이유를 말한다. v0.2에서는 이유가 두 가지(미리보기, 소비자 차이)였는데 v0.3에서는 무엇이 남았나?</li>
+  <li>웹 화면에서 고른 개념마다 신뢰 배지와 대체 개념을 보여 준다면, <code>src/okf/</code>의 어느 함수를 그대로 쓰는가?</li>
+  <li>번들 그래프의 간선 두 종류를 명세(§6.4)대로 말하고, 공식 뷰어가 그중 무엇을 그리는지 말한다.</li>
+</ol>
+
+<div class="box">
+  <h3>1차 자료</h3>
+  <p><a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/README.md">공식 저장소 README</a>(형식과 개념 증명 도구, Visualize), <a href="https://github.com/open-knowledge-format/open-knowledge-format/tree/527e81aff55992be21507e97004286789126f88c/bundles/acme_retail">Acme Retail 번들</a>(<code>computations/</code>, <code>metrics/</code>, 미리 만든 <code>viz.html</code>), <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#10-attested-computations">OKF v0.3 명세 §10 Attested computations</a>, <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#64-the-bundle-graph">§6.4 The bundle graph</a>, <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#61-links-between-concepts">§6.1</a>·<a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#62-path-fields">§6.2</a>(링크·경로 필드), <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#32-concepts-assets-and-other-files">§3.2</a>(개념 판별), <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#55-lifecycle-stale_after">§5.5</a>. 뷰어 동작은 새 저장소 커밋 <code>527e81a</code>의 코드로 확인했다. v0.2 뷰어와의 비교 기록은 <a href="../NOTES.md">NOTES.md</a> 2026-11-18 항목에 있다.</p>
+  <p>두 소비자의 결과가 예상과 다르면 두 출력을 함께 에이전트에게 붙여 넣고 물어본다.</p>
+</div>
+
+<nav class="course">
+  <a href="0008-trust-lifecycle.html">← 0008 검토 상태와 낡은 개념</a>
+  <span>과정 끝. 다음: 웹 화면 (요청 시)</span>
+</nav>
+</main>
+</body>
+</html>

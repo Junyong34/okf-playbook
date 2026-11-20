@@ -12,9 +12,11 @@
 <header class="lesson">
   <p class="kicker">Lesson 0003 · 3회차</p>
   <h1>검증기, 오류와 경고의 경계를 코드로</h1>
-  <p class="lede"><code>src/okf/validate.ts</code>의 TODO를 채워 테스트 30개를 통과시키고 <code>pnpm validate</code>로 실제 번들을 검사한다.</p>
-  <div class="meta"><span>약 90분</span><span>회상 5 · 읽기 15 · 퀴즈 5 · 실습 50 · 검토 15</span><span>용어: <a href="../reference/okf-v0.2-core.html">핵심 규칙과 용어집</a></span></div>
+  <p class="lede"><code>src/okf/validate.ts</code>의 TODO를 채워 테스트를 통과시키고 <code>pnpm validate</code>로 실제 번들을 검사한다.</p>
+  <div class="meta"><span>약 90분</span><span>회상 5 · 읽기 15 · 퀴즈 5 · 실습 50 · 검토 15</span><span>용어: <a href="../reference/okf-v0.3-core.html">핵심 규칙과 용어집</a></span></div>
 </header>
+
+<p class="note">2026-11-19 OKF v0.3 기준으로 갱신했다. v0.2에서 바뀐 점은 <a href="../../docs/okf-v0.3-changes.md">docs/okf-v0.3-changes.md</a>에 있다. 이 레슨에서 가장 크게 바뀐 곳은 <code>type</code>이 없는 파일의 판정(오류 → 경고)과 루트 <code>index.md</code> 규칙이다.</p>
 
 <div class="box win">
   <h3>왜 이것이 다음인가</h3>
@@ -24,37 +26,50 @@
 <h2>0. 회상</h2>
 <p>노트 없이 답한 뒤 펼친다.</p>
 <details><summary>명세 위반이라 <em>오류</em>인 것과, 거부하면 안 되어 <em>경고</em>에 그치는 것을 두 개씩 꼽는다.</summary>
-<p>오류: frontmatter가 없거나 파싱 불가, 비어 있지 않은 <code>type</code> 없음. 거부 금지: 끊어진 링크, 모르는 <code>type</code>, 추가 키, 선택 필드 누락, <code>index.md</code> 누락. <a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#11-conformance">§11</a></p></details>
+<p>오류: frontmatter 블록이 YAML 매핑으로 파싱되지 않음, 예약 파일(<code>index.md</code>·<code>log.md</code>)이 §8·§9를 어김. 거부 금지: 끊어진 링크, 모르는 <code>type</code>, 확장 키, 선택 필드 누락, <code>index.md</code> 누락. v0.3에서는 frontmatter나 <code>type</code>이 없는 <code>.md</code>도 오류가 아니다. 개념이 아닌 파일이라 건너뛰고, 검증기는 경고한다. <a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#111-bundle-conformance">§11.1</a><a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#112-consumer-rules">§11.2</a><a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#32-concepts-assets-and-other-files">§3.2</a></p></details>
 <details><summary><code>/processes/refunds.md</code>가 OKF 소비자와 GitHub에서 다르게 해석되는 이유는?</summary>
-<p>OKF 소비자는 <code>/</code>를 번들 루트(<code>knowledge/</code>)로, GitHub와 에디터 미리보기는 저장소 루트로 해석한다. 그래서 이 실습은 <strong>상대 경로만</strong>을 팀 규칙으로 정했다.</p></details>
+<p>OKF 소비자는 <code>/</code>를 번들 루트(<code>bundles/knowledge/</code>)로, GitHub와 에디터 미리보기는 저장소 루트로 해석한다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#6-links-and-paths">§6</a> 그래서 이 실습은 본문 링크에 <strong>상대 경로만</strong>을 팀 규칙으로 정했다.</p></details>
 <details><summary>frontmatter에 개념 ID를 쓰지 않는 이유는? <code>refunds.md</code>에 <code>resource</code>가 없는 이유는?</summary>
-<p>ID는 파일 경로에서 정해진다(<a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#2-terminology">§2</a>). <code>resource</code>는 가리킬 실물 자산이 있을 때만 쓰는데, 환불 절차는 자산이 없다(<a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#41-frontmatter">§4.1</a>).</p></details>
+<p>ID는 파일 경로에서 정해진다(<a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#2-terminology">§2</a>). <code>resource</code>는 가리킬 실물 자산이 있을 때만 쓰는데, 환불 절차는 자산이 없다(<a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#41-frontmatter">§4.1</a>).</p></details>
 
 <h2>1. 명세 규칙과 팀 규칙</h2>
-<p>검증기는 명세가 정한 것과 우리가 정한 것을 <em>구분해서</em> 보고한다. 팀 규칙은 명세보다 좁을 수 있지만 명세가 허용한 것을 오류로 만들면 안 된다. 다른 소비자에게는 적합한 번들이기 때문이다.<a class="cite" href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#11-conformance">§11</a></p>
+<p>검증기는 명세가 정한 것과 우리가 정한 것을 <em>구분해서</em> 보고한다. 팀 규칙은 명세보다 좁을 수 있지만 명세가 허용한 것을 오류로 만들면 안 된다. 다른 소비자에게는 적합한 번들이기 때문이다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#112-consumer-rules">§11.2</a></p>
 <table>
   <tr><th>rule</th><th>level</th><th>근거</th><th>예</th></tr>
-  <tr><td><code>yaml-parse</code></td><td>error</td><td>§11-1</td><td>frontmatter 없음, <code>tags:[반품]</code>, 탭 들여쓰기</td></tr>
-  <tr><td><code>missing-type</code></td><td>error</td><td>§11-2</td><td><code>type</code> 없음, <code>type:</code> 빈 값</td></tr>
-  <tr><td><code>index-frontmatter</code></td><td>error</td><td>§8 · §12</td><td>하위 <code>index.md</code>의 frontmatter, 루트의 <code>title</code></td></tr>
-  <tr><td><code>broken-link</code></td><td>warning</td><td>§6.1 · §11</td><td>없는 <code>shipping.md</code>로 가는 링크</td></tr>
-  <tr><td><code>link-outside-bundle</code></td><td>warning</td><td>이 실습</td><td><code>../../faq.md</code></td></tr>
+  <tr><td><code>yaml-parse</code></td><td>error</td><td>§4 · §11.1-1</td><td><code>tags:[반품]</code>, 탭 들여쓰기, 여는 <code>---</code>만 있고 닫는 줄 없음</td></tr>
+  <tr><td><code>index-frontmatter</code></td><td>error</td><td>§8</td><td>하위 <code>policies/index.md</code>의 frontmatter</td></tr>
+  <tr><td><code>log-frontmatter</code></td><td>error</td><td>§9 · §11.1-2</td><td><code>log.md</code>의 frontmatter</td></tr>
+  <tr><td><code>not-a-concept</code></td><td>warning</td><td>§3.2-2</td><td>frontmatter 없는 <code>README.md</code>, <code>type</code> 없음, <code>type:</code> 빈 값</td></tr>
+  <tr><td><code>missing-okf-version</code></td><td>warning</td><td>§8.1 (SHOULD)</td><td>루트 <code>index.md</code>에 <code>okf_version</code> 없음</td></tr>
+  <tr><td><code>unquoted-version</code></td><td>warning</td><td>§4 · §8.1</td><td><code>okf_version: 0.3</code> (숫자로 읽힌다)</td></tr>
+  <tr><td><code>incomplete-verified</code></td><td>warning</td><td>§5.2 · §11.2-3</td><td><code>verified</code> 항목에 <code>by</code>나 <code>at</code>이 없음</td></tr>
+  <tr><td><code>bad-timestamp</code></td><td>warning</td><td>§5</td><td><code>stale_after: 2026-12-31T00:00:00</code> (오프셋 없음), <code>at: 어제</code></td></tr>
+  <tr><td><code>broken-link</code></td><td>warning</td><td>§6.1 · §11.2</td><td>없는 <code>shipping.md</code>로 가는 링크</td></tr>
+  <tr><td><code>link-outside-bundle</code></td><td>warning</td><td>§6</td><td><code>../../faq.md</code> (외부 값, 로컬에서 읽지 않는다)</td></tr>
   <tr><td><code>team/relative-links</code></td><td>warning</td><td>팀 규칙</td><td><code>/policies/returns.md</code></td></tr>
 </table>
-<p class="note">YAML 문법 판정은 직접 만들지 않고 <a href="https://eemeli.org/yaml/">yaml</a> 패키지에 맡긴다. 콜론 뒤 공백 누락, 탭 들여쓰기, 중복 키를 모두 예외로 던진다. 탭 금지는 YAML 명세의 규칙이다.<a class="cite" href="https://yaml.org/spec/1.2.2/#indentation-spaces">YAML 6.1</a> <code>log.md</code> 구조(§9) 검사는 이번 범위에서 뺐다.</p>
+<div class="box">
+  <h3>v0.2 → v0.3에서 바뀐 판정</h3>
+  <ul>
+    <li><strong><code>missing-type</code> 오류가 없어졌다.</strong> v0.2 §11은 예약 파일이 아닌 모든 <code>.md</code>에 frontmatter와 <code>type</code>을 요구했다. v0.3은 그런 파일을 개념이 아닌 파일로 보고, 검증기에 경고하라고 한다(SHOULD). 그래서 <code>not-a-concept</code> 경고가 되었다. <code>README.md</code>, <code>AGENTS.md</code> 같은 파일을 번들에 둘 수 있게 하려는 규칙이다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#32-concepts-assets-and-other-files">§3.2</a></li>
+    <li><strong>루트 <code>index.md</code>의 <code>title</code>은 더 이상 오류가 아니다.</strong> 루트 frontmatter에는 <code>okf_version</code>, <code>title</code>, <code>description</code>, <code>license</code>와 확장 키를 둘 수 있다. 대신 <code>okf_version</code>이 없으면 <code>missing-okf-version</code>, 따옴표 없는 숫자면 <code>unquoted-version</code> 경고를 낸다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#81-bundle-metadata">§8.1</a></li>
+    <li><strong>새 규칙.</strong> <code>log.md</code>에는 frontmatter가 없다(<code>log-frontmatter</code>).<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#9-log-files">§9</a> 시각 값은 오프셋 있는 date-time이나 날짜만 허용한다(<code>bad-timestamp</code>).<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#5-provenance-trust-and-lifecycle">§5</a> 소비자가 무시할 <code>verified</code> 항목을 미리 알린다(<code>incomplete-verified</code>).<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#52-trust-generated-and-verified">§5.2</a> 두 수명 규칙은 0008에서 쓰는 값이다.</li>
+  </ul>
+</div>
+<p class="note">YAML 문법 판정은 직접 만들지 않고 <a href="https://eemeli.org/yaml/">yaml</a> 패키지에 맡긴다. 콜론 뒤 공백 누락, 탭 들여쓰기, 중복 키를 모두 예외로 던진다. 탭 금지는 YAML 명세의 규칙이고<a class="cite" href="https://yaml.org/spec/1.2.2/#indentation-spaces">YAML 6.1</a>, 키 중복 금지는 OKF v0.3 §4의 규칙이다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#4-concept-documents">§4</a> <code>log.md</code>의 날짜 제목 형식 검사는 이번 범위에서 뺐다.</p>
 
 <h2>2. 파일 시스템을 모르는 검사기</h2>
 <pre><code>validate.ts            CLI. 디렉터리를 읽어 출력하고 오류가 있으면 exit 1  (제공)
 src/okf/types.ts       Bundle = Map&lt;경로, 내용&gt;, Issue {level, rule, file, message}  (제공)
 src/okf/load.ts        디렉터리 → Bundle  (제공)
 src/okf/validate.ts    Bundle → Issue[]  ← 오늘 채울 곳
-tests/validate.test.ts 1~7단계 테스트 30개  (제공)</code></pre>
+tests/validate.test.ts 1~8단계 테스트 54개  (제공, v0.3 갱신과 공식 규칙 이식 뒤 개수)</code></pre>
 <p>입력이 <code>Map</code>이라 테스트는 디스크 없이 번들을 문자열로 만든다. 웹 화면에서도 브라우저가 가진 파일 내용만 넘기면 같은 함수가 돈다.</p>
 
 <h2>3. 기억에서 꺼내 분류하기</h2>
 <p>각 경우를 검증기가 어떻게 보고해야 하는지 고른다. 점수: <span class="quiz-score"></span></p>
 
-<div class="quiz" data-answer="1" data-why="<code>키:</code> 뒤 공백이 없으면 YAML 파싱이 실패한다 → <code>yaml-parse</code> 오류 (§11-1).">
+<div class="quiz" data-answer="1" data-why="<code>키:</code> 뒤 공백이 없으면 YAML 파싱이 실패한다 → <code>yaml-parse</code> 오류 (§4, §11.1-1).">
   <p class="q">Q1. <code>policies/returns.md</code>의 frontmatter에 <code>tags:[반품]</code></p>
   <ol><li>명세 오류</li><li>명세 경고</li><li>팀규칙 경고</li><li>검사 통과</li></ol>
 </div>
@@ -62,71 +77,85 @@ tests/validate.test.ts 1~7단계 테스트 30개  (제공)</code></pre>
   <p class="q">Q2. <code>policies/return-exceptions.md</code> 본문에 <code>[반품 정책](/policies/returns.md)</code> (대상 있음)</p>
   <ol><li>명세 오류</li><li>명세 경고</li><li>팀규칙 경고</li><li>검사 통과</li></ol>
 </div>
-<div class="quiz" data-answer="4" data-why="모르는 <code>type</code> 값과 추가 키로 거부하면 안 된다 (§4.1, §11).">
+<div class="quiz" data-answer="4" data-why="모르는 <code>type</code> 값과 확장 키로 거부하면 안 된다 (§4.1, §11.2). 자기 키는 <code>x-cs-owner</code>처럼 <code>x-</code>로 시작하게 짓는 편이 좋지만 권장일 뿐이다.">
   <p class="q">Q3. <code>type: FAQ</code>에 <code>owner: cs-team</code> 키가 추가된 개념</p>
   <ol><li>명세 오류</li><li>명세 경고</li><li>팀규칙 경고</li><li>검사 통과</li></ol>
 </div>
-<div class="quiz" data-answer="2" data-why="끊어진 링크는 아직 쓰지 않은 지식일 수 있다. 경고를 남기고 계속 읽는다 (§6.1, §11).">
+<div class="quiz" data-answer="2" data-why="끊어진 링크는 아직 쓰지 않은 지식일 수 있다. 경고를 남기고 계속 읽는다 (§6.1, §11.2).">
   <p class="q">Q4. 본문에 <code>[배송비](../policies/shipping.md)</code>가 있는데 <code>shipping.md</code>는 아직 없다</p>
   <ol><li>명세 오류</li><li>명세 경고</li><li>팀규칙 경고</li><li>검사 통과</li></ol>
 </div>
-<div class="quiz" data-answer="1" data-why="frontmatter는 번들 루트 <code>index.md</code>에서만 허용된다 (§8).">
-  <p class="q">Q5. <code>policies/index.md</code> 맨 위에 <code>okf_version: "0.2"</code></p>
+<div class="quiz" data-answer="1" data-why="하위 디렉터리 <code>index.md</code>에는 frontmatter가 없다 → <code>index-frontmatter</code> 오류 (§8).">
+  <p class="q">Q5. <code>policies/index.md</code> 맨 위에 <code>okf_version: "0.3"</code></p>
+  <ol><li>명세 오류</li><li>명세 경고</li><li>팀규칙 경고</li><li>검사 통과</li></ol>
+</div>
+<div class="quiz" data-answer="2" data-why="v0.3에서 <code>type</code>이 없는 <code>.md</code>는 개념이 아닌 파일이다. 적합성에는 영향이 없고 검증기는 <code>not-a-concept</code> 경고를 낸다 (§3.2, §11.1). v0.2였다면 오류였다.">
+  <p class="q">Q6. <code>processes/refunds.md</code>의 <code>type</code> 줄을 지웠다</p>
+  <ol><li>명세 오류</li><li>명세 경고</li><li>팀규칙 경고</li><li>검사 통과</li></ol>
+</div>
+<div class="quiz" data-answer="4" data-why="루트 <code>index.md</code>에는 <code>okf_version</code>·<code>title</code>·<code>description</code>·<code>license</code>를 둘 수 있다 (§8.1). v0.2였다면 <code>title</code>이 오류였다.">
+  <p class="q">Q7. 루트 <code>index.md</code> frontmatter에 <code>okf_version: "0.3"</code>과 <code>title: 반품과 환불</code></p>
   <ol><li>명세 오류</li><li>명세 경고</li><li>팀규칙 경고</li><li>검사 통과</li></ol>
 </div>
 
 <h2>4. 실습: 테스트를 초록으로</h2>
 <ol>
-  <li>저장소 루트에서 <code>pnpm install</code> 후 <code>pnpm test</code>. 30개 중 28개가 실패한 상태에서 시작한다. Node 22.18 이상은 TypeScript를 빌드 없이 바로 실행한다.<a class="cite" href="https://nodejs.org/api/typescript.html">Node.js</a></li>
+  <li>저장소 루트에서 <code>pnpm install</code> 후 <code>pnpm test</code>. 처음 실습할 때는 30개 중 28개가 실패한 상태에서 시작했다. 구현은 2026-11-18에 끝났고, v0.3 갱신으로 40개, 공식 검증기 규칙을 옮긴 8단계(2026-11-19)를 더해 <code>tests/validate.test.ts</code>는 54개가 되었다. Node 22.18 이상은 TypeScript를 빌드 없이 바로 실행한다.<a class="cite" href="https://nodejs.org/api/typescript.html">Node.js</a></li>
   <li>단계별로 하나씩 통과시킨다. 한 단계만 돌리려면:
 <pre><code>node --test --test-name-pattern="1단계" "tests/**/*.test.ts"</code></pre></li>
-  <li><strong>1단계</strong> <code>splitFrontmatter</code> → <strong>2단계</strong> <code>resolveLink</code>(레슨 0002 경로 연습 그대로) → <strong>4단계</strong> <code>checkConcept</code>·<code>checkIndex</code> → <strong>5·6단계</strong> <code>checkLinks</code>. 3단계 <code>extractLinks</code>와 YAML 파싱 코드는 이미 들어 있다.</li>
+  <li><strong>1단계</strong> <code>splitFrontmatter</code> → <strong>2단계</strong> <code>resolveLink</code>(레슨 0002 경로 연습 그대로) → <strong>4단계</strong> <code>checkConcept</code>·<code>checkIndex</code> → <strong>5·6단계</strong> <code>checkLinks</code>. 3단계 <code>extractLinks</code>와 YAML 파싱 코드는 이미 들어 있다. 지금 저장소에서는 이 함수들과 YAML 파싱이 개념 읽기 모듈 <code>src/okf/concept.ts</code>로 옮겨졌고, <code>validate.ts</code>는 1·2단계 함수를 다시 내보내며 <code>checkConcept</code>·<code>checkIndex</code>·<code>checkLog</code>·<code>checkLinks</code>가 이미 읽은 파일(<code>BundleFile</code>)을 받는다. 개념 판별(<code>kind</code>: <code>concept</code>·<code>index</code>·<code>log</code>·<code>other</code>)과 시각 파서(<code>parseTimestamp</code>)도 <code>concept.ts</code>에 있다. 아래 모범 답안은 지금 코드 그대로다.</li>
   <li>7단계까지 초록이면 <code>pnpm validate</code>. 기대 출력:
-<pre><code>knowledge: 파일 4개, 오류 0개, 경고 0개</code></pre></li>
+<pre><code>bundles/knowledge: 문서 5개, 오류 0개, 경고 0개, 정보 0개</code></pre>
+  처음 8단계 규칙을 옮겼을 때는 경고가 하나 있었다. <code>returns-faq.md</code>의 <code>verified.by</code>가 <code>human</code>(콜론 없음)이라 §7 행위자 형식이 아니어서 <code>bad-actor</code>가 났다. 사용자가 대조 기록을 <code>human:jun</code>으로 고친 뒤(2026-11-19) 경고가 사라졌고, 이 개념도 human-reviewed가 되었다. 문서 5개는 루트 <code>index.md</code>, 개념 3개, 0007에서 더한 원문 개념 <code>references/returns-faq.md</code>다. 이 레슨을 처음 할 때는 4개였다.</li>
   <li><strong>일부러 망가뜨리기</strong>(학습 계획 3회차). 실제 번들에서 아래를 하나씩 바꾸고 <code>pnpm validate</code>를 돌린 뒤 되돌린다.
     <ul>
       <li><code>returns.md</code>의 <code>tags: [반품, 할인]</code>에서 콜론 뒤 공백을 뺀다</li>
       <li><code>refunds.md</code>의 <code>type</code> 줄을 지운다</li>
       <li><code>return-exceptions.md</code>의 링크를 <code>/policies/shipping.md</code>로 바꾼다</li>
     </ul>
-    네 개가 한꺼번에 나오면 이렇게 보인다(파일 순, 메시지 일부 생략):
+    세 가지를 한꺼번에 바꾸면 이렇게 보인다(파일 순, 메시지 일부 생략):
 <pre><code>WARN  policies/return-exceptions.md  [team/relative-links] `/policies/shipping.md`: 팀 규칙상 …
 WARN  policies/return-exceptions.md  [broken-link] `/policies/shipping.md` → `policies/shipping.md`가 번들에 없습니다 …
-ERROR policies/returns.md  [yaml-parse] YAML을 파싱할 수 없습니다: Implicit map keys need to be followed by map values …
-ERROR processes/refunds.md  [missing-type] 비어 있지 않은 `type`이 없습니다 (§4.1, §11).
+ERROR policies/returns.md  [yaml-parse] YAML을 파싱할 수 없습니다: Implicit keys need to be on a single line … (§4, §11.1)
+WARN  processes/refunds.md  [not-a-concept] 비어 있지 않은 `type`이 없습니다. 개념이 아닌 파일로 건너뜁니다 (§3.2).
 
-knowledge: 파일 4개, 오류 2개, 경고 2개</code></pre>
-    오류가 있으면 종료 코드가 1이다. 경고만 있으면 0이다.</li>
+bundles/knowledge: 문서 5개, 오류 1개, 경고 3개, 정보 0개</code></pre>
+    오류가 있으면 종료 코드가 1이다. 경고만 있으면 0이다. v0.2 기준일 때는 <code>refunds.md</code>가 <code>[missing-type]</code> 오류였고 결과가 "오류 2개, 경고 2개"였다. YAML 오류 문구는 <code>yaml</code> 패키지 버전에 따라 다를 수 있다.</li>
   <li><code>docs/team-rules.md</code>에 오늘 검사로 확인한 팀 규칙을 적는다. 첫 줄(상대 경로)은 들어 있다. 하나 더 정하고 싶은 규칙이 있으면 추가하고 명세 규칙인지 팀 규칙인지 표시한다.</li>
 </ol>
 
-<details><summary>모범 답안: <code>src/okf/validate.ts</code> 전체 (테스트를 직접 통과시킨 뒤에 열기)</summary>
-<pre><code>import { parse } from 'yaml';
-import type { Bundle, Issue } from './types.ts';
+<div class="box"><p><strong>8단계: 공식 검증기 규칙 옮기기 (2026-11-19).</strong> 공식 스킬 <code>okf-generate</code>의 검증기는 Python(<code>.agents/skills/okf-generate/scripts/validate.py</code>)이다. 이 저장소는 TS 검증기를 기준으로 삼기로 하고, 공식 규칙을 <code>validate.ts</code>로 옮겼다. 규칙 이름과 공식 코드의 대응은 <code>src/okf/types.ts</code>의 <code>Rule</code> 주석에 있다(예: <code>bad-actor</code> = W103). 수준은 오류·경고에 <strong>정보</strong>(<code>info</code>)가 더해졌다. 고칠 필요는 없지만 알아 둘 것이다(예: <code>stale-verification</code> = I204, 모든 검토 기록이 <code>generated.at</code>보다 이르다). 두 검증기의 판정이 같은지는 <code>pnpm okf:validate bundles/knowledge</code>로 대조한다. 아직 옮기지 않은 것은 Attested Computation 규칙(§10)이다. 이 레슨의 1~6단계 실습 범위는 그대로이고, 8단계는 읽기 자료다.</p></div>
 
-// ── 1. frontmatter와 본문 나누기 (§4) ────────────────────────────────
+<details><summary>모범 답안: <code>src/okf/concept.ts</code> 1·2단계와 <code>src/okf/validate.ts</code> 전체 (테스트를 직접 통과시킨 뒤에 열기)</summary>
+<p>1·2단계 함수와 파일 읽기는 <code>src/okf/concept.ts</code>에 있다. 아래는 그 일부다.</p>
+<pre><code>// ── frontmatter와 본문 나누기 (§4) — 레슨 0003 1단계 ────────────────────
 export type Split = { frontmatter: string | null; body: string };
 
 export function splitFrontmatter(text: string): Split {
+  // 줄 단위로 나눈다. \r?\n 이라서 Windows 줄바꿈(CRLF)도 같이 처리된다. 맨 앞 BOM도 떼어 낸다.
   const lines = text.replace(/^﻿/, '').split(/\r?\n/);
+  // 첫 줄이 '---'가 아니면 frontmatter가 없는 파일이다.
   if (lines[0] !== '---') return { frontmatter: null, body: lines.join('\n') };
+  // 두 번째 줄부터 닫는 '---'를 찾는다. 없으면 frontmatter가 닫히지 않은 것이다.
   const close = lines.indexOf('---', 1);
   if (close === -1) return { frontmatter: null, body: lines.join('\n') };
   return {
-    frontmatter: lines.slice(1, close).join('\n'),
-    body: lines.slice(close + 1).join('\n'),
+    frontmatter: lines.slice(1, close).join('\n'), // 두 '---' 사이
+    body: lines.slice(close + 1).join('\n'),       // 닫는 '---' 다음 줄부터
   };
 }
 
-// ── 2. 링크 경로 해석 (§6.1) ──────────────────────────────────────────
+// ── 링크 경로 해석 (§6) — 레슨 0003 2단계 ─────────────────────────────
+// 링크(§6.1)와 경로 필드(§6.2)가 같은 규칙을 쓴다. '/'로 시작하면 번들 루트, 그 밖은 파일이 있는 디렉터리 기준.
 // from: 링크가 들어 있는 파일 ("policies/returns.md")
-// 반환: 번들 루트 기준 경로, 루트 밖이면 null
+// 반환: 번들 루트 기준 경로, 루트 밖(외부)이면 null
 export function resolveLink(from: string, target: string): string | null {
+  // 출발점: '/'로 시작하면 번들 루트([]), 아니면 from이 들어 있는 디렉터리.
   const out = target.startsWith('/') ? [] : from.split('/').slice(0, -1);
   for (const part of target.split('/')) {
-    if (part === '' || part === '.') continue;
+    if (part === '' || part === '.') continue; // 맨 앞 '/', 겹친 '//', './' 는 건너뜀
     if (part === '..') {
-      if (out.length === 0) return null;
+      if (out.length === 0) return null; // 루트보다 위로 가려 함 → 번들 밖
       out.pop();
     } else {
       out.push(part);
@@ -147,91 +176,404 @@ export function extractLinks(body: string): string[] {
   return links;
 }
 
-// ── 3. 검사 ──────────────────────────────────────────────────────────
-type Parsed = { ok: true; data: Record&lt;string, unknown&gt; } | { ok: false; reason: string };
+// ── 시각 (§5 Timestamps) ───────────────────────────────────────────────
+// 허용 형식은 RFC 3339 두 가지뿐이다.
+//  - 오프셋이 있는 date-time: "2026-06-30T14:00:00Z", "2026-11-18T15:00:00+09:00"
+//  - 날짜만: "2026-06-30" → 그날 UTC 0시
+// YAML 고유 Date 값도 받는다(그날 UTC 0시). 오프셋 없는 date-time과 그 밖 형식은 무효라 null이다.
+const DATE_RE = /^(\d{4})-(\d{2})-(\d{2})$/;
+const DATETIME_RE = /^(\d{4})-(\d{2})-(\d{2})[Tt](\d{2}):(\d{2}):(\d{2})(\.\d+)?([Zz]|[+-]\d{2}:\d{2})$/;
 
-function parseFrontmatter(src: string): Parsed {
+function validDay(y: string, m: string, d: string): boolean {
+  const t = new Date(Date.UTC(Number(y), Number(m) - 1, Number(d)));
+  return t.getUTCFullYear() === Number(y) &amp;&amp; t.getUTCMonth() === Number(m) - 1 &amp;&amp; t.getUTCDate() === Number(d);
+}
+
+// 반환: 밀리초 시각, 읽을 수 없으면 null.
+export function parseTimestamp(v: unknown): number | null {
+  if (v instanceof Date) return Number.isNaN(v.getTime()) ? null : v.getTime();
+  if (typeof v !== 'string') return null;
+  const d = v.match(DATE_RE);
+  if (d) return validDay(d[1], d[2], d[3]) ? Date.UTC(Number(d[1]), Number(d[2]) - 1, Number(d[3])) : null;
+  const dt = v.match(DATETIME_RE);
+  if (!dt || !validDay(dt[1], dt[2], dt[3])) return null;
+  if (Number(dt[4]) &gt; 23 || Number(dt[5]) &gt; 59 || Number(dt[6]) &gt; 59) return null;
+  const t = Date.parse(v.toUpperCase());
+  return Number.isNaN(t) ? null : t;
+}
+
+// yaml 패키지는 콜론 뒤 공백 누락, 탭 들여쓰기, 중복 키를 모두 오류로 던진다.
+function parseFrontmatter(src: string): Frontmatter {
   try {
     const data = parse(src) ?? {};
-    if (typeof data !== 'object' || Array.isArray(data)) {
-      return { ok: false, reason: 'frontmatter가 `키: 값` 매핑이 아닙니다.' };
-    }
-    return { ok: true, data };
+    // "tags:[x]" 한 줄은 매핑이 아니라 문자열로 읽힌다.
+    if (typeof data !== 'object' || Array.isArray(data)) return { state: 'invalid', reason: 'frontmatter가 `키: 값` 매핑이 아닙니다.' };
+    return { state: 'ok', data };
   } catch (err) {
-    return { ok: false, reason: String((err as Error).message).split('\n')[0] };
+    return { state: 'invalid', reason: String((err as Error).message).split('\n')[0] };
   }
 }
 
-function checkConcept(file: string, frontmatter: string | null, issues: Issue[]): void {
-  if (frontmatter === null) {
-    issues.push({ level: 'error', rule: 'yaml-parse', file, message: '파일 맨 위에 `---`로 열고 닫는 frontmatter가 없습니다 (§4, §11).' });
+export function readFile(path: string, text: string): BundleFile {
+  const { frontmatter, body } = splitFrontmatter(text);
+  // 첫 줄이 '---'인데 닫는 '---'가 없으면 frontmatter를 쓰려다 망가진 것이다. 없는 것이 아니라 읽을 수 없는 것으로 본다 (§4).
+  const opened = /^\uFEFF?---\r?$/.test(text.split('\n')[0]);
+  const fm: Frontmatter =
+    frontmatter !== null ? parseFrontmatter(frontmatter)
+    : opened ? { state: 'invalid', reason: '닫는 `---` 줄이 없습니다.' }
+    : { state: 'absent' };
+  return { path, kind: fileKind(path, fm), frontmatter: fm, body, links: extractLinks(body) };
+}
+</code></pre>
+<p><code>src/okf/validate.ts</code> 전체.</p>
+<pre><code>// 3회차 실습: 1~6단계 구현 완료 (tests/validate.test.ts). OKF v0.3 기준으로 4단계를 고쳤다 (2026-11-19).
+// 순서: 1단계 splitFrontmatter → 2단계 resolveLink → 4단계 checkConcept·checkIndex → 5·6단계 checkLinks
+// 레슨: learn/lessons/0003-validate.html
+//
+// 공식 검증기(.agents/skills/okf-generate/scripts/validate.py)의 규칙을 이 파일로 옮겼다 (2026-11-19).
+// 이 저장소에서는 이 검증기(pnpm validate)가 기준이고, 공식 검증기(pnpm okf:validate)는 판정을 대조할 때 쓴다.
+// 아직 옮기지 않은 것: Attested Computation 규칙(W111~W114·W126·I205, §10). 이 번들에는 계산 개념이 없다.
+import type { Bundle, Issue, Level, Rule } from './types.ts';
+import {
+  asList, frontmatterData, isBlank, isMarkdown, parseTimestamp, readBundle, resolveLink, resolvePathField,
+  type BundleFile,
+} from './concept.ts';
+
+// 1·2단계 함수(splitFrontmatter·resolveLink)와 extractLinks는 개념 읽기 모듈(concept.ts)로 옮겼다.
+// 레슨·테스트가 이 경로로 import하므로 그대로 다시 내보낸다.
+export { extractLinks, resolveLink, splitFrontmatter, type Split } from './concept.ts';
+
+export type ValidateOptions = {
+  now?: Date; // 주면 stale_after가 지난 개념을 stale-concept(정보)로 알린다. 없으면 시각에 따라 달라지는 검사는 하지 않는다
+};
+
+// ── 형식 ─────────────────────────────────────────────────────────────
+// §7: &lt;producer&gt;/&lt;version&gt; (에이전트·도구) 또는 &lt;scheme&gt;:&lt;id&gt; (human:·team:·process: 등)
+const ACTOR_RE = /^([^\s/:]+\/\S+|[A-Za-z][A-Za-z0-9+.-]*:\S+)$/;
+// §8.1: license는 SPDX 표현식이거나 번들 안 라이선스 파일 경로
+const SPDX_RE = /^[A-Za-z0-9.+-]+( (AND|OR|WITH) [A-Za-z0-9.+-]+)*$/;
+const DATE_ONLY_RE = /^\d{4}-\d{2}-\d{2}$/;
+const STATUSES = ['draft', 'stable', 'deprecated'];
+// §4.1: 명세가 정한 키. 이 밖의 키는 확장 키이고 x- 접두사를 권장한다. timestamp는 v0.1 대체 키다(부록 B).
+const KNOWN_KEYS = new Set([
+  'type', 'title', 'description', 'resource', 'tags', 'sources', 'usage_window',
+  'generated', 'verified', 'status', 'superseded_by', 'stale_after', 'runtime',
+  'parameters', 'computation', 'executor', 'attester', 'timestamp',
+]);
+
+type Mapping = Record&lt;string, unknown&gt;;
+const asMapping = (v: unknown): Mapping | null =&gt; (v &amp;&amp; typeof v === 'object' &amp;&amp; !Array.isArray(v) ? (v as Mapping) : null);
+
+// 한 파일의 이슈를 모은다.
+function reporter(issues: Issue[], file: string) {
+  return (level: Level, rule: Rule, message: string) =&gt; issues.push({ level, rule, file, message });
+}
+type Report = ReturnType&lt;typeof reporter&gt;;
+
+// ── 3. 검사 ──────────────────────────────────────────────────────────
+// 4단계 공통: frontmatter 블록이 있으면 YAML 매핑으로 파싱되어야 한다 (§4, §11.1-1). 파싱 실패만 오류다.
+function checkParse(f: BundleFile, report: Report): boolean {
+  if (f.frontmatter.state !== 'invalid') return true;
+  report('error', 'yaml-parse', `YAML을 파싱할 수 없습니다: ${f.frontmatter.reason} (§4, §11.1)`);
+  return false;
+}
+
+function checkConcept(bundle: Bundle, f: BundleFile, report: Report, options: ValidateOptions): void {
+  // 4단계 (완료) — 명세 §3.2·§11.1
+  // v0.3: frontmatter나 type이 없는 .md는 오류가 아니라 "개념이 아닌 파일"이다. 소비자는 건너뛰고, 검증기는 경고한다(SHOULD).
+  if (!checkParse(f, report)) return;
+  if (f.kind === 'other') {
+    const why = f.frontmatter.state === 'absent' ? 'frontmatter가 없습니다' : '비어 있지 않은 `type`이 없습니다';
+    report('warning', 'not-a-concept', `${why}. 개념이 아닌 파일로 건너뜁니다 (§3.2).`);
     return;
   }
-  const parsed = parseFrontmatter(frontmatter);
-  if (!parsed.ok) {
-    issues.push({ level: 'error', rule: 'yaml-parse', file, message: `YAML을 파싱할 수 없습니다: ${parsed.reason} (§11)` });
-    return;
-  }
-  const type = parsed.data.type;
-  if (type === undefined || type === null || String(type).trim() === '') {
-    issues.push({ level: 'error', rule: 'missing-type', file, message: '비어 있지 않은 `type`이 없습니다 (§4.1, §11).' });
+  // 4단계 추가 (v0.3) — 소비자가 무시하거나 다르게 읽을 값을 미리 알린다 (§4, §5, §6.2, §7, §11.2).
+  const fm = frontmatterData(f)!;
+  const field = fieldChecks(bundle, f.path, report);
+  checkStrings(fm, report);
+  checkTags(fm, report);
+  checkStatus(fm, report, field);
+  const generated = checkGenerated(fm, report, field);
+  checkVerified(fm, report, field, generated);
+  const ids = checkSources(fm, report, field);
+  checkStaleAfter(fm, report, options);
+  if (!isBlank(fm.resource)) field.path('resource', fm.resource);
+  checkFootnotes(f.body, ids, report);
+  const unknown = Object.keys(fm).filter((k) =&gt; !KNOWN_KEYS.has(k) &amp;&amp; !k.startsWith('x-')).sort();
+  if (unknown.length &gt; 0) {
+    report('info', 'unprefixed-extension-key', `x- 접두사가 없는 확장 키: ${unknown.join(', ')}. 앞으로 명세가 같은 이름을 정할 수 있다 (§4.1).`);
   }
 }
 
-function checkIndex(file: string, frontmatter: string | null, issues: Issue[]): void {
-  if (frontmatter === null) return;
-  const parsed = parseFrontmatter(frontmatter);
-  if (!parsed.ok) {
-    issues.push({ level: 'error', rule: 'yaml-parse', file, message: `YAML을 파싱할 수 없습니다: ${parsed.reason}` });
-    return;
-  }
-  if (file !== 'index.md') {
-    issues.push({ level: 'error', rule: 'index-frontmatter', file, message: '하위 디렉터리 index.md에는 frontmatter를 둘 수 없습니다 (§8).' });
-    return;
-  }
-  for (const key of Object.keys(parsed.data)) {
-    if (key !== 'okf_version') {
-      issues.push({ level: 'error', rule: 'index-frontmatter', file, message: `루트 index.md frontmatter에는 okf_version만 둘 수 있습니다: \`${key}\` (§8, §12).` });
+// 값 하나를 보는 공용 검사. 개념 검사와 루트 index 검사가 함께 쓴다.
+function fieldChecks(bundle: Bundle, file: string, report: Report) {
+  return {
+    // §7 행위자 형식. 이 형식이 아니면 human-reviewed 등급을 받을 수 없다.
+    actor(name: string, v: unknown) {
+      if (typeof v !== 'string' || !ACTOR_RE.test(v)) {
+        report('warning', 'bad-actor', `${name}은 행위자 형식(&lt;producer&gt;/&lt;version&gt; 또는 &lt;scheme&gt;:&lt;id&gt;, 예: human:&lt;id&gt;)이어야 합니다. 지금 값: ${String(v)} (§7)`);
+      }
+    },
+    // §5 시각 형식. 읽은 시각(밀리초)을 돌려준다. 읽을 수 없으면 null.
+    time(name: string, v: unknown): number | null {
+      const t = parseTimestamp(v);
+      if (t === null) report('warning', 'bad-timestamp', `\`${name}: ${String(v)}\`는 허용된 시각 형식(오프셋 있는 date-time, 날짜만)이 아닙니다 (§5).`);
+      return t;
+    },
+    // §6.2 경로 필드. URL·범위 설명·번들 밖은 외부라 보지 않는다.
+    path(name: string, v: unknown): void {
+      if (typeof v !== 'string' || /\s/.test(v) || /^[a-z][a-z0-9+.-]*:/i.test(v) || v.startsWith('//')) return;
+      const { target, legacy } = resolvePathField(bundle, file, v);
+      if (target === null) return;
+      if (legacy) {
+        report('warning', 'legacy-path', `${name} \`${v}\`는 v0.2 대체 해석(번들 루트 기준)으로만 풀립니다. \`/${v}\`로 씁니다 (§6.2, §12.1).`);
+      } else if (!bundle.has(target) &amp;&amp; !bundle.has(`${target}/index.md`)) {
+        report('warning', 'missing-path-target', `${name} \`${v}\` → \`${target}\`가 번들에 없습니다 (§6.2).`);
+      }
+    },
+  };
+}
+type FieldChecks = ReturnType&lt;typeof fieldChecks&gt;;
+
+// §4: 문자열이어야 할 키가 따옴표 없는 숫자·불리언 등으로 읽혔다. type은 문자열이 아니면 이미 개념이 아니다.
+function checkStrings(fm: Mapping, report: Report): void {
+  for (const key of ['title', 'description', 'status']) {
+    const v = fm[key];
+    if (v !== undefined &amp;&amp; v !== null &amp;&amp; typeof v !== 'string') {
+      report('warning', 'unquoted-value', `${key}가 문자열이 아니라 ${v instanceof Date ? 'date' : typeof v}로 읽힙니다. 따옴표로 감쌉니다 (§4).`);
     }
   }
 }
 
-function checkLinks(bundle: Bundle, file: string, body: string, issues: Issue[]): void {
-  for (const target of extractLinks(body)) {
-    const resolved = resolveLink(file, target);
+// §4.1 · §11.2-2: tags는 목록이다. 스칼라는 태그 하나로 읽히고 쉼표로 나뉘지 않는다.
+function checkTags(fm: Mapping, report: Report): void {
+  const tags = fm.tags;
+  if (typeof tags === 'string' &amp;&amp; tags.trim() !== '') {
+    const hint = tags.includes(',') ? ` 소비자는 \`${tags}\` 전체를 태그 하나로 읽습니다.` : '';
+    report('warning', 'tags-not-list', `tags는 YAML 목록으로 씁니다 (§4.1, §11.2).${hint}`);
+  } else if (tags !== undefined &amp;&amp; tags !== null &amp;&amp; typeof tags !== 'string' &amp;&amp; !Array.isArray(tags)) {
+    report('warning', 'tags-not-list', 'tags는 문자열의 YAML 목록으로 씁니다 (§4.1).');
+  }
+}
+
+// §5.4: status 어휘와 superseded_by
+function checkStatus(fm: Mapping, report: Report, field: FieldChecks): void {
+  const status = fm.status;
+  if (!isBlank(status) &amp;&amp; !STATUSES.includes(status as string)) {
+    report('warning', 'unknown-status', `status는 draft·stable·deprecated 가운데 하나입니다. 소비자는 \`${String(status)}\`를 현재 지식이 아니라고 봅니다 (§5.4).`);
+  }
+  if (isBlank(fm.superseded_by)) return;
+  if (status !== 'deprecated') {
+    report('warning', 'superseded-without-deprecated', 'superseded_by는 status: deprecated일 때만 뜻이 있습니다 (§5.4).');
+  }
+  field.path('superseded_by', fm.superseded_by);
+}
+
+// §5.2: generated는 by가 있는 매핑이다. 읽은 generated.at(밀리초)을 돌려준다.
+function checkGenerated(fm: Mapping, report: Report, field: FieldChecks): number | null {
+  if (isBlank(fm.generated)) return null;
+  const g = asMapping(fm.generated);
+  if (g === null || isBlank(g.by)) {
+    report('warning', 'bad-generated', 'generated는 by를 가진 매핑입니다. 예: { by: "claude-code/&lt;model&gt;", at: "…" } (§5.2).');
+    return null;
+  }
+  field.actor('generated.by', g.by);
+  if (isBlank(g.at)) return null;
+  const t = field.time('generated.at', g.at);
+  if (t !== null &amp;&amp; DATE_ONLY_RE.test(String(g.at))) {
+    report('warning', 'date-only-trust-time', 'generated.at은 verified[].at과 비교하므로 date-time으로 씁니다 (§5).');
+  }
+  return t;
+}
+
+// §5.2 · §5.3: 검토 기록의 모양과, 현재 기록이 하나도 없는지
+function checkVerified(fm: Mapping, report: Report, field: FieldChecks, generated: number | null): void {
+  const times: number[] = [];
+  asList(fm.verified).forEach((item, i) =&gt; {
+    const o = asMapping(item);
+    if (o === null || isBlank(o.by) || isBlank(o.at)) {
+      report('warning', 'incomplete-verified', `verified ${i + 1}번째 항목에 by와 at이 둘 다 있어야 합니다. 소비자는 이 항목을 무시합니다 (§5.2, §11.2).`);
+      return;
+    }
+    field.actor(`verified[${i}].by`, o.by);
+    const t = field.time(`verified[${i}].at`, o.at);
+    if (t === null) return;
+    times.push(t);
+    if (DATE_ONLY_RE.test(String(o.at))) {
+      report('warning', 'date-only-trust-time', `verified[${i}].at은 generated.at과 비교하므로 date-time으로 씁니다 (§5).`);
+    }
+  });
+  if (times.length &gt; 0 &amp;&amp; generated !== null &amp;&amp; times.every((t) =&gt; t &lt; generated)) {
+    report('info', 'stale-verification', '모든 검토 기록이 generated.at보다 이릅니다. 소비자는 이 개념을 unverified로 읽습니다. 다시 검토를 받아야 합니다 (§5.3).');
+  }
+}
+
+// §5.1: sources 항목과 usage_window. 본문 각주와 맞춰 볼 id 목록을 돌려준다.
+function checkSources(fm: Mapping, report: Report, field: FieldChecks): Set&lt;string&gt; {
+  const ids = new Set&lt;string&gt;();
+  const window = (name: string, v: unknown) =&gt; {
+    const w = asMapping(v);
+    if (w === null || isBlank(w.from) || isBlank(w.to)) {
+      report('warning', 'bad-usage-window', `${name}는 시각 두 개로 된 { from, to } 매핑입니다 (§5.1).`);
+      return;
+    }
+    field.time(`${name}.from`, w.from);
+    field.time(`${name}.to`, w.to);
+  };
+  const shared = fm.usage_window;
+  if (!isBlank(shared)) window('usage_window', shared);
+  asList(fm.sources).forEach((item, i) =&gt; {
+    const name = `sources[${i}]`;
+    const s = asMapping(item);
+    if (s === null || isBlank(s.resource)) {
+      report('warning', 'missing-source-resource', `${name}에 resource가 없습니다. 소비자는 이 항목을 무시합니다 (§5.1, §11.2).`);
+      return;
+    }
+    if (!isBlank(s.id)) {
+      const id = String(s.id);
+      if (ids.has(id)) report('warning', 'duplicate-source-id', `${name}.id \`${id}\`가 겹칩니다. 각주가 어느 출처를 가리키는지 정할 수 없습니다 (§5.1).`);
+      ids.add(id);
+    }
+    if (!isBlank(s.author)) field.actor(`${name}.author`, s.author);
+    if (!isBlank(s.last_modified)) field.time(`${name}.last_modified`, s.last_modified);
+    if (!isBlank(s.usage_window)) window(`${name}.usage_window`, s.usage_window);
+    if (!isBlank(s.usage_count) &amp;&amp; isBlank(shared) &amp;&amp; isBlank(s.usage_window)) {
+      report('warning', 'usage-count-window', `${name}.usage_count에는 기간을 알려 줄 usage_window가 필요합니다 (§5.1).`);
+    }
+    field.path(`${name}.resource`, s.resource);
+  });
+  return ids;
+}
+
+// §5.5: stale_after. 읽을 수 없는 값은 절대 신선하지 않다.
+function checkStaleAfter(fm: Mapping, report: Report, options: ValidateOptions): void {
+  const v = fm.stale_after;
+  if (isBlank(v)) return;
+  const t = parseTimestamp(v);
+  if (t === null) {
+    report('warning', 'bad-timestamp', `\`stale_after: ${String(v)}\`를 시각으로 읽을 수 없습니다. 소비자는 이 개념을 신선하지 않다고 봅니다 (§5, §5.5).`);
+  } else if (options.now &amp;&amp; options.now.getTime() &gt;= t) {
+    report('info', 'stale-concept', `stale_after ${String(v)}가 지났습니다. 내용을 다시 확인할 때입니다 (§5.5).`);
+  }
+}
+
+// §5.1: 본문 각주 라벨은 sources id와 같아야 한다. 코드 블록·인라인 코드 안은 보지 않는다. 라벨마다 한 번만 알린다.
+function checkFootnotes(body: string, ids: Set&lt;string&gt;, report: Report): void {
+  const reported = new Set&lt;string&gt;();
+  for (const line of proseLines(body)) {
+    for (const m of line.matchAll(/\[\^([^\]\s]+)\]/g)) {
+      const label = m[1];
+      if (ids.has(label) || reported.has(label)) continue;
+      reported.add(label);
+      report('warning', 'unknown-footnote', `각주 [^${label}]에 맞는 sources id가 없습니다 (§5.1).`);
+    }
+  }
+}
+
+// 펜스 코드 블록과 들여 쓴 코드를 뺀 본문 줄. 인라인 코드도 지운다.
+function proseLines(body: string): string[] {
+  const out: string[] = [];
+  let fence: string | null = null;
+  for (const line of body.split('\n')) {
+    const stripped = line.trimStart();
+    if (fence === null &amp;&amp; (stripped.startsWith('```') || stripped.startsWith('~~~'))) {
+      fence = stripped.slice(0, 3);
+      continue;
+    }
+    if (fence !== null) {
+      if (stripped.startsWith(fence)) fence = null;
+      continue;
+    }
+    if (line.startsWith('    ') || line.startsWith('\t')) continue;
+    out.push(line.replace(/`[^`]*`/g, ''));
+  }
+  return out;
+}
+
+function checkIndex(bundle: Bundle, f: BundleFile, report: Report): void {
+  // 4단계 (완료) — 명세 §8·§8.1
+  if (f.path !== 'index.md') {
+    // 하위 디렉터리 index.md에는 frontmatter가 없다 (§8).
+    if (f.frontmatter.state !== 'absent') {
+      report('error', 'index-frontmatter', '하위 디렉터리 index.md에는 frontmatter를 둘 수 없습니다 (§8).');
+    }
+    return;
+  }
+  // 루트 index.md: okf_version·title·description·license와 확장 키를 둘 수 있다 (§8.1). 모르는 키도 오류가 아니다 (§4.1).
+  if (!checkParse(f, report)) return;
+  const fm = f.frontmatter.state === 'ok' ? f.frontmatter.data : {};
+  const v = fm.okf_version;
+  if (isBlank(v)) {
+    report('warning', 'missing-okf-version', '루트 index.md frontmatter에 `okf_version: "0.3"`을 두는 것을 권장합니다 (§8.1).');
+  } else if (typeof v !== 'string') {
+    report('warning', 'unquoted-version', `okf_version은 따옴표로 감싼 문자열로 씁니다. 예: "0.3" (§4, §8.1). 지금 값: ${String(v)}`);
+  }
+  const license = fm.license;
+  if (typeof license === 'string' &amp;&amp; !SPDX_RE.test(license)) {
+    const { target } = resolvePathField(bundle, 'index.md', license);
+    if (target === null || !bundle.has(target)) {
+      report('warning', 'bad-license', `license \`${license}\`는 SPDX 표현식도 번들 안 파일도 아닙니다 (§8.1).`);
+    }
+  }
+}
+
+function checkLog(f: BundleFile, report: Report): void {
+  // 4단계 추가 (v0.3) — log.md에는 frontmatter가 없다 (§9, §11.1-2)
+  if (f.frontmatter.state !== 'absent') {
+    report('error', 'log-frontmatter', 'log.md에는 frontmatter를 둘 수 없습니다 (§9).');
+  }
+  // 날짜 제목은 ## YYYY-MM-DD이고 최신 날짜가 먼저다 (§9).
+  const dates: string[] = [];
+  for (const line of f.body.split('\n')) {
+    if (!line.startsWith('## ')) continue;
+    const heading = line.slice(3).trim();
+    if (DATE_ONLY_RE.test(heading)) dates.push(heading);
+    else report('error', 'log-date-heading', `log.md 날짜 제목은 YYYY-MM-DD입니다. 지금 제목: ${heading} (§9).`);
+  }
+  for (let i = 1; i &lt; dates.length; i++) {
+    if (dates[i] &gt; dates[i - 1]) report('warning', 'log-order', `log.md는 최신 날짜를 먼저 씁니다. ${dates[i]}가 ${dates[i - 1]} 뒤에 있습니다 (§9).`);
+  }
+}
+
+function checkLinks(bundle: Bundle, f: BundleFile, report: Report): void {
+  // 5·6단계 (완료) — 명세 위반이 아니므로 모두 warning
+  for (const target of f.links) {
+    const resolved = resolveLink(f.path, target);
     if (resolved === null) {
-      issues.push({ level: 'warning', rule: 'link-outside-bundle', file, message: `\`${target}\`가 번들 루트 밖을 가리킵니다.` });
+      report('warning', 'link-outside-bundle', `\`${target}\`가 번들 루트 밖을 가리킵니다.`);
       continue;
     }
     if (target.startsWith('/')) {
-      issues.push({ level: 'warning', rule: 'team/relative-links', file, message: `\`${target}\`: 팀 규칙상 번들 안 링크는 상대 경로로 씁니다.` });
+      report('warning', 'team/relative-links', `\`${target}\`: 팀 규칙상 번들 안 링크는 상대 경로로 씁니다.`);
     }
     if (!bundle.has(resolved) &amp;&amp; !bundle.has(`${resolved}/index.md`)) {
-      issues.push({ level: 'warning', rule: 'broken-link', file, message: `\`${target}\` → \`${resolved}\`가 번들에 없습니다. 읽기는 계속합니다 (§6.1, §11).` });
+      report('warning', 'broken-link', `\`${target}\` → \`${resolved}\`가 번들에 없습니다. 읽기는 계속합니다 (§6.1, §11.2).`);
     }
   }
 }
 
-export function validateBundle(bundle: Bundle): Issue[] {
+export function validateBundle(bundle: Bundle, options: ValidateOptions = {}): Issue[] {
   const issues: Issue[] = [];
-  const files = [...bundle.keys()].sort();
-  for (const file of files) {
-    const { frontmatter, body } = splitFrontmatter(bundle.get(file)!);
-    const name = file.split('/').pop();
-    if (name === 'index.md') checkIndex(file, frontmatter, issues);
-    else if (name !== 'log.md') checkConcept(file, frontmatter, issues); // log.md 구조 검사는 이번 범위 밖
-    checkLinks(bundle, file, body, issues);
+  if (![...bundle.keys()].some(isMarkdown)) return issues; // 빈 번들
+  if (!bundle.has('index.md')) {
+    issues.push({ level: 'warning', rule: 'missing-root-index', file: '.', message: '번들 루트에 `okf_version: "0.3"`을 선언한 index.md를 둡니다 (§8.1).' });
+  }
+  for (const f of readBundle(bundle)) {
+    const report = reporter(issues, f.path);
+    if (f.kind === 'index') checkIndex(bundle, f, report);
+    else if (f.kind === 'log') checkLog(f, report);
+    else checkConcept(bundle, f, report, options); // concept·other
+    checkLinks(bundle, f, report);
   }
   return issues;
-}
-</code></pre>
+}</code></pre>
 </details>
 
 <div class="box">
   <h3>완료 기준 (학습 계획 3회차)</h3>
   <ul>
-    <li><code>pnpm test</code> 30개 통과, <code>pnpm validate</code> 오류·경고 0개.</li>
-    <li>잘못된 YAML과 누락된 <code>type</code>은 ERROR, 끊어진 링크는 WARN으로 나오는 것을 실제 번들에서 확인했다.</li>
+    <li><code>tests/validate.test.ts</code> 54개 통과, <code>pnpm validate</code> 오류·경고 0개.</li>
+    <li>잘못된 YAML은 ERROR, 누락된 <code>type</code>(<code>not-a-concept</code>)과 끊어진 링크는 WARN으로 나오는 것을 실제 번들에서 확인했다.</li>
     <li>문서 하나를 고치고 다시 검사해 0개로 돌아왔다.</li>
   </ul>
 </div>
@@ -245,7 +587,7 @@ export function validateBundle(bundle: Bundle): Issue[] {
 
 <div class="box">
   <h3>1차 자료</h3>
-  <p><a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#11-conformance">OKF v0.2 명세 §11 Conformance</a>. 분량이 짧다. 생산자의 SHOULD와 소비자의 MUST를 나눠 읽는다. 구현 중에는 <a href="https://eemeli.org/yaml/#parse">yaml 패키지 <code>parse</code> 문서</a>와 <a href="https://nodejs.org/api/test.html">Node.js test runner</a>를 옆에 둔다.</p>
+  <p><a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#11-conformance">OKF v0.3 명세 §11 Conformance</a>(§11.1 번들 적합성, §11.2 소비자 규칙)와 <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#32-concepts-assets-and-other-files">§3.2</a>. 분량이 짧다. 생산자의 SHOULD와 소비자의 MUST를 나눠 읽는다. 구현 중에는 <a href="https://eemeli.org/yaml/#parse">yaml 패키지 <code>parse</code> 문서</a>와 <a href="https://nodejs.org/api/test.html">Node.js test runner</a>를 옆에 둔다.</p>
   <p>테스트가 왜 실패하는지 모르겠으면 실패 메시지를 그대로 에이전트에게 붙여 넣고 물어본다.</p>
 </div>
 

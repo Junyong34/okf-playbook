@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0006 · 검색 설정 비교</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/quiz.js" defer></script>
+<script src="../assets/bigram-lab.js" defer></script>
+</head>
+<body>
+<main>
+<header class="lesson">
+  <p class="kicker">Lesson 0006 · 6회차</p>
+  <h1>검색 설정 비교</h1>
+  <p class="lede">같은 질문을 세 가지 검색 설정으로 돌려 표로 비교한다. 문서 분류와 링크가 결과를 언제 바꾸는지 직접 확인한다.</p>
+  <div class="meta"><span>약 90분</span><span>회상 5 · 읽기 15 · 퀴즈 5 · 실습 50 · 검토 15</span><span>용어: <a href="../reference/okf-v0.3-core.html">핵심 규칙과 용어집</a></span></div>
+</header>
+
+<div class="note"><strong>v0.3 기준.</strong> 2026-11-19 OKF v0.3 기준으로 갱신했다. 명세 인용(§)은 v0.3 번호다. v0.2에서 바뀐 점은 <a href="../../docs/okf-v0.3-changes.md">docs/okf-v0.3-changes.md</a>에 있다.</div>
+
+<div class="box win">
+  <h3>왜 이것이 다음인가</h3>
+  <p>4회차에는 기본 설정 하나(본문+분류, 링크 on)로만 검색했다. 그래서 "불필요한 개념이 많다"는 관찰은 있어도 그 원인이 분류 필드인지 링크인지 가를 수 없었다. 오늘은 한 번에 한 가지만 바꿔 비교한다. 학습 계획 6회차의 완료 기준은 결과표에 세 종류의 사례를 남기는 일이다. 문서가 빠진 사례, 불필요한 문서가 더해진 사례, 링크 확장이 유효했던 사례.</p>
+</div>
+
+<div class="note"><strong>시작 전 확인.</strong> 오늘 코드는 0004의 <code>retrieve</code>만 쓴다. 0005의 모델 답변 저장(<code>answers/qN.txt</code>)이 남아 있어도 진행할 수 있다. 그 경우 회상 1번은 0005 실습을 마친 뒤에 다시 답한다.</div>
+
+<h2>0. 회상</h2>
+<details><summary>질문 6에서 검색이 넘긴 개념과 모델 답변을 보고, 검색과 생성 중 어느 단계가 막았는지 말한다.</summary>
+<p>기본 설정의 검색은 질문 6에도 <code>return-exceptions.md</code>와 <code>returns.md</code>를 넘긴다. 검색은 막지 못했다. 막는 곳은 생성 단계의 지시문("근거가 없으면 번들에서 확인할 수 없다고 답해 줘")이다. 오늘 실습 3단계에서 검색 단계에서도 막을 수 있는지 본다.</p></details>
+<details><summary><code>check-answer</code>가 통과했는데도 틀린 답일 수 있는 경우를 하나 든다.</summary>
+<p>인용 경로는 맞는데 내용이 다른 경우다. <code>[policies/returns.md]</code>를 붙이고 "14일 이내"라고 쓰면 형식 검사는 통과한다. 내용은 사람이 파일을 열어 확인한다.</p></details>
+<details><summary>OKF의 <code>sources</code>와 각주는 0005의 경로 인용과 무엇이 같고 무엇이 다른가?</summary>
+<p>같은 점: 주장 단위로 근거를 붙인다. 다른 점: 경로 인용은 답변이 번들 안의 개념을 가리킨다. <code>sources</code>와 각주는 개념이 자신을 만든 자료를 가리킨다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#51-provenance-sources">§5.1</a> 근거의 근거다. 0007에서 다룬다.</p></details>
+
+<h2>1. 세 설정과 통제 변인</h2>
+<table>
+  <tr><th>설정</th><th>점수를 매기는 글</th><th>링크 한 단계</th><th>CLI</th></tr>
+  <tr><td>본문</td><td>본문</td><td>안 따라감</td><td><code>--fields body --no-links</code></td></tr>
+  <tr><td>본문+분류</td><td>본문 + <code>type</code>·<code>title</code>·<code>description</code>·<code>tags</code></td><td>안 따라감</td><td><code>--fields body+meta --no-links</code></td></tr>
+  <tr><td>본문+분류+링크</td><td>위와 같음</td><td>따라감</td><td>기본값</td></tr>
+</table>
+<p>첫째 줄과 둘째 줄은 분류 필드만 다르다. 둘째 줄과 셋째 줄은 링크만 다르다. 이렇게 짝을 지어야 차이가 어디서 왔는지 말할 수 있다. 상한(<code>--max</code>)과 기준(<code>--min</code>)은 세 설정이 같아야 한다. 4회차 실험에서 <code>--max 1</code>이면 링크 단계가 아무것도 더하지 못했다. 상한이 다르면 링크의 효과와 상한의 효과가 섞인다.</p>
+
+<h3>명세가 말하는 것과 말하지 않는 것</h3>
+<ul>
+  <li><strong>분류 필드의 용도.</strong> <code>type</code>은 소비자가 라우팅과 필터링에 쓴다. <code>description</code>은 개념을 요약한 한 문장이고 인덱스 생성, 검색 스니펫, 미리보기에 쓰인다. <code>tags</code>는 여러 개념을 가로지르는 분류다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#41-frontmatter">§4.1</a> 본문을 다 읽기 전에 개념을 고르게 돕는 정보다. 인덱스가 같은 목적(점진적 공개)을 가진다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#8-index-files">§8</a></li>
+  <li><strong>링크가 담는 것.</strong> 개념 A에서 B로 가는 링크는 관계가 있다는 주장이다. 관계의 종류(부모·자식, 참조, 의존)는 링크가 아니라 주변 문장이 전한다. 그래프를 만드는 소비자는 보통 모든 링크를 종류 없는 방향 간선으로 다룬다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#61-links-between-concepts">§6.1</a> 우리 검색기도 그렇게 한다. 링크 주변 문장이 질문과 관계있는지는 보지 않는다. v0.3은 링크 대상(<code>#fragment</code>를 뺀 것)이 개념 파일로 해석될 때만 "개념을 가리키는 링크"라고 정했다.<a class="cite" href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#61-links-between-concepts">§6.1</a> 그래서 검색기의 링크 한 단계도 <code>type</code>이 있는 개념만 더하고, <code>README.md</code>처럼 개념이 아닌 파일로 가는 링크는 따라가지 않고 경고만 남긴다.</li>
+  <li><strong>명세가 정하지 않는 것.</strong> 검색 방법은 명세 범위 밖이다. 두 글자 묶음 점수, 상한, 기준, 링크 한 단계는 모두 이 과정에서 정한 설계다. 오늘 결과는 "OKF의 성질"이 아니라 "이 번들과 이 검색기의 성질"로 기록한다.</li>
+</ul>
+
+<h2>2. 돌리기 전에 예측하기</h2>
+<p><code>evaluation.md</code> 6회차 메모에 먼저 적는다. 틀려도 된다. 예측과 결과가 어긋난 곳이 오늘 가장 많이 배우는 곳이다.</p>
+<ol>
+  <li>질문 1~6 가운데 본문과 본문+분류의 결과가 달라지는 질문은 몇 개인가?</li>
+  <li>링크 확장이 기대 근거를 살린(키워드로는 못 찾았는데 링크로 들어온) 질문은 몇 개인가?</li>
+  <li><code>--min 3</code>으로 올리면 질문 1~5 가운데 기대 근거를 잃는 질문이 있는가?</li>
+</ol>
+<p>아래 실험대는 개념마다 "본문"과 "본문+분류" 두 줄을 나란히 보여 준다. 질문을 바꿔 가며 두 줄의 점수가 갈리는 경우를 찾아본다. 예측의 단서가 된다.</p>
+<div class="box"><div class="bigram-lab" data-min="2" data-question="반품이 승인됐는데 언제 환불되나요?" data-docs="[{&quot;path&quot;:&quot;policies/return-exceptions.md · 본문&quot;,&quot;text&quot;:&quot;\n# 최종 판매 상품\n\n주문할 때 최종 판매로 표시된 상품은 반품할 수 없다.\n일반 반품 기한은 [반품 정책](returns.md)을 따른다.\n&quot;},{&quot;path&quot;:&quot;policies/return-exceptions.md · 본문+분류&quot;,&quot;text&quot;:&quot;Policy\n반품 예외\n최종 판매 상품의 처리 기준.\n반품 예외\n\n# 최종 판매 상품\n\n주문할 때 최종 판매로 표시된 상품은 반품할 수 없다.\n일반 반품 기한은 [반품 정책](returns.md)을 따른다.\n&quot;},{&quot;path&quot;:&quot;policies/returns.md · 본문&quot;,&quot;text&quot;:&quot;\n# 반품 조건\n\n할인 상품을 포함해 수령 후 7일 이내에 반품을 신청할 수 있다.\n최종 판매로 표시된 상품은 [반품 예외](return-exceptions.md)를 확인한다.\n반품 승인 이후의 일정은 [환불 절차](../processes/refunds.md)를 따른다.\n&quot;},{&quot;path&quot;:&quot;policies/returns.md · 본문+분류&quot;,&quot;text&quot;:&quot;Policy\n반품 정책\n반품 신청 기한과 할인 상품 규칙.\n반품 할인\n\n# 반품 조건\n\n할인 상품을 포함해 수령 후 7일 이내에 반품을 신청할 수 있다.\n최종 판매로 표시된 상품은 [반품 예외](return-exceptions.md)를 확인한다.\n반품 승인 이후의 일정은 [환불 절차](../processes/refunds.md)를 따른다.\n&quot;},{&quot;path&quot;:&quot;processes/refunds.md · 본문&quot;,&quot;text&quot;:&quot;\n# 환불 일정\n\n환불은 반품 승인 후 영업일 기준 3~5일 걸린다.\n&quot;},{&quot;path&quot;:&quot;processes/refunds.md · 본문+분류&quot;,&quot;text&quot;:&quot;Process\n환불 절차\n반품 승인부터 환불까지의 기간.\n환불\n\n# 환불 일정\n\n환불은 반품 승인 후 영업일 기준 3~5일 걸린다.\n&quot;}]"></div></div>
+
+<h2>3. 기억에서 꺼내기</h2>
+<p>점수: <span class="quiz-score"></span></p>
+<div class="quiz" data-answer="3" data-why="한 번에 한 변인만 바꿔야 결과 차이를 그 변인 탓으로 돌릴 수 있다. 상한이 다르면 링크 효과와 상한 효과가 섞인다.">
+  <p class="q">Q1. 세 설정의 <code>--max</code>와 <code>--min</code>을 같게 두는 이유는?</p>
+  <ol><li>명세가 기본값을 정해서</li><li>실행 시간을 줄이려고</li><li>차이의 원인을 가르려고</li><li>테스트가 그 값만 받아서</li></ol>
+</div>
+<div class="quiz" data-answer="2" data-why="§6.1: 링크는 관계가 있다는 주장이고, 관계의 종류는 주변 문장이 전한다. 그래서 링크만 보고는 질문과 관계있는지 알 수 없다.">
+  <p class="q">Q2. OKF 명세 §6.1에 따르면 링크 자체가 알려 주는 것은?</p>
+  <ol><li>관계의 종류(참조, 의존 등)</li><li>관계가 있다는 사실</li><li>대상 개념의 신뢰 등급</li><li>대상 개념의 <code>type</code></li></ol>
+</div>
+<div class="quiz" data-answer="4" data-why="§4.1은 <code>description</code>을 인덱스 생성, 검색 스니펫, 미리보기에 쓰는 한 문장 요약이라고 적는다. 본문보다 먼저 보는 정보다.">
+  <p class="q">Q3. 명세가 <code>description</code>의 쓰임으로 들지 <em>않은</em> 것은?</p>
+  <ol><li>인덱스 생성</li><li>검색 스니펫</li><li>미리보기</li><li>답변의 근거 인용</li></ol>
+</div>
+<div class="quiz" data-answer="1" data-why="기대 근거가 없으니 빠진 것은 없고, 고른 개념은 모두 불필요하다. 근거 없음 질문은 extra가 0개일 때가 이상적이다.">
+  <p class="q">Q4. 질문 6(기대 근거 없음)에서 개념 2개를 골랐다. <code>judge</code>의 결과는?</p>
+  <ol><li>missing 0개, extra 2개</li><li>missing 2개, extra 0개</li><li>missing 0개, extra 0개</li><li>판정할 수 없다</li></ol>
+</div>
+
+<h2>4. 실습: 설정 비교표 만들기</h2>
+<ol>
+  <li><code>src/okf/compare.ts</code>의 TODO를 채운다. <strong>C1</strong> <code>judge</code> → <strong>C2</strong> <code>compare</code>. 질문 목록(<code>QUESTIONS</code>), 세 설정(<code>settings</code>), 표 만들기(<code>toMarkdown</code>, <code>summarize</code>)는 들어 있다. 테스트 실패 메시지가 <code>Error: TODO C1단계 …</code>이면 버그가 아니라 남은 실습이다.
+<pre><code>node --test --test-name-pattern="C1단계" "tests/**/*.test.ts"
+node --test --test-name-pattern="C2단계" "tests/**/*.test.ts"</code></pre></li>
+  <li>기본 상한·기준으로 비교표를 만들어 <code>evaluation.md</code> 6회차에 붙여 넣는다. 2절의 예측과 나란히 놓고 맞은 것과 틀린 것을 적는다.
+<pre><code>pnpm -s compare</code></pre></li>
+  <li>기준을 올려 다시 돌린다. 4회차 메모에 남긴 질문("같은 기준을 질문 1~5에 적용하면 무엇이 빠지는가")에 답한다. 질문 6이 검색 단계에서 막히는지, 질문 1의 "5일" 오탐이 어떻게 되는지도 본다.
+<pre><code>pnpm -s compare --min 3</code></pre></li>
+  <li>질문 1~6만으로는 완료 기준의 사례가 다 나오지 않을 수 있다. 그러면 질문을 직접 만든다. 2절 실험대에서 두 가지를 찾는다.
+    <ul>
+      <li><strong>q7</strong>: 본문만 보면 기대 근거를 놓치고, 분류를 더하면 찾는 질문.</li>
+      <li><strong>q8</strong>: 키워드로는 기대 근거를 못 고르지만 링크로 들어오는 질문.</li>
+    </ul>
+    찾았으면 <code>QUESTIONS</code> 끝에 <code>{ id: 'q7', text: '…', expected: ['…'] }</code>처럼 더하고 2단계를 다시 돌린다. 기대 근거는 질문을 만들기 전에 정한다. 결과를 보고 정하면 실험이 아니다.</li>
+  <li><code>evaluation.md</code> 6회차 메모에 결론을 쓴다. 완료 기준의 세 사례를 하나씩 들고, 각 사례가 분류·링크·기준 가운데 무엇 때문인지 적는다. 마지막으로 "링크가 불필요한 개념을 덜 더하게 하려면 검색기를 어떻게 바꿀까"에 대한 생각을 한두 줄 남긴다. 구현은 하지 않는다.</li>
+</ol>
+
+<details><summary>힌트: q7과 q8을 찾는 단서 (실험대에서 10분 찾아본 뒤에 열기)</summary>
+<ul>
+  <li>q7: 세 개념의 <code>description</code>을 본문과 한 단어씩 대조한다. <code>description</code>에만 있고 본문에는 없는 단어가 하나 있다.</li>
+  <li>q8: <code>returns.md</code> 본문의 링크 문장 "반품 승인 이후의 일정은 [환불 절차](…)를 따른다"를 본다. 환불 시점을 묻되 "환불", "승인" 같은 말을 쓰지 않으면 <code>refunds.md</code>는 키워드로 걸리지 않는다.</li>
+</ul></details>
+
+<details><summary>모범 답안: <code>judge</code>와 <code>compare</code> (테스트를 직접 통과시킨 뒤에 열기)</summary>
+<pre><code>export function judge(picks: Pick[], expected: string[]): Judgement {
+  const got = new Set(picks.map((p) =&gt; p.path));
+  const want = new Set(expected);
+  return {
+    missing: expected.filter((e) =&gt; !got.has(e)),
+    extra: picks.filter((p) =&gt; !want.has(p.path)).map((p) =&gt; p.path),
+    linkHelped: picks.filter((p) =&gt; p.via === 'link' &amp;&amp; want.has(p.path)).map((p) =&gt; p.path),
+  };
+}
+
+export function compare(bundle: Bundle, questions: Question[], settingList: Setting[]): Row[] {
+  return questions.flatMap((question) =&gt;
+    settingList.map((s) =&gt; {
+      const { picks } = retrieve(bundle, question.text, s.options);
+      return { question, setting: s.name, picks, ...judge(picks, question.expected) };
+    }),
+  );
+}</code></pre>
+<p>q7·q8 예시: <code>환불 기간이 얼마나 되나요?</code>(기대 근거 <code>processes/refunds.md</code>, "기간"이 <code>description</code>에만 있다), <code>할인 상품 반품했는데 돈은 언제 돌려받나요?</code>(기대 근거 <code>policies/returns.md</code>, <code>processes/refunds.md</code>, 환불 절차가 링크로만 들어온다).</p>
+</details>
+
+<h2>5. 검토: 결과를 읽는 법</h2>
+<p>표를 다 채운 뒤 아래를 확인한다.</p>
+<ul>
+  <li><strong>번들 크기를 함께 적는다.</strong> 개념이 3개이고 상한이 3개다. 링크를 켜면 번들 전체가 넘어가기 쉽다. 이 조건에서 나온 "링크는 불필요하다"는 결론이 개념 수백 개짜리 번들에도 맞는지는 이 실험으로 알 수 없다.</li>
+  <li><strong>분류 필드의 효과는 본문과 얼마나 겹치느냐에 달렸다.</strong> 지금 번들은 <code>title</code>과 <code>tags</code>의 단어가 대부분 본문 제목이나 문장에도 들어 있다. 본문이 길고 <code>description</code>이 그것을 요약하는 번들이라면 차이가 커질 수 있다.</li>
+  <li><strong>기준을 올리는 일과 링크를 켜는 일은 서로 영향을 준다.</strong> 키워드에서 떨어진 개념이 링크로 다시 들어올 수 있다. 표의 "점수" 칸과 "링크" 표시를 같이 본다.</li>
+</ul>
+
+<div class="box">
+  <h3>완료 기준 (학습 계획 6회차)</h3>
+  <ul>
+    <li><code>pnpm test</code>의 C단계 통과.</li>
+    <li><code>evaluation.md</code> 6회차에 세 설정의 비교표와 <code>--min 3</code> 결과가 있다.</li>
+    <li>문서 누락, 불필요한 문서 추가, 링크 확장이 유효했던 사례를 하나씩 메모에 남겼다. 질문 1~6에 없으면 직접 만든 질문으로 채웠다.</li>
+  </ul>
+</div>
+
+<h2>6. 다음 회차 시작 질문</h2>
+<ol>
+  <li>오늘 표에서 링크 확장이 불필요한 개념을 더한 이유를 §6.1의 문장 하나로 설명한다.</li>
+  <li><code>description</code>에만 있는 단어가 검색을 살린 사례를 들고, 그 단어를 본문에도 넣어야 하는지 판단한다.</li>
+  <li>답변의 근거가 번들의 개념이라면, 그 개념이 옳다는 근거는 어디에 적어 두는가?</li>
+</ol>
+
+<div class="box">
+  <h3>1차 자료</h3>
+  <p><a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#41-frontmatter">OKF v0.3 명세 §4.1 Frontmatter</a>(분류 필드의 용도), <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#61-links-between-concepts">§6.1 Links between concepts</a>(링크가 담는 것과 담지 않는 것), <a href="https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md#8-index-files">§8 Index files</a>(점진적 공개). 세 절을 합쳐 읽으면 "본문을 열기 전에 무엇으로 고르는가"라는 오늘의 질문이 된다.</p>
+  <p>표가 예상과 다르거나 테스트가 납득되지 않으면 <code>pnpm -s compare</code> 출력을 그대로 에이전트에게 붙여 넣고 물어본다.</p>
+</div>
+
+<nav class="course">
+  <a href="0005-grounded-answer.html">← 0005 근거를 붙인 답변</a>
+  <a href="0007-sources-footnotes.html">0007 원문으로 거슬러 올라가기 →</a>
+</nav>
+</main>
+</body>
+</html>

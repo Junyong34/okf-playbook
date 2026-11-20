@@ -1,7 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules/
+.pnpm-store/
 /.pnp
 .pnp.*
 .yarn/*
@@ -11,7 +12,7 @@
 !.yarn/versions
 
 # testing
-/coverage
+coverage/
 
 # next.js
 /.next/
@@ -29,10 +30,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+pnpm-debug.log*
 
 # local env files
-.env*.local
 .env
+.env.*
+!.env.example
 
 # vercel
 .vercel
@@ -46,3 +49,15 @@ next-env.d.ts
 .eslintcache
 .turbo
 .swc
+
+# editors & local tools
+.idea/
+.vscode/
+.serena/
+.claude/settings.local.json
+
+# Vite and package build output
+.vite/
+.vite-temp/
+/web/dist/
+/server/dist/
