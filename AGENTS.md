@@ -14,6 +14,7 @@ okf-playbook/
 │   ├── README.md
 │   ├── adr/                   # 결정 기록 (0001-topic-retrieval: 주제 허브를 검색에서 다루는 방식)
 │   ├── agents/                # 에이전트 스킬 설정 (이슈 트래커, 라벨, 도메인 문서 규칙)
+│   ├── images/                # README용 웹 화면 스크린샷 (상담·디버깅·그래프)
 │   ├── okf-learning-plan.md   # 전체 학습·실습 계획 (기준 문서)
 │   ├── okf-modules.md         # src/okf 모듈별 역할과 CLI별 흐름 (구조를 바꾸면 함께 갱신)
 │   ├── okf-v0.3-changes.md    # v0.2 → v0.3 변경 안내 (깨지는 변경, 절 번호 대응, 이 저장소의 결정)
