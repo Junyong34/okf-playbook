@@ -2,12 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import { MultiDirectedGraph } from 'graphology';
 import type Sigma from 'sigma';
 import type { EdgeKind, Graph } from '@okf/graph.ts';
-import { conceptPositions, EDGE_STYLES, nodeColor, type EdgeShape, type NodeLayout } from './graphLayout.ts';
+import { conceptPositions, EDGE_STYLES, nodeColor, type EdgeShape, type FaqCategoryStyles, type NodeLayout } from './graphLayout.ts';
 
 export type NodeSelection = { path: string; center: boolean };
 
 type GraphCanvasProps = {
   graph: Graph;
+  categoryStyles: FaqCategoryStyles;
   layout: NodeLayout;
   edgeKind: 'all' | EdgeKind;
   edgeShape: EdgeShape;
@@ -22,7 +23,7 @@ function fitGraph(renderer: Sigma) {
   renderer.getCamera().setState({ x: 0.5, y: 0.5, angle: 0, ratio: 1 });
 }
 
-export function GraphCanvas({ graph, layout, edgeKind, edgeShape, selection, onSelect }: GraphCanvasProps) {
+export function GraphCanvas({ graph, categoryStyles, layout, edgeKind, edgeShape, selection, onSelect }: GraphCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [renderer, setRenderer] = useState<Sigma | null>(null);
   const highlightedPath = useRef<string | null>(null);
@@ -38,7 +39,7 @@ export function GraphCanvas({ graph, layout, edgeKind, edgeShape, selection, onS
         x: node.x,
         y: node.y,
         label: node.title || node.path,
-        color: nodeColor(node.type),
+        color: nodeColor(node, categoryStyles),
         size: graph.nodes.length > 80 ? 4 : 10,
       });
     }
@@ -116,7 +117,7 @@ export function GraphCanvas({ graph, layout, edgeKind, edgeShape, selection, onS
       instance?.kill();
       highlightedPath.current = null;
     };
-  }, [graph, layout, onSelect]);
+  }, [graph, categoryStyles, layout, onSelect]);
 
   useEffect(function updateEdges() {
     if (!renderer) return;
@@ -161,6 +162,16 @@ export function GraphCanvas({ graph, layout, edgeKind, edgeShape, selection, onS
       <div ref={containerRef} className="okf-graph-canvas" aria-label="OKF 개념 그래프" />
       {graph.nodes.length === 0 && <p className="okf-graph-stage-message">이 번들에 표시할 개념이 없습니다.</p>}
       {unavailable && <p className="okf-graph-stage-message">그래프를 그릴 수 없습니다. 개념 목록에서 문서를 열 수 있습니다.</p>}
+      {renderer && categoryStyles.size > 0 && (
+        <aside className="okf-graph-category-legend" aria-label="FAQ 카테고리 색상">
+          <p>FAQ 카테고리</p>
+          <ul>
+            {[...categoryStyles].map(([category, { label, color }]) => (
+              <li key={category}><i aria-hidden="true" style={{ backgroundColor: color }} />{label}</li>
+            ))}
+          </ul>
+        </aside>
+      )}
       {renderer && (
         <button
           type="button"

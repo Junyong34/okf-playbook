@@ -1,4 +1,5 @@
 import type { EdgeKind, GraphNode } from '@okf/graph.ts';
+import type { Bundle } from '@okf/types.ts';
 
 export const LAYOUTS = {
   grid: '격자',
@@ -25,6 +26,31 @@ const NODE_COLORS = new Map([
   ['Reference', '#00857c'],
   ['FAQ', '#527697'],
 ]);
+
+const FAQ_CATEGORY_COLORS = [
+  '#d47c1d', '#c74b64', '#748d32', '#9255bd', '#367ac8', '#18897d', '#a36037',
+];
+
+type CategoryStyle = { label: string; color: string };
+export type FaqCategoryStyles = ReadonlyMap<string, CategoryStyle>;
+
+function faqCategory(node: GraphNode): string | undefined {
+  return node.type === 'FAQ' ? /^faqs\/([^/]+)\/.+/.exec(node.path)?.[1] : undefined;
+}
+
+export function faqCategoryStyles(nodes: readonly GraphNode[], bundle: Bundle): FaqCategoryStyles {
+  const categories = new Set<string>();
+  for (const node of nodes) {
+    const category = faqCategory(node);
+    if (category) categories.add(category);
+  }
+
+  return new Map([...categories].sort().map((category, index) => {
+    const heading = bundle.get(`faqs/${category}/index.md`)?.match(/^#\s+(.+)$/m)?.[1].trim();
+    const color = FAQ_CATEGORY_COLORS[index % FAQ_CATEGORY_COLORS.length];
+    return [category, { label: heading || category, color }];
+  }));
+}
 
 export function conceptPositions(nodes: readonly GraphNode[], layout: NodeLayout) {
   if (layout === 'circle') {
@@ -56,6 +82,8 @@ export function conceptPositions(nodes: readonly GraphNode[], layout: NodeLayout
   return nodes.map((node, index) => ({ ...node, x: index % columns, y: -Math.floor(index / columns) }));
 }
 
-export function nodeColor(type: string): string {
-  return NODE_COLORS.get(type) ?? '#687a91';
+export function nodeColor(node: GraphNode, categoryStyles: FaqCategoryStyles): string {
+  const category = faqCategory(node);
+  const categoryStyle = category ? categoryStyles.get(category) : undefined;
+  return categoryStyle?.color ?? NODE_COLORS.get(node.type) ?? '#687a91';
 }

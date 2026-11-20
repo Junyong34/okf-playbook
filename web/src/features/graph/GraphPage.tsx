@@ -7,7 +7,7 @@ import type { LoadedBundle } from '@/lib/bundles/loadBundles.ts';
 import { PageHeader } from '@/shared/ui/PageHeader.tsx';
 import { ConceptInspector } from './ConceptInspector.tsx';
 import { GraphCanvas } from './GraphCanvas.tsx';
-import { EDGE_STYLES, LAYOUTS, type EdgeShape, type NodeLayout } from './graphLayout.ts';
+import { EDGE_STYLES, LAYOUTS, faqCategoryStyles, type EdgeShape, type NodeLayout } from './graphLayout.ts';
 import './graph.css';
 
 export function GraphPage() {
@@ -29,6 +29,7 @@ function BundleGraph({ loaded }: { loaded: LoadedBundle }) {
   const location = useLocation();
   const navigate = useNavigate();
   const graph = useMemo(() => buildGraph(loaded.bundle), [loaded.bundle]);
+  const categoryStyles = useMemo(() => faqCategoryStyles(graph.nodes, loaded.bundle), [graph, loaded.bundle]);
   const titles = useMemo(() => new Map(graph.nodes.map(({ path, title }) => [path, title])), [graph]);
   const edgeKinds = useMemo(() => [...new Set(graph.edges.map(({ kind }) => kind))], [graph]);
   const [layout, setLayout] = useState<NodeLayout>('grid');
@@ -87,6 +88,7 @@ function BundleGraph({ loaded }: { loaded: LoadedBundle }) {
         <GraphCanvas
           key={layout}
           graph={graph}
+          categoryStyles={categoryStyles}
           layout={layout}
           edgeKind={edgeKind}
           edgeShape={edgeShape}
@@ -96,7 +98,7 @@ function BundleGraph({ loaded }: { loaded: LoadedBundle }) {
         <footer className="okf-graph-legend">
           <p>개념 {graph.nodes.length}개 · 간선 {visibleEdgeCount}개{graph.dangling.length > 0 && ` · 개념 이외 참조 ${graph.dangling.length}개`}</p>
           {edgeKinds.map((kind) => (edgeKind === 'all' || edgeKind === kind) && (
-            <span key={kind}><i style={{ backgroundColor: EDGE_STYLES[kind].color }} />{EDGE_STYLES[kind].label}</span>
+            <span key={kind}><i aria-hidden="true" style={{ backgroundColor: EDGE_STYLES[kind].color }} />{EDGE_STYLES[kind].label}</span>
           ))}
         </footer>
       </section>

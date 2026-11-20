@@ -101,6 +101,28 @@
 .okf-graph-legend span { display: inline-flex; align-items: center; gap: 0.3rem; }
 .okf-graph-legend i { inline-size: 0.85rem; block-size: 0.2rem; border-radius: 1rem; }
 
+.okf-graph-category-legend {
+  position: absolute;
+  z-index: 1;
+  inset-block-start: 0.75rem;
+  inset-inline-end: 0.75rem;
+  max-inline-size: min(12rem, calc(100% - 1.5rem));
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.45rem;
+  background: var(--color-background-surface);
+  color: var(--color-text-primary);
+  font-size: 0.75rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  pointer-events: none;
+}
+
+.okf-graph-category-legend p { margin: 0 0 0.35rem; font-weight: 600; }
+.okf-graph-category-legend ul { display: grid; gap: 0.2rem; margin: 0; padding: 0; list-style: none; }
+.okf-graph-category-legend li { display: flex; align-items: baseline; gap: 0.35rem; }
+.okf-graph-category-legend i { flex: 0 0 0.6rem; block-size: 0.6rem; border-radius: 50%; }
+
 .okf-graph-sidebar {
   flex: 1 1 19rem;
   display: flex;
